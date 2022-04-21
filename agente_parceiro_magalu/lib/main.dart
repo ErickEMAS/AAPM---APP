@@ -1,7 +1,11 @@
+import 'package:agente_parceiro_magalu/core/app_config.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_router.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  AppConfig.setEnvironment(Environment.heroku);
   runApp(const AppWidget());
 }
 
@@ -10,8 +14,10 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Agente parceiro Magalu',
       theme: AppThemes.theme,
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: AppRoutes.dashboard,
     );
   }
 }

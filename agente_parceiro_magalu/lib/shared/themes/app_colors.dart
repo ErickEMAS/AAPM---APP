@@ -7,4 +7,14 @@ class AppColors {
 
   //
   static Color inputHint = const Color(0xFFA9A9A9);
+
+  //gradient
+  static Color amarelo = const Color(0xFFFBDB37);
+  static Color laranja = const Color(0xFFFE6C0C);
+  static Color vermelho = const Color(0xFFFF3F30);
+  static Color rosa = const Color(0xFFFC14B5);
+  static Color roxo = const Color(0xFFBD0ADB);
+  static Color azul = const Color(0xFF583DFF);
+  static Color azulClaro = const Color(0xFF00C1FF);
+  static Color verde = const Color(0xFF16EE3D);
 }
