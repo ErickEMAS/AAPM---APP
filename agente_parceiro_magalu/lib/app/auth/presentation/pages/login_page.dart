@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextFormField(
+              controller: _store.emailController,
               decoration: const InputDecoration(
                 hintText: "Digite seu email",
                 labelText: "Email",
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 8),
             TextFormField(
+              controller: _store.passwordController,
               decoration: const InputDecoration(
                 hintText: "Digite sua senha",
                 labelText: "Senha",
@@ -43,12 +45,22 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  _store.navigateToHome(context);
+                onPressed: () async {
+                  bool ret = await _store.login();
+
+                  if (ret) {
+                    _store.navigateToHome(context);
+                  } else {
+                    print("errooooou");
+                  }
                 },
                 child: const Text("Entrar"),
               ),
-            )
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text("Esqueci minha senha"),
+            ),
           ],
         ),
       ),

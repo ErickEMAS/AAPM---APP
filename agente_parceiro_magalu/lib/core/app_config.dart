@@ -33,7 +33,7 @@ class _Config {
   };
 
   static Map<String, dynamic> herokuConfig = {
-    "baseUrl": "https://api-agente-parceiro-magalu.herokuapp.com/",
+    "baseUrl": "https://api-agente-parceiro-magalu.herokuapp.com",
     "whereAmI": "dev"
   };
 }

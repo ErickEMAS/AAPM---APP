@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:agente_parceiro_magalu/core/app_config.dart';
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 
 const int _receiveTimeout = Duration.millisecondsPerMinute;
@@ -9,8 +8,13 @@ const int _connectionTimeout = 150000;
 
 class HttpService {
   final Dio _dio = Dio();
+  final Iterable<Interceptor>? interceptors;
+  final bool? refreshToken;
 
-  HttpService() {
+  HttpService({
+    this.interceptors = const [],
+    this.refreshToken = true,
+  }) {
     _dio
       ..options.baseUrl = AppConfig.baseUrl
       ..options.connectTimeout = _connectionTimeout
@@ -18,27 +22,26 @@ class HttpService {
       ..httpClientAdapter
       ..options.headers = {'Content-Type': 'application/json; charset=UTF-8'};
 
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-
-      return client;
-    };
-
-    _dio.clear();
-
     // if (refreshToken) _dio.interceptors.add(RefreshTokenInterceptor());
     // if (interceptors.isNotEmpty) _dio.interceptors.addAll(interceptors);
 
-    // _dio.interceptors.add(
-    //   LogInterceptor(
-    //     requestBody: true,
-    //     responseHeader: false,
-    //     responseBody: true,
-    //   ),
-    // );
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          print(
+              'send request：baseURL:${options.baseUrl}, path:${options.path}，');
+
+          return handler.next(options);
+        },
+      ),
+      // LogInterceptor(
+      //   requestBody: true,
+      //   responseHeader: false,
+      //   responseBody: true,
+      // ),
+    );
   }
+
   dynamic _defaultHttpExceptionHandler(DioError error) {
     if (error.response != null &&
         error.response!.data.toString().contains('ECONNREFUSED')) {
