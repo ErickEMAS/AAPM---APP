@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:agente_parceiro_magalu/core/app_config.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 const int _receiveTimeout = Duration.millisecondsPerMinute;
 const int _connectionTimeout = 150000;
@@ -28,18 +29,31 @@ class HttpService {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          print(
-              'send request：baseURL:${options.baseUrl}, path:${options.path}，');
+          if (kDebugMode) {
+            print(options.data);
+            print(
+                'send request：baseURL:${options.baseUrl}, path:${options.path}，');
+          }
 
           return handler.next(options);
         },
+        onResponse: (Response response, ResponseInterceptorHandler handler) {
+          if (kDebugMode) {
+            print(response.data);
+          }
+          return handler.next(response);
+        },
       ),
-      // LogInterceptor(
-      //   requestBody: true,
-      //   responseHeader: false,
-      //   responseBody: true,
-      // ),
     );
+
+    // _dio.interceptors.add(
+    //   LogInterceptor(
+    //     error: true,
+    //     // requestBody: true,
+    //     // responseHeader: false,
+    //     // responseBody: true,
+    //   ),
+    // );
   }
 
   dynamic _defaultHttpExceptionHandler(DioError error) {
