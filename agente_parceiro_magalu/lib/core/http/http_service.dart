@@ -31,6 +31,7 @@ class HttpService {
         onRequest: (options, handler) {
           if (kDebugMode) {
             print(options.data);
+
             print(
                 'send request：baseURL:${options.baseUrl}, path:${options.path}，');
           }
@@ -40,6 +41,7 @@ class HttpService {
         onResponse: (Response response, ResponseInterceptorHandler handler) {
           if (kDebugMode) {
             print(response.data);
+            print(response.statusCode);
           }
           return handler.next(response);
         },
@@ -57,13 +59,7 @@ class HttpService {
   }
 
   dynamic _defaultHttpExceptionHandler(DioError error) {
-    if (error.response != null &&
-        error.response!.data.toString().contains('ECONNREFUSED')) {
-      // throw ConnectionRefused(message: 'ERROR.ERROR_CONNECTION');
-    }
-    if (error.type == DioErrorType.connectTimeout) {
-      // throw ConnectionTimeOut(message: "ERROR.ERROR_CONNECTION");
-    }
+    print(error.message);
   }
 
   Future<dynamic> get(
