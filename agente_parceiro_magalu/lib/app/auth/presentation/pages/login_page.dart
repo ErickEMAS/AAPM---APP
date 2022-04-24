@@ -1,4 +1,5 @@
 import 'package:agente_parceiro_magalu/app/auth/presentation/stores/login_store.dart';
+import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: "Email",
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: AppDimens.space),
               TextFormField(
                 // obscureText: true,
                 controller: _store.passwordController,
@@ -56,7 +57,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     bool formOk = _store.formKey.currentState!.validate();
-                    if (!formOk) return;
 
                     bool ret = await LoadingOverlay.of(context).during(
                       _store.login(),
@@ -68,6 +68,8 @@ class _LoginPageState extends State<LoginPage> {
                       SnackBarHelper.snackBar(context,
                           message: "Falha na autentificação");
                     }
+
+                    if (!formOk) return;
                   },
                   child: const Text("Entrar"),
                 ),

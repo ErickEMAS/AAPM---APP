@@ -1,3 +1,4 @@
+import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/domain/repositories_interfaces/i_auth_repository.dart';
 
@@ -6,6 +7,9 @@ abstract class IAuthUseCase {
     required String email,
     required String password,
   });
+
+  Future verifyCpf({required String cpf});
+  Future signUp({required SignUpModel signUpModel});
 }
 
 class AuthUseCase implements IAuthUseCase {
@@ -21,6 +25,28 @@ class AuthUseCase implements IAuthUseCase {
     try {
       final response =
           await _repository.login(email: email, password: password);
+      return response;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserModel> verifyCpf({
+    required String cpf,
+  }) async {
+    try {
+      final response = await _repository.verifyCpf(cpf: cpf);
+      return response;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserModel> signUp({required SignUpModel signUpModel}) async {
+    try {
+      final response = await _repository.signUp(signUpModel: signUpModel);
       return response;
     } catch (err) {
       rethrow;
