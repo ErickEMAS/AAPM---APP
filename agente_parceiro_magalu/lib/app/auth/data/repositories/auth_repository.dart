@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:agente_parceiro_magalu/app/auth/data/datasource/auth_datasource.dart';
+import 'package:agente_parceiro_magalu/app/auth/data/models/change_password_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/send_code_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
@@ -31,5 +34,15 @@ class AuthRepository implements IAuthRepository {
   @override
   Future sendCode({required SendCode sendCode}) {
     return _datasource.sendCode(sendCode: sendCode);
+  }
+
+  @override
+  Future confirmeCode({required String email, required String code}) {
+    return _datasource.confirmeCode(email: email, code: code);
+  }
+
+  @override
+  Future changePassword({required ChangePassword changePassword}) {
+    return _datasource.changePassword(changePassword: changePassword);
   }
 }

@@ -6,7 +6,7 @@ class AppRoutes {
   //auth
   static const login = dashboard + '/login';
   static const signUp = dashboard + '/sign-up';
-  static const forgotPassword = dashboard + '/sign-up';
+  static const forgotPassword = dashboard + '/forgot_password';
 
   static const home = '/home';
 }

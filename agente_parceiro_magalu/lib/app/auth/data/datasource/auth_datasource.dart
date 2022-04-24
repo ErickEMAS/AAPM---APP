@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:agente_parceiro_magalu/app/auth/data/models/change_password_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/send_code_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
@@ -13,6 +14,8 @@ abstract class IAuthDatasource {
   Future verifyCpf({required String cpf});
   Future signUp({required SignUpModel signUpModel});
   Future sendCode({required SendCode sendCode});
+  Future confirmeCode({required String email, required String code});
+  Future changePassword({required ChangePassword changePassword});
 }
 
 class AuthDatasource implements IAuthDatasource {
@@ -90,6 +93,45 @@ class AuthDatasource implements IAuthDatasource {
       final response = await HttpService().post(
         Endpoints.sendCode,
         data: sendCode.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future confirmeCode({required String email, required String code}) async {
+    try {
+      Map<String, dynamic> data = {
+        "email": email,
+        "code": code,
+      };
+
+      final response = await HttpService().post(
+        Endpoints.confirmCodeChangePassword,
+        data: data,
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future changePassword({required ChangePassword changePassword}) async{
+    try {
+      final response = await HttpService().post(
+        Endpoints.changePassword,
+        data: changePassword.toJson(),
       );
 
       print(response);

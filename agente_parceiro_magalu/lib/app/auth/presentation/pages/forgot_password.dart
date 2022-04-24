@@ -30,48 +30,172 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         child: Form(
           key: _store.formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: PageView(
+            controller: _store.pageController,
             children: [
-              TextFormField(
-                controller: _store.emailController,
-                validator: _store.validateEmailPassword,
-                decoration: const InputDecoration(
-                  hintText: "Digite seu email",
-                  labelText: "Email",
-                ),
-              ),
-              const Text(
-                  "Um código será enviado ao e-mail cadastrado",
-              ),
-              const SizedBox(height: 160),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    bool formOk = _store.formKey.currentState!.validate();
-
-                    bool ret = await LoadingOverlay.of(context).during(
-                      _store.ForgotPassWordSendCode(),
-                    );
-
-                    if (ret) {
-                      _store.navigateToHome(context);
-                    } else {
-                      SnackBarHelper.snackBar(context,
-                          message: "Falha na autentificação");
-                    }
-
-                    if (!formOk) return;
-                  },
-                  child: const Text("Enviar código"),
-                ),
-              ),
+              _emailFormView(),
+              _codeFormView(),
+              _changePasswordFormView(),
+              _passwordRedefined(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  _emailFormView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextFormField(
+          controller: _store.emailController,
+          validator: _store.validateEmail,
+          decoration: const InputDecoration(
+            hintText: "Digite seu email",
+            labelText: "Email",
+          ),
+        ),        
+        const SizedBox(height: 10),
+        const Text(
+          "Um código será enviado ao e-mail cadastrado",
+        ),
+        const SizedBox(height: 150),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              bool formOk = _store.formKey.currentState!.validate();
+
+              bool ret = await LoadingOverlay.of(context).during(
+                _store.ForgotPassWordSendCode(),
+              );
+
+              if (ret) {
+                _store.nextPage();
+              } else {
+                SnackBarHelper.snackBar(context,
+                    message: "Falha ao solicitar redefinição de senha");
+              }
+
+              if (!formOk) return;
+            },
+            child: const Text("Enviar código"),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _codeFormView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextFormField(
+          controller: _store.codeController,
+          decoration: const InputDecoration(
+            hintText: "Digite o código recebido",
+            labelText: "Código",
+          ),
+        ),        
+        const SizedBox(height: 10),
+        const Text(
+          "Informe o código recebido por e-mail",
+        ),
+        const SizedBox(height: 150),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              bool formOk = _store.formKey.currentState!.validate();
+
+              bool ret = await LoadingOverlay.of(context).during(
+                _store.ForgotPassWordConfirmCode(),
+              );
+
+              print(ret);
+
+              if (ret) {
+                _store.nextPage();
+              } else {
+                SnackBarHelper.snackBar(context,
+                    message: "Falha ao solicitar redefinição de senha");
+              }
+
+              if (!formOk) return;
+            },
+            child: const Text("Confirmar código"),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _changePasswordFormView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextFormField(
+          controller: _store.passwordController,
+          validator: _store.validatePassword,
+          decoration: const InputDecoration(
+            hintText: "Digite sua nova senha",
+            labelText: "Senha",
+          ),
+        ), 
+        SizedBox(height: AppDimens.space),
+        TextFormField(
+          controller: _store.passwordConfirmController,
+          validator: _store.validatePassword,
+          decoration: const InputDecoration(
+            hintText: "Confirme sua nova senha",
+            labelText: "Confirmar Senha",
+          ),
+        ), 
+        const SizedBox(height: 160),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              bool formOk = _store.formKey.currentState!.validate();
+
+              bool ret = await LoadingOverlay.of(context).during(
+                _store.ForgotPassWordChangePassword(),
+              );
+
+              if (ret) {
+                _store.nextPage();
+              } else {
+                SnackBarHelper.snackBar(context,
+                    message: "Falha ao solicitar redefinição de senha");
+              }
+
+              if (!formOk) return;
+            },
+            child: const Text("Redefinir senha"),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _passwordRedefined() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text("Senha redefinida com sucesso"),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () { _store.navigateback(context); },
+            child: const Text("Entrar"),
+          ),
+        ),
+      ],
     );
   }
 }
