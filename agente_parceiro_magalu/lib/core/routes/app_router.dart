@@ -1,8 +1,11 @@
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/account_page.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/calendar_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/sellers_page.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +36,23 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const HomePage(),
+        );
+      case AppRoutes.sellers:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const SellersPage(),
+        );
+      case AppRoutes.calendar:
+        return MaterialPageRoute(
+          
+          settings: settings,
+          builder: (_) => const CalendarPage(),
+        );
+      case AppRoutes.account:
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          settings: settings,
+          builder: (_) => const AccountPage(),
         );
       default:
         return MaterialPageRoute(
