@@ -32,7 +32,7 @@ class AuthUseCase implements IAuthUseCase {
   }
 
   @override
-  Future<UserModel> verifyCpf({
+  Future verifyCpf({
     required String cpf,
   }) async {
     try {
@@ -44,7 +44,7 @@ class AuthUseCase implements IAuthUseCase {
   }
 
   @override
-  Future<UserModel> signUp({required SignUpModel signUpModel}) async {
+  Future signUp({required SignUpModel signUpModel}) async {
     try {
       final response = await _repository.signUp(signUpModel: signUpModel);
       return response;

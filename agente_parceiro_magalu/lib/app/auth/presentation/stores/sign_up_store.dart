@@ -1,6 +1,7 @@
 import 'package:agente_parceiro_magalu/app/auth/data/datasource/auth_datasource.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/domain/usecases/auth_usecases.dart';
+import 'package:agente_parceiro_magalu/core/http/exceptions/exceptions.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -28,10 +29,15 @@ abstract class _SignUpStoreBase with Store {
   @observable
   bool isObscureConfirm = true;
 
-  verifyCpf() {
+  Future<bool> verifyCpf() async {
     try {
-      _authUseCase.verifyCpf(cpf: cpfController.text);
-    } catch (err) {}
+      var cpf = cpfController.text.replaceAll(".", "").replaceAll("-", "");
+      await _authUseCase.verifyCpf(cpf: cpf);
+
+      return true;
+    } on Unauthorized {
+      return false;
+    }
   }
 
   onSignUpSubmitted() {

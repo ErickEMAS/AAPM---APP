@@ -46,17 +46,19 @@ class AuthDatasource implements IAuthDatasource {
     required String cpf,
   }) async {
     try {
-      Map<String, dynamic> data = {
+      Map<String, dynamic> params = {
         "cpf": cpf,
       };
+
       final response = await HttpService().get(
         Endpoints.verifyCPF,
-        data: data,
+        queryParameters: params,
       );
 
       print(response);
     } on DioError catch (err) {
-      if (err.response!.statusCode == 401) throw Unauthorized();
+      print(err);
+      if (err.response!.statusCode == 400) throw Unauthorized();
       rethrow;
     } catch (err) {
       rethrow;
@@ -75,7 +77,7 @@ class AuthDatasource implements IAuthDatasource {
 
       print(response);
     } on DioError catch (err) {
-      if (err.response!.statusCode == 400) throw Unauthorized();
+      if (err.response!.statusCode == 401) throw Unauthorized();
       rethrow;
     } catch (err) {
       rethrow;

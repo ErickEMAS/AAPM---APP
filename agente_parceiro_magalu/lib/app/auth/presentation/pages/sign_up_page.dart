@@ -1,6 +1,9 @@
 import 'package:agente_parceiro_magalu/app/auth/presentation/stores/sign_up_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
+import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
+import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -48,6 +51,9 @@ class _SignUpPageState extends State<SignUpPage> {
             hintText: "Digite seu CPF",
             labelText: "CPF",
           ),
+          inputFormatters: [
+            CpfCnpjInputMask(),
+          ],
         ),
         Expanded(
           child: Align(
@@ -55,10 +61,21 @@ class _SignUpPageState extends State<SignUpPage> {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // _store.verifyCpf();
+                onPressed: () async {
+                  bool formOk = _store.formKey.currentState!.validate();
 
-                  _store.nextPage();
+                  bool ret = await LoadingOverlay.of(context).during(
+                    _store.verifyCpf(),
+                  );
+
+                  if (ret) {
+                    _store.nextPage();
+                  } else {
+                    SnackBarHelper.snackBar(context,
+                        message: "CPF não autenticado");
+                  }
+
+                  if (!formOk) return;
                 },
                 child: const Text("Próximo"),
               ),

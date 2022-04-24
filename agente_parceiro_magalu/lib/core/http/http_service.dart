@@ -33,7 +33,7 @@ class HttpService {
             print(options.data);
 
             print(
-                'send request：baseURL:${options.baseUrl}, path:${options.path}，');
+                'send request：baseURL:${options.baseUrl}, path:${options.path}， body: ${options.data}, query params${options.queryParameters}');
           }
 
           return handler.next(options);
