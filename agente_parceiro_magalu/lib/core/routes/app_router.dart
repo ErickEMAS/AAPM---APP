@@ -1,3 +1,4 @@
+import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
@@ -17,6 +18,11 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const LoginPage(),
+        );
+      case AppRoutes.forgotPassword:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ForgotPasswordPage(),
         );
       case AppRoutes.signUp:
         return MaterialPageRoute(

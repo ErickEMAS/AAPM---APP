@@ -1,4 +1,3 @@
-import 'package:agente_parceiro_magalu/app/auth/presentation/stores/login_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
@@ -6,22 +5,24 @@ import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+import '../stores/forgot_password_store.dart';
+
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final LoginStore _store = serviceLocator<LoginStore>();
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final ForgotPassWordStore _store = serviceLocator<ForgotPassWordStore>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const AppBarGradient(
-        title: "Login",
+        title: "Recuperar senha",
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -41,15 +42,8 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: "Email",
                 ),
               ),
-              SizedBox(height: AppDimens.space),
-              TextFormField(
-                // obscureText: true,
-                controller: _store.passwordController,
-                validator: _store.validateEmailPassword,
-                decoration: const InputDecoration(
-                  hintText: "Digite sua senha",
-                  labelText: "Senha",
-                ),
+              const Text(
+                  "Um código será enviado ao e-mail cadastrado",
               ),
               const SizedBox(height: 160),
               SizedBox(
@@ -59,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                     bool formOk = _store.formKey.currentState!.validate();
 
                     bool ret = await LoadingOverlay.of(context).during(
-                      _store.login(),
+                      _store.ForgotPassWordSendCode(),
                     );
 
                     if (ret) {
@@ -71,13 +65,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     if (!formOk) return;
                   },
-                  child: const Text("Entrar"),
-                ),
-              ),
-              TextButton(
-                onPressed: () {_store.navigateToForgotPassword(context);},
-                child: const Text(
-                  "Esqueci minha senha",
+                  child: const Text("Enviar código"),
                 ),
               ),
             ],

@@ -1,7 +1,9 @@
 import 'package:agente_parceiro_magalu/app/auth/data/datasource/auth_datasource.dart';
+import 'package:agente_parceiro_magalu/app/auth/data/models/send_code_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/domain/repositories_interfaces/i_auth_repository.dart';
+import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 
 class AuthRepository implements IAuthRepository {
   final IAuthDatasource _datasource;
@@ -24,5 +26,10 @@ class AuthRepository implements IAuthRepository {
   @override
   Future signUp({required SignUpModel signUpModel}) {
     return _datasource.signUp(signUpModel: signUpModel);
+  }
+
+  @override
+  Future sendCode({required SendCode sendCode}) {
+    return _datasource.sendCode(sendCode: sendCode);
   }
 }

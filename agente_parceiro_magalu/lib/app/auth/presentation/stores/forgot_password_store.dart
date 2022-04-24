@@ -4,29 +4,23 @@ import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+part 'forgot_password_store.g.dart';
 
-import 'forgot_password_store.dart';
-part 'login_store.g.dart';
+class ForgotPassWordStore = _ForgotPassWordStoreBase with _$ForgotPassWordStore;
 
-class LoginStore = _LoginStoreBase with _$LoginStore;
-
-abstract class _LoginStoreBase with Store {
+abstract class _ForgotPassWordStoreBase with Store {
   final IAuthUseCase _authUseCase = serviceLocator<IAuthUseCase>();
-  final ForgotPassWordStore _forgotPasswordStore = serviceLocator<ForgotPassWordStore>();
 
-  TextEditingController emailController =
-      TextEditingController(text: 'admin@apm.com.br');
-  TextEditingController passwordController =
-      TextEditingController(text: 'lumos123456');
+  TextEditingController emailController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
   bool _unauthorized = false;
 
-  Future<bool> login() async {
+  Future<bool> ForgotPassWordSendCode() async {
     try {
-      await _authUseCase.login(
-          email: emailController.text, password: passwordController.text);
+      await _authUseCase.forgotPassWordSendCode(
+          email: emailController.text);
 
       return true;
     } on Unauthorized {
@@ -38,13 +32,6 @@ abstract class _LoginStoreBase with Store {
   Future<bool> navigateToHome(BuildContext context) {
     return Navigator.of(context)
         .pushNamed(AppRoutes.home)
-        .then((value) => true);
-  }
-
-  Future<bool> navigateToForgotPassword(BuildContext context) {
-    _forgotPasswordStore.emailController = emailController;
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.forgotPassword)
         .then((value) => true);
   }
 
