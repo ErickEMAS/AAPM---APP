@@ -11,14 +11,26 @@ class LoginStore = _LoginStoreBase with _$LoginStore;
 abstract class _LoginStoreBase with Store {
   final IAuthUseCase _authUseCase = serviceLocator<IAuthUseCase>();
 
+//adm login
+  // TextEditingController emailController =
+  //     TextEditingController(text: 'admin@apm.com.br');
+  //user login
   TextEditingController emailController =
-      TextEditingController(text: 'emas.erk@gmail.com');
+      TextEditingController(text: 'testesdaluacoding@gmail.com');
   TextEditingController passwordController =
-      TextEditingController(text: 'lumos123456');
+      TextEditingController(text: 'Teste!23');
 
   final formKey = GlobalKey<FormState>();
 
   bool _unauthorized = false;
+
+  @observable
+  bool isObscure = true;
+
+  @action
+  passwordVisibilityToggle() {
+    isObscure = !isObscure;
+  }
 
   Future<bool> login() async {
     try {

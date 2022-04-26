@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/core/http/exceptions/exceptions.dart';
 import 'package:agente_parceiro_magalu/core/http/http_service.dart';
 import 'package:dio/dio.dart';
@@ -32,7 +34,18 @@ class AuthDatasource implements IAuthDatasource {
 
       var user = response['me'];
 
-      return UserModel.fromJson(user);
+      UserModel userModel = UserModel.fromJson(user);
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.token, value: response["access_token"]);
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.loggedUser, value: userModel);
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.userRole, value: userModel.roles);
+
+      return userModel;
     } on DioError catch (err) {
       if (err.response!.statusCode == 401) throw Unauthorized();
       rethrow;
