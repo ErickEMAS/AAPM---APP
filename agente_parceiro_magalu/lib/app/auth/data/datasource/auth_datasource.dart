@@ -30,6 +30,8 @@ class AuthDatasource implements IAuthDatasource {
         data: json.encode(data),
       );
 
+      print(response);
+
       var user = response['me'];
 
       return UserModel.fromJson(user);
