@@ -32,7 +32,7 @@ class AuthUseCase implements IAuthUseCase {
   }
 
   @override
-  Future verifyCpf({
+  Future<UserModel> verifyCpf({
     required String cpf,
   }) async {
     try {

@@ -17,7 +17,7 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future verifyCpf({required String cpf}) {
+  Future<UserModel> verifyCpf({required String cpf}) {
     return _datasource.verifyCpf(cpf: cpf);
   }
 

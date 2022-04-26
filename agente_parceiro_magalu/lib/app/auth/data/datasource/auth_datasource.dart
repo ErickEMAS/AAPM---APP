@@ -9,7 +9,7 @@ import 'package:dio/dio.dart';
 
 abstract class IAuthDatasource {
   Future<UserModel> login({required String email, required String password});
-  Future verifyCpf({required String cpf});
+  Future<UserModel> verifyCpf({required String cpf});
   Future signUp({required SignUpModel signUpModel});
 }
 
@@ -42,12 +42,12 @@ class AuthDatasource implements IAuthDatasource {
   }
 
   @override
-  Future verifyCpf({
+  Future<UserModel> verifyCpf({
     required String cpf,
   }) async {
     try {
       Map<String, dynamic> params = {
-        "cpf": cpf,
+        "cpf": cpf.replaceAll(".", "").replaceAll("-", ""),
       };
 
       final response = await HttpService().get(
@@ -55,7 +55,9 @@ class AuthDatasource implements IAuthDatasource {
         queryParameters: params,
       );
 
-      print(response);
+      UserModel userModel = UserModel.fromJson(response);
+
+      return userModel;
     } on DioError catch (err) {
       print(err);
       if (err.response!.statusCode == 400) throw Unauthorized();
@@ -70,14 +72,14 @@ class AuthDatasource implements IAuthDatasource {
     required SignUpModel signUpModel,
   }) async {
     try {
+      signUpModel.cpf = signUpModel.cpf.replaceAll(".", "").replaceAll("-", "");
       final response = await HttpService().post(
         Endpoints.signUp,
-        data: signUpModel.toJson(),
+        data: json.encode(signUpModel.toJson()),
       );
-
       print(response);
     } on DioError catch (err) {
-      if (err.response!.statusCode == 401) throw Unauthorized();
+      if (err.response!.statusCode == 400) throw Unauthorized();
       rethrow;
     } catch (err) {
       rethrow;
