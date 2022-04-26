@@ -33,7 +33,7 @@ class HttpService {
             print(options.data);
 
             print(
-                'send request：baseURL:${options.baseUrl}, path:${options.path}，');
+                'send request：baseURL:${options.baseUrl}, path:${options.path}， body: ${options.data}, query params${options.queryParameters}');
           }
 
           return handler.next(options);
@@ -42,6 +42,7 @@ class HttpService {
           if (kDebugMode) {
             print(response.data);
             print(response.statusCode);
+            print(response.statusMessage);
           }
           return handler.next(response);
         },
@@ -60,6 +61,7 @@ class HttpService {
 
   dynamic _defaultHttpExceptionHandler(DioError error) {
     print(error.message);
+    print(error.error);
   }
 
   Future<dynamic> get(
