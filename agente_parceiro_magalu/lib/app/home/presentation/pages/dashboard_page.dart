@@ -14,13 +14,15 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          _logo(),
-          _inputs(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          children: [
+            _logo(),
+            _inputs(),
+          ],
+        ),
       ),
     );
   }

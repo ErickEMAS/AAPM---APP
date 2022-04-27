@@ -11,5 +11,7 @@ class AppRoutes {
   static const home = '/home';
   static const sellers = '/sellers';
   static const calendar = '/calendar';
-  static const account = '/account';
+  static const userAccount = '/userAccount';
+  static const adminAccount = '/adminAccount';
+  static const agent = '/agent';
 }
