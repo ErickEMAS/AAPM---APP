@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:agente_parceiro_magalu/core/app_config.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -69,10 +71,18 @@ class HttpService {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    bool sendToken = false,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
+      if (sendToken) {
+        String? accessToken =
+            await SecureStorageHelper.read(key: StorageKeys.token);
+
+        options?.headers!["Authorization"] = "Bearer " + (accessToken ?? "");
+      }
+
       final response = await _dio.get(
         uri,
         queryParameters: queryParameters,
