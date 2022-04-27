@@ -1,5 +1,7 @@
+import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
+import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,10 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return AppSafeArea(
       child: Scaffold(
         bottomNavigationBar: AppBottomBar(role: widget.role),
         appBar: const AppBarGradient(

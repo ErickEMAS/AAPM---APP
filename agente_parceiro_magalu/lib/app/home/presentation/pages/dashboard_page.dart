@@ -1,5 +1,6 @@
 import 'package:agente_parceiro_magalu/app/home/presentation/stores/dasboard_store.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
+import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return AppSafeArea(
       child: Scaffold(
         appBar: AppBar(),
         body: Column(
