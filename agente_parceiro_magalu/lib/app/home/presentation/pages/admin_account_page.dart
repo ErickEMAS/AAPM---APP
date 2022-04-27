@@ -17,7 +17,7 @@ class _AdminAccountPageState extends State<AdminAccountPage> {
       child: Scaffold(
         bottomNavigationBar: AppBottomBar(role: widget.role),
         appBar: const AppBarGradient(
-          title: "Carteira",
+          title: "Minha conta",
         ),
       ),
     );

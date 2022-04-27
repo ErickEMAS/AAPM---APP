@@ -34,7 +34,7 @@ class AppBottomBar extends StatelessWidget {
           ),
           admin ? iconBottomApp(
             tittle: "Agentes",
-            iconData: Icons.person,
+            iconData: Icons.people,
             active: path == "agent",
             nav: () {
               Navigator.pushNamed(context, AppRoutes.agent, arguments: role)
@@ -61,7 +61,7 @@ class AppBottomBar extends StatelessWidget {
           ),
           iconBottomApp(
             tittle: "Minha Conta",
-            iconData: Icons.person,
+            iconData: admin ? Icons.admin_panel_settings : Icons.person,
             active: path == "userAccount" || path == "adminAccount",
             nav: () {
               Navigator.pushNamed(context, admin ? AppRoutes.adminAccount : AppRoutes.userAccount, arguments: role)
