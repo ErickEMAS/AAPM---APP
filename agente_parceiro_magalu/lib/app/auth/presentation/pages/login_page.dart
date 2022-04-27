@@ -5,6 +5,7 @@ import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,62 +28,82 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
         ),
-        child: Form(
-          key: _store.formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: _store.emailController,
-                validator: _store.validateEmailPassword,
-                decoration: const InputDecoration(
-                  hintText: "Digite seu email",
-                  labelText: "Email",
+        child: Observer(builder: (_) {
+          return Form(
+            key: _store.formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _store.emailController,
+                  validator: _store.validateEmailPassword,
+                  decoration: const InputDecoration(
+                    hintText: "Digite seu email",
+                    labelText: "Email",
+                  ),
                 ),
-              ),
-              SizedBox(height: AppDimens.space),
-              TextFormField(
-                // obscureText: true,
-                controller: _store.passwordController,
-                validator: _store.validateEmailPassword,
-                decoration: const InputDecoration(
-                  hintText: "Digite sua senha",
-                  labelText: "Senha",
+                SizedBox(height: AppDimens.space),
+                TextFormField(
+                  obscureText: _store.isObscure,
+                  controller: _store.passwordController,
+                  validator: _store.validateEmailPassword,
+                  decoration: InputDecoration(
+                      hintText: "Digite sua senha",
+                      labelText: "Senha",
+                      suffixIcon: _store.isObscure
+                          ? IconButton(
+                              icon: const Icon(
+                                Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                _store.passwordVisibilityToggle();
+                              },
+                            )
+                          : IconButton(
+                              icon: const Icon(
+                                Icons.visibility,
+                              ),
+                              onPressed: () {
+                                _store.passwordVisibilityToggle();
+                              },
+                            )),
                 ),
-              ),
-              const SizedBox(height: 160),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    bool formOk = _store.formKey.currentState!.validate();
+                const SizedBox(height: 160),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      bool formOk = _store.formKey.currentState!.validate();
 
-                    bool ret = await LoadingOverlay.of(context).during(
-                      _store.login(),
-                    );
+                      bool ret = await LoadingOverlay.of(context).during(
+                        _store.login(),
+                      );
 
-                    if (ret) {
-                      _store.navigateToHome(context);
-                    } else {
-                      SnackBarHelper.snackBar(context,
-                          message: "Falha na autentificação");
-                    }
+                      if (ret) {
+                        _store.navigateToHome(context);
+                      } else {
+                        SnackBarHelper.snackBar(context,
+                            message: "Falha na autentificação");
+                      }
 
-                    if (!formOk) return;
+                      if (!formOk) return;
+                    },
+                    child: const Text("Entrar"),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _store.navigateToForgotPassword(context);
                   },
-                  child: const Text("Entrar"),
+                  child: const Text(
+                    "Esqueci minha senha",
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {_store.navigateToForgotPassword(context);},
-                child: const Text(
-                  "Esqueci minha senha",
-                ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

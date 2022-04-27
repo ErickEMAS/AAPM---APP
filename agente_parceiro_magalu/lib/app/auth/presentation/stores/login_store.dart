@@ -14,14 +14,26 @@ abstract class _LoginStoreBase with Store {
   final IAuthUseCase _authUseCase = serviceLocator<IAuthUseCase>();
   final ForgotPassWordStore _forgotPasswordStore = serviceLocator<ForgotPassWordStore>();
 
+//adm login
+  // TextEditingController emailController =
+  //     TextEditingController(text: 'admin@apm.com.br');
+  //user login
   TextEditingController emailController =
-      TextEditingController(text: 'admin@apm.com.br');
+      TextEditingController(text: 'testesdaluacoding@gmail.com');
   TextEditingController passwordController =
-      TextEditingController(text: 'lumos123456');
+      TextEditingController(text: 'Teste!23');
 
   final formKey = GlobalKey<FormState>();
 
   bool _unauthorized = false;
+
+  @observable
+  bool isObscure = true;
+
+  @action
+  passwordVisibilityToggle() {
+    isObscure = !isObscure;
+  }
 
   Future<bool> login() async {
     try {

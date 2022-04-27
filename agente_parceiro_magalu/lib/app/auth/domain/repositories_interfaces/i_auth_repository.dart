@@ -6,7 +6,7 @@ import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 
 abstract class IAuthRepository {
   Future<UserModel> login({required String email, required String password});
-  Future verifyCpf({required String cpf});
+  Future<UserModel> verifyCpf({required String cpf});
   Future signUp({required SignUpModel signUpModel});
   Future sendCode({required SendCode sendCode});
   Future confirmeCode({required String email, required String code});

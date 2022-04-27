@@ -5,13 +5,15 @@ import 'package:agente_parceiro_magalu/app/auth/data/models/send_code_model.dart
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/core/http/exceptions/exceptions.dart';
 import 'package:agente_parceiro_magalu/core/http/http_service.dart';
 import 'package:dio/dio.dart';
 
 abstract class IAuthDatasource {
   Future<UserModel> login({required String email, required String password});
-  Future verifyCpf({required String cpf});
+  Future<UserModel> verifyCpf({required String cpf});
   Future signUp({required SignUpModel signUpModel});
   Future sendCode({required SendCode sendCode});
   Future confirmeCode({required String email, required String code});
@@ -37,7 +39,18 @@ class AuthDatasource implements IAuthDatasource {
 
       var user = response['me'];
 
-      return UserModel.fromJson(user);
+      UserModel userModel = UserModel.fromJson(user);
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.token, value: response["access_token"]);
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.loggedUser, value: userModel);
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.userRole, value: userModel.roles);
+
+      return userModel;
     } on DioError catch (err) {
       if (err.response!.statusCode == 401) throw Unauthorized();
       rethrow;
@@ -47,21 +60,25 @@ class AuthDatasource implements IAuthDatasource {
   }
 
   @override
-  Future verifyCpf({
+  Future<UserModel> verifyCpf({
     required String cpf,
   }) async {
     try {
-      Map<String, dynamic> data = {
-        "cpf": cpf,
+      Map<String, dynamic> params = {
+        "cpf": cpf.replaceAll(".", "").replaceAll("-", ""),
       };
+
       final response = await HttpService().get(
         Endpoints.verifyCPF,
-        data: data,
+        queryParameters: params,
       );
 
-      print(response);
+      UserModel userModel = UserModel.fromJson(response);
+
+      return userModel;
     } on DioError catch (err) {
-      if (err.response!.statusCode == 401) throw Unauthorized();
+      print(err);
+      if (err.response!.statusCode == 400) throw Unauthorized();
       rethrow;
     } catch (err) {
       rethrow;
@@ -73,11 +90,11 @@ class AuthDatasource implements IAuthDatasource {
     required SignUpModel signUpModel,
   }) async {
     try {
+      signUpModel.cpf = signUpModel.cpf.replaceAll(".", "").replaceAll("-", "");
       final response = await HttpService().post(
         Endpoints.signUp,
-        data: signUpModel.toJson(),
+        data: json.encode(signUpModel.toJson()),
       );
-
       print(response);
     } on DioError catch (err) {
       if (err.response!.statusCode == 400) throw Unauthorized();
