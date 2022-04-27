@@ -47,8 +47,7 @@ class AuthDatasource implements IAuthDatasource {
       await SecureStorageHelper.write(
           key: StorageKeys.loggedUser, value: userModel);
 
-      await SecureStorageHelper.write(
-          key: StorageKeys.userRole, value: userModel.roles);
+      await SecureStorageHelper.write(key: StorageKeys.userRole, value: userModel.roles[0]);
 
       return userModel;
     } on DioError catch (err) {

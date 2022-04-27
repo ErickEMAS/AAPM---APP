@@ -1,4 +1,6 @@
 import 'package:agente_parceiro_magalu/app/auth/domain/usecases/auth_usecases.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/core/http/exceptions/exceptions.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
@@ -47,9 +49,10 @@ abstract class _LoginStoreBase with Store {
     }
   }
 
-  Future<bool> navigateToHome(BuildContext context) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.home)
+  Future<bool> navigateToHome(BuildContext context) async {
+    String? role = await SecureStorageHelper.read(key: StorageKeys.userRole);
+    
+    return Navigator.pushNamed(context, AppRoutes.home, arguments: role)
         .then((value) => true);
   }
 

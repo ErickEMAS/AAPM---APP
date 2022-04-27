@@ -2,22 +2,22 @@ import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.da
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
 import 'package:flutter/material.dart';
 
-class CalendarPage extends StatefulWidget {
+class AdminAccountPage extends StatefulWidget {
   final String role;
-  const CalendarPage({Key? key, required this.role}) : super(key: key);
+  const AdminAccountPage({Key? key, required this.role}) : super(key: key);
 
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  State<AdminAccountPage> createState() => _AdminAccountPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
+class _AdminAccountPageState extends State<AdminAccountPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: AppBottomBar(role: widget.role),
         appBar: const AppBarGradient(
-          title: "Agenda",
+          title: "Carteira",
         ),
       ),
     );
