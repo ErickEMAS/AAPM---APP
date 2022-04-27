@@ -9,4 +9,7 @@ class AppRoutes {
   static const forgotPassword = dashboard + '/forgot_password';
 
   static const home = '/home';
+  static const sellers = '/sellers';
+  static const calendar = '/calendar';
+  static const account = '/account';
 }
