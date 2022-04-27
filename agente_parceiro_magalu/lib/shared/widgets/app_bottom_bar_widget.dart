@@ -1,5 +1,3 @@
-import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
-import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +10,6 @@ class AppBottomBar extends StatelessWidget {
     required this.role,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     String? path = ModalRoute.of(context)?.settings.name?.split("/")[1];
@@ -23,58 +20,76 @@ class AppBottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          iconBottomApp(
+          bottomIcon(
             tittle: "Home",
             iconData: Icons.home,
-            active: path == "home",
+            active: path == AppRoutes.home.replaceAll("/", ""),
             nav: () {
-              Navigator.pushNamed(context, AppRoutes.home, arguments: role)
-                  .then((value) => true);
+              _navigator(context: context, route: AppRoutes.home);
             },
           ),
-          admin ? iconBottomApp(
-            tittle: "Agentes",
-            iconData: Icons.people,
-            active: path == "agent",
-            nav: () {
-              Navigator.pushNamed(context, AppRoutes.agent, arguments: role)
-                  .then((value) => true);
-            },
-          ) : Container(),
-          iconBottomApp(
+          admin
+              ? bottomIcon(
+                  tittle: "Agentes",
+                  iconData: Icons.people,
+                  active: path == AppRoutes.agent.replaceAll("/", ""),
+                  nav: () {
+                    _navigator(context: context, route: AppRoutes.agent);
+                  },
+                )
+              : Container(),
+          bottomIcon(
             tittle: "Carteira",
-            iconData: Icons.store,
-            active: path == "sellers",
+            iconData: Icons.credit_card,
+            active: path == AppRoutes.sellers.replaceAll("/", ""),
             nav: () {
-              Navigator.pushNamed(context, AppRoutes.sellers, arguments: role)
-                  .then((value) => true);
+              _navigator(context: context, route: AppRoutes.sellers);
             },
           ),
-          iconBottomApp(
+          bottomIcon(
             tittle: "Agenda",
             iconData: Icons.calendar_today,
-            active: path == "calendar",
+            active: path == AppRoutes.calendar.replaceAll("/", ""),
             nav: () {
-              Navigator.pushNamed(context, AppRoutes.calendar, arguments: role)
-                  .then((value) => true);
+              _navigator(context: context, route: AppRoutes.calendar);
             },
           ),
-          iconBottomApp(
+          bottomIcon(
             tittle: "Minha Conta",
             iconData: admin ? Icons.admin_panel_settings : Icons.person,
-            active: path == "userAccount" || path == "adminAccount",
+            active: path == AppRoutes.userAccount.replaceAll("/", "") ||
+                path == AppRoutes.adminAccount.replaceAll("/", ""),
             nav: () {
-              Navigator.pushNamed(context, admin ? AppRoutes.adminAccount : AppRoutes.userAccount, arguments: role)
-                  .then((value) => true);
+              _navigator(
+                context: context,
+                route: admin ? AppRoutes.adminAccount : AppRoutes.userAccount,
+              );
             },
           ),
         ],
       ),
     );
   }
+
+  _navigator({required BuildContext context, required String route}) {
+    if (ModalRoute.of(context)?.settings.name?.split("/")[1] ==
+        route.replaceAll("/", "")) {
+      return null;
+    } else {
+      return Navigator.of(context)
+          .pushNamedAndRemoveUntil(
+            route,
+            ModalRoute.withName('/'),
+            arguments: role,
+          )
+          .then(
+            (value) => false,
+          );
+    }
+  }
 }
 
-iconBottomApp({
+bottomIcon({
   required String tittle,
   required IconData iconData,
   required bool active,

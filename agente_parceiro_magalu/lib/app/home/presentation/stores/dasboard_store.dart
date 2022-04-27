@@ -8,8 +8,11 @@ class DashboardStore = _DashboardStoreBase with _$DashboardStore;
 abstract class _DashboardStoreBase with Store {
   Future<bool> navigateToLogin(BuildContext context) {
     return Navigator.of(context)
-        .pushNamed(AppRoutes.login)
-        .then((value) => true);
+        .pushNamedAndRemoveUntil(
+          AppRoutes.login,
+          ModalRoute.withName(AppRoutes.home),
+        )
+        .then((value) => false);
   }
 
   Future<bool> navigateToSignUp(BuildContext context) {

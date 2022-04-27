@@ -10,6 +10,7 @@ class AppThemes {
       backgroundColor: AppColors.primary,
       elevation: 0,
     ),
+    bottomAppBarTheme: const BottomAppBarTheme(elevation: 0),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(

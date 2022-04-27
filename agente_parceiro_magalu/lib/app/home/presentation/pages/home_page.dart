@@ -17,10 +17,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return AppSafeArea(
       child: Scaffold(
-        bottomNavigationBar: AppBottomBar(role: widget.role),
         appBar: const AppBarGradient(
           title: "home page",
         ),
+        bottomNavigationBar: AppBottomBar(role: widget.role),
       ),
     );
   }
