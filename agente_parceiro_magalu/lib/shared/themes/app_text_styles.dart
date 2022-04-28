@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
-  static TextStyle robotoRegular({
+  static TextStyle regular({
     Color? color,
     double? size,
   }) =>
-      GoogleFonts.roboto(
+      GoogleFonts.mPlusRounded1c(
         color: color ?? AppColors.black,
         fontSize: size ?? 12,
         fontWeight: FontWeight.w400,
       );
 
-  static TextStyle robotoBold({
+  static TextStyle bold({
     Color? color,
     double? size,
   }) =>
-      GoogleFonts.roboto(
+      GoogleFonts.mPlusRounded1c(
         color: color ?? AppColors.black,
-        fontSize: size ?? 12,
+        fontSize: size ?? 19,
         fontWeight: FontWeight.w700,
       );
 }

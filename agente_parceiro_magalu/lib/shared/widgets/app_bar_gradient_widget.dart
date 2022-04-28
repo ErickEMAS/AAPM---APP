@@ -21,7 +21,7 @@ class AppBarGradient extends StatelessWidget with PreferredSizeWidget {
           title: title != null
               ? Text(
                   title!,
-                  style: AppTextStyles.robotoBold(
+                  style: AppTextStyles.bold(
                     size: 18,
                     color: AppColors.white,
                   ),

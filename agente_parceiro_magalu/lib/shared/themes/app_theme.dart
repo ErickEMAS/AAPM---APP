@@ -18,7 +18,7 @@ class AppThemes {
         ), //button color
         foregroundColor: MaterialStateProperty.all<Color>(AppColors.white),
         textStyle: MaterialStateProperty.all<TextStyle>(
-          AppTextStyles.robotoBold(size: 18),
+          AppTextStyles.bold(size: 18),
         ),
       ),
     ),
@@ -26,7 +26,7 @@ class AppThemes {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(AppColors.primary),
         textStyle: MaterialStateProperty.all<TextStyle>(
-          AppTextStyles.robotoBold(size: 18),
+          AppTextStyles.bold(size: 18),
         ),
         side: MaterialStateProperty.all(
           BorderSide(
@@ -38,7 +38,7 @@ class AppThemes {
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-      labelStyle: AppTextStyles.robotoRegular(
+      labelStyle: AppTextStyles.regular(
         size: 16,
         color: AppColors.primary,
       ),

@@ -1,3 +1,5 @@
+import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
+import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
@@ -16,10 +18,23 @@ class _SellersPageState extends State<SellersPage> {
   Widget build(BuildContext context) {
     return AppSafeArea(
       child: Scaffold(
-        bottomNavigationBar: AppBottomBar(role: widget.role),
         appBar: const AppBarGradient(
           title: "Carteira",
         ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(AppDimens.margin),
+            child: Column(
+              children: [
+                Text(
+                  "Sellers",
+                  style: AppTextStyles.bold(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: AppBottomBar(role: widget.role),
       ),
     );
   }
