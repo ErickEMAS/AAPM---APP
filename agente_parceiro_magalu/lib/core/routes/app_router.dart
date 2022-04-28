@@ -35,39 +35,69 @@ class AppRouter {
           settings: settings,
           builder: (_) => const SignUpPage(),
         );
+
       case AppRoutes.home:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => HomePage(role: settings.arguments.toString()),
+        return PageRouteBuilder(
+          pageBuilder: (context, __, ___) =>
+              HomePage(role: settings.arguments.toString()),
         );
       case AppRoutes.agent:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => AgentPage(role: settings.arguments.toString()),
+        return PageRouteBuilder(
+          pageBuilder: (context, __, ___) =>
+              AgentPage(role: settings.arguments.toString()),
         );
       case AppRoutes.sellers:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => SellersPage(role: settings.arguments.toString()),
+        return PageRouteBuilder(
+          pageBuilder: (context, __, ___) =>
+              SellersPage(role: settings.arguments.toString()),
         );
       case AppRoutes.calendar:
-        return MaterialPageRoute(
-          
-          settings: settings,
-          builder: (_) => CalendarPage(role: settings.arguments.toString()),
+        return PageRouteBuilder(
+          pageBuilder: (context, __, ___) =>
+              CalendarPage(role: settings.arguments.toString()),
         );
       case AppRoutes.userAccount:
-        return MaterialPageRoute(
-          fullscreenDialog: true,
-          settings: settings,
-          builder: (_) => UserAccountPage(role: settings.arguments.toString()),
+        return PageRouteBuilder(
+          pageBuilder: (context, __, ___) =>
+              UserAccountPage(role: settings.arguments.toString()),
         );
       case AppRoutes.adminAccount:
-        return MaterialPageRoute(
-          fullscreenDialog: true,
-          settings: settings,
-          builder: (_) => AdminAccountPage(role: settings.arguments.toString()),
+        return PageRouteBuilder(
+          pageBuilder: (context, __, ___) =>
+              AdminAccountPage(role: settings.arguments.toString()),
         );
+      // case AppRoutes.home:
+      //   return MaterialPageRoute(
+      //     settings: settings,
+      //     builder: (_) => HomePage(role: settings.arguments.toString()),
+      //   );
+      // case AppRoutes.agent:
+      //   return MaterialPageRoute(
+      //     settings: settings,
+      //     builder: (_) => AgentPage(role: settings.arguments.toString()),
+      //   );
+      // case AppRoutes.sellers:
+      //   return MaterialPageRoute(
+      //     settings: settings,
+      //     builder: (_) => SellersPage(role: settings.arguments.toString()),
+      //   );
+      // case AppRoutes.calendar:
+      //   return MaterialPageRoute(
+      //     settings: settings,
+      //     builder: (_) => CalendarPage(role: settings.arguments.toString()),
+      //   );
+      // case AppRoutes.userAccount:
+      //   return MaterialPageRoute(
+      //     fullscreenDialog: true,
+      //     settings: settings,
+      //     builder: (_) => UserAccountPage(role: settings.arguments.toString()),
+      //   );
+      // case AppRoutes.adminAccount:
+      //   return MaterialPageRoute(
+      //     fullscreenDialog: true,
+      //     settings: settings,
+      //     builder: (_) => AdminAccountPage(role: settings.arguments.toString()),
+      //   );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

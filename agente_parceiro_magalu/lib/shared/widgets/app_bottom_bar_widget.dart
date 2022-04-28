@@ -39,19 +39,19 @@ class AppBottomBar extends StatelessWidget {
                 )
               : Container(),
           bottomIcon(
-            tittle: "Carteira",
-            iconData: Icons.credit_card,
-            active: path == AppRoutes.sellers.replaceAll("/", ""),
-            nav: () {
-              _navigator(context: context, route: AppRoutes.sellers);
-            },
-          ),
-          bottomIcon(
             tittle: "Agenda",
             iconData: Icons.calendar_today,
             active: path == AppRoutes.calendar.replaceAll("/", ""),
             nav: () {
               _navigator(context: context, route: AppRoutes.calendar);
+            },
+          ),
+          bottomIcon(
+            tittle: "Carteira",
+            iconData: Icons.credit_card,
+            active: path == AppRoutes.sellers.replaceAll("/", ""),
+            nav: () {
+              _navigator(context: context, route: AppRoutes.sellers);
             },
           ),
           bottomIcon(
