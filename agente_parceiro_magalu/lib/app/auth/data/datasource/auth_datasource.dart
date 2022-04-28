@@ -44,10 +44,17 @@ class AuthDatasource implements IAuthDatasource {
       await SecureStorageHelper.write(
           key: StorageKeys.token, value: response["access_token"]);
 
-      await SecureStorageHelper.write(
-          key: StorageKeys.loggedUser, value: userModel);
+      var oi = await SecureStorageHelper.read(
+        key: StorageKeys.token,
+      );
 
-      await SecureStorageHelper.write(key: StorageKeys.userRole, value: userModel.roles[0]);
+      print("TOKEN AQUI $oi");
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.loggedUser, value: userModel.toJson());
+
+      await SecureStorageHelper.write(
+          key: StorageKeys.userRole, value: userModel.roles[0]);
 
       return userModel;
     } on DioError catch (err) {
@@ -143,7 +150,7 @@ class AuthDatasource implements IAuthDatasource {
   }
 
   @override
-  Future changePassword({required ChangePassword changePassword}) async{
+  Future changePassword({required ChangePassword changePassword}) async {
     try {
       final response = await HttpService().post(
         Endpoints.changePassword,

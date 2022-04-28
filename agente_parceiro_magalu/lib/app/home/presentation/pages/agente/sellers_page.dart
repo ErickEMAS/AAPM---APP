@@ -1,4 +1,6 @@
+import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
+import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
@@ -14,6 +16,15 @@ class SellersPage extends StatefulWidget {
 }
 
 class _SellersPageState extends State<SellersPage> {
+  final SellerStore _store = serviceLocator<SellerStore>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _store.onSellersInit();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppSafeArea(
