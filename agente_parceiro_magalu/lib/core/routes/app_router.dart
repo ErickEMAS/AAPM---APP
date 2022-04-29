@@ -6,7 +6,7 @@ import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/agente
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/calendar_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/sellers_page.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller_page.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +49,7 @@ class AppRouter {
       case AppRoutes.sellers:
         return PageRouteBuilder(
           pageBuilder: (context, __, ___) =>
-              SellersPage(role: settings.arguments.toString()),
+              SellerPage(role: settings.arguments.toString()),
         );
       case AppRoutes.calendar:
         return PageRouteBuilder(

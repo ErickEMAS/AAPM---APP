@@ -9,4 +9,5 @@ class Endpoints {
 
   //seller
   static const String getSellerListByAgentId = "/seller/get-sellers";
+  static const String postSeller = "/seller/add-seller";
 }

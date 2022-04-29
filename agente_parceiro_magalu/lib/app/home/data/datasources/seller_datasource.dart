@@ -10,7 +10,7 @@ import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:dio/dio.dart';
 
 abstract class ISellerDatasource {
-  Future getSellerByAgenteId();
+  Future getSellerList();
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -25,21 +25,13 @@ class SellerDatasource implements ISellerDatasource {
   }
 
   @override
-  Future getSellerByAgenteId() async {
+  Future getSellerList() async {
     try {
-      var user = await SecureStorageHelper.read(key: StorageKeys.loggedUser);
-      var encoded = json.encode(user);
-      Map<String, dynamic> decoded =
-          json.decode(encoded) as Map<String, dynamic>;
-
-      UserModel.fromJson(decoded);
-
-      print(decoded);
-
       final response = await _httpWithAuth.get(
         Endpoints.getSellerListByAgentId,
-        // params = params,
       );
+
+      print(response);
     } on DioError catch (err) {
       rethrow;
     } catch (err) {

@@ -7,22 +7,22 @@ import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart
 import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
 import 'package:flutter/material.dart';
 
-class SellersPage extends StatefulWidget {
+class SellerPage extends StatefulWidget {
   final String role;
-  const SellersPage({Key? key, required this.role}) : super(key: key);
+  const SellerPage({Key? key, required this.role}) : super(key: key);
 
   @override
-  State<SellersPage> createState() => _SellersPageState();
+  State<SellerPage> createState() => _SellerPageState();
 }
 
-class _SellersPageState extends State<SellersPage> {
+class _SellerPageState extends State<SellerPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
 
   @override
   void initState() {
     super.initState();
 
-    _store.onSellersInit();
+    _store.onSellerInit();
   }
 
   @override
@@ -32,13 +32,24 @@ class _SellersPageState extends State<SellersPage> {
         appBar: const AppBarGradient(
           title: "Carteira",
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Text("Adicionar Seller"),
+            ),
+          ),
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(AppDimens.margin),
             child: Column(
               children: [
                 Text(
-                  "Sellers",
+                  "Seller",
                   style: AppTextStyles.bold(),
                 ),
               ],

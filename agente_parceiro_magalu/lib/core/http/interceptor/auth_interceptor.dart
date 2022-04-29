@@ -10,6 +10,8 @@ class AuthInterceptor extends InterceptorsWrapper {
 
     options.headers.addAll({'Authorization': 'Bearer $bearer'});
 
+    print(options.headers);
+
     return super.onRequest(options, handler);
   }
 }

@@ -51,7 +51,7 @@ class AuthDatasource implements IAuthDatasource {
       print("TOKEN AQUI $oi");
 
       await SecureStorageHelper.write(
-          key: StorageKeys.loggedUser, value: userModel.toJson());
+          key: StorageKeys.loggedUser, value: json.encode(user));
 
       await SecureStorageHelper.write(
           key: StorageKeys.userRole, value: userModel.roles[0]);

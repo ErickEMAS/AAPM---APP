@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:agente_parceiro_magalu/core/app_config.dart';
+import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -8,7 +9,7 @@ const int _receiveTimeout = Duration.millisecondsPerMinute;
 const int _connectionTimeout = 150000;
 
 class HttpService {
-  final Dio _dio = Dio();
+  final Dio _dio = serviceLocator<Dio>();
   final Iterable<Interceptor> interceptors;
   final bool? refreshToken;
 
@@ -30,10 +31,17 @@ class HttpService {
       InterceptorsWrapper(
         onRequest: (options, handler) {
           if (kDebugMode) {
-            print(options.data);
+            print("header: ${options.headers}");
 
+            print("full url: ${options.uri}");
+            print("");
+            print("________________________");
+            print("");
             print(
                 'send request：baseURL:${options.baseUrl}, path:${options.path}， body: ${options.data}, query params${options.queryParameters}');
+            print("");
+            print("________________________");
+            print("");
           }
 
           return handler.next(options);

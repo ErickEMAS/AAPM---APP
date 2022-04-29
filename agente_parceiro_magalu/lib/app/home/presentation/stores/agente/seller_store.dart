@@ -8,10 +8,18 @@ class SellerStore = _SellerStoreBase with _$SellerStore;
 abstract class _SellerStoreBase with Store {
   final ISellerDatasource _datasource = serviceLocator<ISellerDatasource>();
 
-  Future<bool> onSellersInit() async {
+  Future<bool> onSellerInit() async {
     try {
-      await _datasource.getSellerByAgenteId();
+      await _datasource.getSellerList();
 
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> addSeller() async {
+    try {
       return true;
     } catch (err) {
       return false;
