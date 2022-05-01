@@ -236,6 +236,7 @@ class _SellerPageState extends State<SellerPage> {
                       SnackBarHelper.snackBar(context,
                           message: "Seller cadastrado com sucesso!");
                       _previousPage();
+                      _store.formKey.currentState!.reset();
                     } else {
                       SnackBarHelper.snackBar(
                         context,
