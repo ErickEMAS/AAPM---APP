@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:agente_parceiro_magalu/core/app_config.dart';
-import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
-import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
+import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,8 +9,8 @@ const int _receiveTimeout = Duration.millisecondsPerMinute;
 const int _connectionTimeout = 150000;
 
 class HttpService {
-  final Dio _dio = Dio();
-  final Iterable<Interceptor>? interceptors;
+  final Dio _dio = serviceLocator<Dio>();
+  final Iterable<Interceptor> interceptors;
   final bool? refreshToken;
 
   HttpService({
@@ -26,16 +25,23 @@ class HttpService {
       ..options.headers = {'Content-Type': 'application/json; charset=UTF-8'};
 
     // if (refreshToken) _dio.interceptors.add(RefreshTokenInterceptor());
-    // if (interceptors.isNotEmpty) _dio.interceptors.addAll(interceptors);
+    if (interceptors.isNotEmpty) _dio.interceptors.addAll(interceptors);
 
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
           if (kDebugMode) {
-            print(options.data);
+            print("header: ${options.headers}");
 
+            print("full url: ${options.uri}");
+            print("");
+            print("________________________");
+            print("");
             print(
                 'send request：baseURL:${options.baseUrl}, path:${options.path}， body: ${options.data}, query params${options.queryParameters}');
+            print("");
+            print("________________________");
+            print("");
           }
 
           return handler.next(options);
@@ -71,18 +77,10 @@ class HttpService {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-    bool sendToken = false,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      if (sendToken) {
-        String? accessToken =
-            await SecureStorageHelper.read(key: StorageKeys.token);
-
-        options?.headers!["Authorization"] = "Bearer " + (accessToken ?? "");
-      }
-
       final response = await _dio.get(
         uri,
         queryParameters: queryParameters,
