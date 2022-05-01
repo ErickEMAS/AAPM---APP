@@ -29,8 +29,8 @@ abstract class _SignUpStoreBase with Store {
     passwordConfirm: '',
   );
 
-  final TextEditingController cpfController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController cpfController = TextEditingController();
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController apelidoController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -74,16 +74,6 @@ abstract class _SignUpStoreBase with Store {
 
   Future<bool> onSignUpSubmitted() async {
     try {
-      formSignUp = SignUpModel(
-        id: userModel.id,
-        cpf: cpfController.text,
-        email: emailController.text,
-        fullName: nomeController.text,
-        nickName: apelidoController.text,
-        password: passwordController.text,
-        passwordConfirm: passwordConfirmController.text,
-      );
-
       await _authUseCase.signUp(signUpModel: formSignUp);
 
       return true;
@@ -112,14 +102,6 @@ abstract class _SignUpStoreBase with Store {
     );
   }
 
-  @action
-  String? validateSignUpField(String? text) {
-    if (text == "") return "Campo não pode ser vazio";
-
-    return null;
-  }
-
-  @action
   String? validateEmail(String? text) {
     if (text == "") return "Campo não pode ser vazio";
     String pattern =
@@ -131,7 +113,6 @@ abstract class _SignUpStoreBase with Store {
     return null;
   }
 
-  @action
   String? validateCpf(String? cpf) {
     if (cpf == "") return "Campo não pode ser vazio";
     if (cpf!.length < 11) return "Precisa ter 11 números";
@@ -139,7 +120,6 @@ abstract class _SignUpStoreBase with Store {
     return null;
   }
 
-  @action
   String? validatePassword(String? password) {
     if (password!.isEmpty) return "Campo não pode ser vazio";
     if (!password.contains(RegExp(r'[A-Z]'))) {
@@ -158,7 +138,6 @@ abstract class _SignUpStoreBase with Store {
     return null;
   }
 
-  @action
   String? validateConfirmPassword(String? password) {
     if (password!.isEmpty) return "Campo não pode ser vazio";
     if (password != passwordController.text)

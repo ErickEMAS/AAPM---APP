@@ -1,6 +1,7 @@
 import 'package:agente_parceiro_magalu/app/auth/presentation/stores/sign_up_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
+import 'package:agente_parceiro_magalu/core/helpers/input_validator_helper.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
@@ -103,38 +104,48 @@ class _SignUpPageState extends State<SignUpPage> {
       return Column(
         children: [
           ..._formColumn(
-            controller: _store.emailController,
             validator: _store.validateEmail,
             hint: "Digite seu e-mail",
             label: "E-mail",
+            onChanged: (value) {
+              _store.formSignUp.email = value;
+            },
           ),
           ..._formColumn(
-            controller: _store.nomeController,
-            validator: _store.validateSignUpField,
+            validator: InputValidatorHelper.validateCommonField,
             hint: "Digite seu nome completo",
             label: "Nome",
+            onChanged: (value) {
+              _store.formSignUp.fullName = value;
+            },
           ),
           ..._formColumn(
-            controller: _store.apelidoController,
-            validator: _store.validateSignUpField,
+            validator: InputValidatorHelper.validateCommonField,
             hint: "Digite seu apelido",
             label: "Apelido",
+            onChanged: (value) {
+              _store.formSignUp.nickName = value;
+            },
           ),
           ..._formColumn(
-            controller: _store.passwordController,
             isPassword: true,
             isObscure: _store.isObscure,
             onTapSulfixIcon: _store.passwordVisibilityToggle,
             validator: _store.validatePassword,
+            onChanged: (value) {
+              _store.formSignUp.password = value;
+            },
             hint: "Digite sua senha",
             label: "Senha",
           ),
           ..._formColumn(
-            controller: _store.passwordConfirmController,
             isPassword: true,
             isObscure: _store.isObscureConfirm,
             onTapSulfixIcon: _store.passwordConfirmVisibilityToggle,
             validator: _store.validateConfirmPassword,
+            onChanged: (value) {
+              _store.formSignUp.passwordConfirm = value;
+            },
             hint: "Confirme sua senha",
             label: "Confirmação da senha",
           ),
@@ -187,14 +198,14 @@ class _SignUpPageState extends State<SignUpPage> {
     bool isPassword = false,
     bool isObscure = false,
     Function? onTapSulfixIcon,
+    void Function(String)? onChanged,
     String? Function(String?)? validator,
-    required TextEditingController controller,
   }) {
     return [
       TextFormField(
         obscureText: isObscure,
-        controller: controller,
         validator: validator,
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hint,
           labelText: label,

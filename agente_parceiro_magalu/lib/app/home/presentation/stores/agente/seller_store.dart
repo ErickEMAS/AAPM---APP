@@ -48,10 +48,4 @@ abstract class _SellerStoreBase with Store {
       return false;
     }
   }
-
-  String? validateCommonField(String? text) {
-    if (text == "") return "Campo não pode ser vazio";
-
-    return null;
-  }
 }

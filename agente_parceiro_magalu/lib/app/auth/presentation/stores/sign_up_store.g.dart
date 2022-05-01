@@ -77,61 +77,6 @@ mixin _$SignUpStore on _SignUpStoreBase, Store {
   }
 
   @override
-  String? validateSignUpField(String? text) {
-    final _$actionInfo = _$_SignUpStoreBaseActionController.startAction(
-        name: '_SignUpStoreBase.validateSignUpField');
-    try {
-      return super.validateSignUpField(text);
-    } finally {
-      _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  String? validateEmail(String? text) {
-    final _$actionInfo = _$_SignUpStoreBaseActionController.startAction(
-        name: '_SignUpStoreBase.validateEmail');
-    try {
-      return super.validateEmail(text);
-    } finally {
-      _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  String? validateCpf(String? cpf) {
-    final _$actionInfo = _$_SignUpStoreBaseActionController.startAction(
-        name: '_SignUpStoreBase.validateCpf');
-    try {
-      return super.validateCpf(cpf);
-    } finally {
-      _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  String? validatePassword(String? password) {
-    final _$actionInfo = _$_SignUpStoreBaseActionController.startAction(
-        name: '_SignUpStoreBase.validatePassword');
-    try {
-      return super.validatePassword(password);
-    } finally {
-      _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  String? validateConfirmPassword(String? password) {
-    final _$actionInfo = _$_SignUpStoreBaseActionController.startAction(
-        name: '_SignUpStoreBase.validateConfirmPassword');
-    try {
-      return super.validateConfirmPassword(password);
-    } finally {
-      _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 isObscure: ${isObscure},
