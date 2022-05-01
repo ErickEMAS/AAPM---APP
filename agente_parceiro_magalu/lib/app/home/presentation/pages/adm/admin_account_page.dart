@@ -4,8 +4,7 @@ import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart'
 import 'package:flutter/material.dart';
 
 class AdminAccountPage extends StatefulWidget {
-  final String role;
-  const AdminAccountPage({Key? key, required this.role}) : super(key: key);
+  const AdminAccountPage({Key? key}) : super(key: key);
 
   @override
   State<AdminAccountPage> createState() => _AdminAccountPageState();
@@ -16,7 +15,7 @@ class _AdminAccountPageState extends State<AdminAccountPage> {
   Widget build(BuildContext context) {
     return AppSafeArea(
       child: Scaffold(
-        bottomNavigationBar: AppBottomBar(role: widget.role),
+        bottomNavigationBar: AppBottomBar(),
         appBar: const AppBarGradient(
           title: "Minha conta",
         ),

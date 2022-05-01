@@ -3,119 +3,21 @@ import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
 import 'package:agente_parceiro_magalu/core/helpers/input_validator_helper.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
-import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
-import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
-import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
-import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SellerPage extends StatefulWidget {
-  final String role;
-  const SellerPage({Key? key, required this.role}) : super(key: key);
+import '../../../../../../../core/locators/service_locators.dart';
 
-  @override
-  State<SellerPage> createState() => _SellerPageState();
-}
+class AddSellerView extends StatelessWidget {
+  AddSellerView({Key? key}) : super(key: key);
 
-class _SellerPageState extends State<SellerPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
-
-  final PageController _pageController = PageController();
-
-  bool isAddSeller = false;
-
-  int _currentPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _store.onSellerInit();
-    _currentPage = 0;
-    _pageController.addListener(() {
-      setState(() {
-        _currentPage = _pageController.page!.toInt();
-      });
-    });
-  }
-
-  _nextPage() {
-    _pageController
-        .nextPage(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOutQuad)
-        .whenComplete(() => setState(() {}));
-  }
-
-  _previousPage() {
-    _pageController
-        .previousPage(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOutQuad)
-        .whenComplete(() => setState(() {}));
-  }
 
   @override
   Widget build(BuildContext context) {
-    return AppSafeArea(
-      child: Scaffold(
-        appBar: AppBarGradient(
-          leading: _currentPage == 1
-              ? BackButton(
-                  onPressed: () => _previousPage(),
-                )
-              : null,
-          title: "Carteira",
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: _currentPage == 0
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _nextPage();
-                    },
-                    child: const Text("Adicionar novo Seller"),
-                  ),
-                ),
-              )
-            : null,
-        body: PageView.builder(
-          itemCount: 2,
-          controller: _pageController,
-          itemBuilder: (context, index) {
-            return index == 0 ? _sellerListView() : _addSeller();
-          },
-        ),
-        bottomNavigationBar: AppBottomBar(role: widget.role),
-      ),
-    );
-  }
-
-  _sellerListView() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(AppDimens.margin),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Seller",
-              style: AppTextStyles.bold(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  _addSeller() {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(AppDimens.margin),
@@ -235,7 +137,7 @@ class _SellerPageState extends State<SellerPage> {
                     if (ret) {
                       SnackBarHelper.snackBar(context,
                           message: "Seller cadastrado com sucesso!");
-                      _previousPage();
+                      _store.previousPage();
                       _store.formKey.currentState!.reset();
                     } else {
                       SnackBarHelper.snackBar(

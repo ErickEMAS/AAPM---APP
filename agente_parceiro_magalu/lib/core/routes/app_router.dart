@@ -6,7 +6,7 @@ import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/agente
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/calendar_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller_page.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/seller_page.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -38,33 +38,27 @@ class AppRouter {
 
       case AppRoutes.home:
         return PageRouteBuilder(
-          pageBuilder: (context, __, ___) =>
-              HomePage(role: settings.arguments.toString()),
+          pageBuilder: (context, __, ___) => HomePage(),
         );
       case AppRoutes.agent:
         return PageRouteBuilder(
-          pageBuilder: (context, __, ___) =>
-              AgentPage(role: settings.arguments.toString()),
+          pageBuilder: (context, __, ___) => AgentPage(),
         );
       case AppRoutes.sellers:
         return PageRouteBuilder(
-          pageBuilder: (context, __, ___) =>
-              SellerPage(role: settings.arguments.toString()),
+          pageBuilder: (context, __, ___) => SellerPage(),
         );
       case AppRoutes.calendar:
         return PageRouteBuilder(
-          pageBuilder: (context, __, ___) =>
-              CalendarPage(role: settings.arguments.toString()),
+          pageBuilder: (context, __, ___) => CalendarPage(),
         );
       case AppRoutes.userAccount:
         return PageRouteBuilder(
-          pageBuilder: (context, __, ___) =>
-              UserAccountPage(role: settings.arguments.toString()),
+          pageBuilder: (context, __, ___) => UserAccountPage(),
         );
       case AppRoutes.adminAccount:
         return PageRouteBuilder(
-          pageBuilder: (context, __, ___) =>
-              AdminAccountPage(role: settings.arguments.toString()),
+          pageBuilder: (context, __, ___) => const AdminAccountPage(),
         );
       // case AppRoutes.home:
       //   return MaterialPageRoute(

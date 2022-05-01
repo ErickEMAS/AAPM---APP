@@ -38,7 +38,7 @@ class AppThemes {
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-      labelStyle: AppTextStyles.regular(
+      labelStyle: AppTextStyles.bold(
         size: 16,
         color: AppColors.primary,
       ),

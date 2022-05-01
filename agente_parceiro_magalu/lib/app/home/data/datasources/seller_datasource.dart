@@ -3,11 +3,15 @@ import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
 import 'package:agente_parceiro_magalu/core/http/http_service.dart';
 import 'package:agente_parceiro_magalu/core/http/interceptor/auth_interceptor.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
 import 'package:dio/dio.dart';
 
 abstract class ISellerDatasource {
-  Future getSellerList();
-  Future postSeller({SellerModel? sellerModel});
+  Future<PageListModel> getSellerList({
+    required int size,
+    required int page,
+  });
+  Future addSeller({SellerModel? sellerModel});
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -22,19 +26,28 @@ class SellerDatasource implements ISellerDatasource {
   }
 
   @override
-  Future getSellerList() async {
+  Future<PageListModel> getSellerList(
+      {required int size, required int page}) async {
     try {
       Map<String, dynamic> params = {
-        "size": 5,
-        "page": 0,
+        "size": size,
+        "page": page,
       };
 
       final response = await _httpWithAuth.get(
         Endpoints.getSellerListByAgentId,
         queryParameters: params,
       );
+      PageListModel pageList = PageListModel.fromJson(response);
 
-      print(response["content"]);
+      var sellers = response["content"];
+
+      List<SellerModel> listSellerModel =
+          (sellers as List).map((e) => SellerModel.fromJson(e)).toList();
+
+      pageList.content = listSellerModel;
+
+      return pageList;
     } on DioError catch (err) {
       rethrow;
     } catch (err) {
@@ -44,7 +57,7 @@ class SellerDatasource implements ISellerDatasource {
   }
 
   @override
-  Future postSeller({SellerModel? sellerModel}) async {
+  Future addSeller({SellerModel? sellerModel}) async {
     try {
       if (sellerModel == null) {
         return;

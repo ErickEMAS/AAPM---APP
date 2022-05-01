@@ -1,20 +1,33 @@
+import 'package:agente_parceiro_magalu/app/home/presentation/stores/home_store.dart';
+import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/routes/app_routes.dart';
 
-class AppBottomBar extends StatelessWidget {
-  final String role;
+class AppBottomBar extends StatefulWidget {
   const AppBottomBar({
     Key? key,
-    required this.role,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    String? path = ModalRoute.of(context)?.settings.name?.split("/")[1];
-    bool admin = role == "ROLE_ADMIN";
+  State<AppBottomBar> createState() => _AppBottomBarState();
+}
 
+class _AppBottomBarState extends State<AppBottomBar> {
+  final HomeStore _store = serviceLocator<HomeStore>();
+
+  bool isAdmin = false;
+  String? path;
+
+  @override
+  void initState() {
+    isAdmin = _store.userRole == "ROLE_ADMIN";
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       height: 56,
       child: Row(
@@ -23,17 +36,19 @@ class AppBottomBar extends StatelessWidget {
           bottomIcon(
             tittle: "Home",
             iconData: Icons.home,
-            active: path == AppRoutes.home.replaceAll("/", ""),
-            nav: () {
+            active: _store.currentPage == AppRoutes.home,
+            onPressed: () {
+              _store.currentPage = AppRoutes.home;
               _navigator(context: context, route: AppRoutes.home);
             },
           ),
-          admin
+          isAdmin
               ? bottomIcon(
                   tittle: "Agentes",
                   iconData: Icons.people,
-                  active: path == AppRoutes.agent.replaceAll("/", ""),
-                  nav: () {
+                  active: _store.currentPage == AppRoutes.agent,
+                  onPressed: () {
+                    _store.currentPage = AppRoutes.agent;
                     _navigator(context: context, route: AppRoutes.agent);
                   },
                 )
@@ -41,28 +56,32 @@ class AppBottomBar extends StatelessWidget {
           bottomIcon(
             tittle: "Agenda",
             iconData: Icons.calendar_today,
-            active: path == AppRoutes.calendar.replaceAll("/", ""),
-            nav: () {
+            active: _store.currentPage == AppRoutes.calendar,
+            onPressed: () {
+              _store.currentPage = AppRoutes.calendar;
               _navigator(context: context, route: AppRoutes.calendar);
             },
           ),
           bottomIcon(
             tittle: "Carteira",
             iconData: Icons.credit_card,
-            active: path == AppRoutes.sellers.replaceAll("/", ""),
-            nav: () {
+            active: _store.currentPage == AppRoutes.sellers,
+            onPressed: () {
+              _store.currentPage = AppRoutes.sellers;
               _navigator(context: context, route: AppRoutes.sellers);
             },
           ),
           bottomIcon(
             tittle: "Minha Conta",
-            iconData: admin ? Icons.admin_panel_settings : Icons.person,
-            active: path == AppRoutes.userAccount.replaceAll("/", "") ||
-                path == AppRoutes.adminAccount.replaceAll("/", ""),
-            nav: () {
+            iconData: isAdmin ? Icons.admin_panel_settings : Icons.person,
+            active: _store.currentPage == AppRoutes.userAccount ||
+                path == AppRoutes.adminAccount,
+            onPressed: () {
+              _store.currentPage =
+                  isAdmin ? AppRoutes.adminAccount : AppRoutes.userAccount;
               _navigator(
                 context: context,
-                route: admin ? AppRoutes.adminAccount : AppRoutes.userAccount,
+                route: isAdmin ? AppRoutes.adminAccount : AppRoutes.userAccount,
               );
             },
           ),
@@ -72,20 +91,15 @@ class AppBottomBar extends StatelessWidget {
   }
 
   _navigator({required BuildContext context, required String route}) {
-    if (ModalRoute.of(context)?.settings.name?.split("/")[1] ==
-        route.replaceAll("/", "")) {
-      return null;
-    } else {
-      return Navigator.of(context)
-          .pushNamedAndRemoveUntil(
-            route,
-            ModalRoute.withName('/'),
-            arguments: role,
-          )
-          .then(
-            (value) => false,
-          );
-    }
+    return Navigator.of(context)
+        .pushNamedAndRemoveUntil(
+          route,
+          ModalRoute.withName('/'),
+          arguments: _store.userRole,
+        )
+        .then(
+          (value) => false,
+        );
   }
 }
 
@@ -93,7 +107,7 @@ bottomIcon({
   required String tittle,
   required IconData iconData,
   required bool active,
-  required Function nav,
+  required void Function()? onPressed,
 }) {
   return Expanded(
     child: Container(
@@ -114,9 +128,7 @@ bottomIcon({
               color: active ? AppColors.primary : AppColors.inputHint,
               size: 24,
             ),
-            onPressed: () {
-              nav();
-            },
+            onPressed: onPressed,
           ),
           Text(tittle,
               style: TextStyle(

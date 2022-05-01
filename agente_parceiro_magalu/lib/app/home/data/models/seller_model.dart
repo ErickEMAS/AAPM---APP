@@ -17,6 +17,9 @@ class SellerModel {
   String complemento;
   String cadastro;
   String dataPedidoTeste;
+  List? sellerFields;
+  List? checkListVisitas;
+  List? tags;
 
   SellerModel({
     required this.cnpj,
@@ -32,6 +35,9 @@ class SellerModel {
     required this.complemento,
     required this.cadastro,
     required this.dataPedidoTeste,
+    this.sellerFields,
+    this.checkListVisitas,
+    this.tags,
   });
 
   factory SellerModel.fromJson(Map<String, dynamic> json) =>
