@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
     return AppSafeArea(
       child: Scaffold(
         appBar: const AppBarGradient(
+          automaticallyImplyLeading: false,
           title: "home page",
         ),
         bottomNavigationBar: AppBottomBar(role: widget.role),

@@ -14,7 +14,8 @@ class LoginStore = _LoginStoreBase with _$LoginStore;
 
 abstract class _LoginStoreBase with Store {
   final IAuthUseCase _authUseCase = serviceLocator<IAuthUseCase>();
-  final ForgotPassWordStore _forgotPasswordStore = serviceLocator<ForgotPassWordStore>();
+  final ForgotPassWordStore _forgotPasswordStore =
+      serviceLocator<ForgotPassWordStore>();
 
 //adm login
   // TextEditingController emailController =
@@ -51,9 +52,13 @@ abstract class _LoginStoreBase with Store {
 
   Future<bool> navigateToHome(BuildContext context) async {
     String? role = await SecureStorageHelper.read(key: StorageKeys.userRole);
-    
-    return Navigator.pushNamed(context, AppRoutes.home, arguments: role)
-        .then((value) => true);
+
+    return Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.home,
+      ModalRoute.withName(AppRoutes.login),
+      arguments: role,
+    ).then((value) => false);
   }
 
   Future<bool> navigateToForgotPassword(BuildContext context) {

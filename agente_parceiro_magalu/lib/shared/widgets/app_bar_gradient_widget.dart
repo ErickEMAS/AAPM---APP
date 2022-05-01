@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 class AppBarGradient extends StatelessWidget with PreferredSizeWidget {
   final String? title;
+  final bool automaticallyImplyLeading;
   const AppBarGradient({
     Key? key,
     this.title,
+    this.automaticallyImplyLeading = true,
   }) : super(key: key);
 
   @override
@@ -18,6 +20,7 @@ class AppBarGradient extends StatelessWidget with PreferredSizeWidget {
     return Column(
       children: [
         AppBar(
+          automaticallyImplyLeading: automaticallyImplyLeading,
           title: title != null
               ? Text(
                   title!,

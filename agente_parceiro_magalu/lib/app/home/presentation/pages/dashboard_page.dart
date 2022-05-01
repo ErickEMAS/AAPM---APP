@@ -15,14 +15,17 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppSafeArea(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          children: [
-            _logo(),
-            _inputs(),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AppSafeArea(
+        child: Scaffold(
+          appBar: AppBar(automaticallyImplyLeading: false),
+          body: Column(
+            children: [
+              _logo(),
+              _inputs(),
+            ],
+          ),
         ),
       ),
     );
