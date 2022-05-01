@@ -68,7 +68,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             hintText: "Digite seu email",
             labelText: "Email",
           ),
-        ),        
+        ),
         const SizedBox(height: 10),
         const Text(
           "Um código será enviado ao e-mail cadastrado",
@@ -81,14 +81,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               bool formOk = _store.formKey.currentState!.validate();
 
               bool ret = await LoadingOverlay.of(context).during(
-                _store.ForgotPassWordSendCode(),
+                _store.forgotPassWordSendCode(),
               );
 
               if (ret) {
                 _store.nextPage();
               } else {
-                SnackBarHelper.snackBar(context,
-                    message: "Falha ao solicitar redefinição de senha");
+                SnackBarHelper.snackBar(
+                  context,
+                  isError: true,
+                  message: "Falha ao solicitar redefinição de senha",
+                );
               }
 
               if (!formOk) return;
@@ -111,7 +114,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             hintText: "Digite o código recebido",
             labelText: "Código",
           ),
-        ),        
+        ),
         const SizedBox(height: 10),
         const Text(
           "Informe o código recebido por e-mail",
@@ -124,7 +127,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               bool formOk = _store.formKey.currentState!.validate();
 
               bool ret = await LoadingOverlay.of(context).during(
-                _store.ForgotPassWordConfirmCode(),
+                _store.forgotPassWordConfirmCode(),
               );
 
               print(ret);
@@ -132,8 +135,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               if (ret) {
                 _store.nextPage();
               } else {
-                SnackBarHelper.snackBar(context,
-                    message: "Falha ao solicitar redefinição de senha");
+                SnackBarHelper.snackBar(
+                  context,
+                  isError: true,
+                  message: "Falha ao solicitar redefinição de senha",
+                );
               }
 
               if (!formOk) return;
@@ -157,7 +163,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             hintText: "Digite sua nova senha",
             labelText: "Senha",
           ),
-        ), 
+        ),
         SizedBox(height: AppDimens.space),
         TextFormField(
           controller: _store.passwordConfirmController,
@@ -166,7 +172,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             hintText: "Confirme sua nova senha",
             labelText: "Confirmar Senha",
           ),
-        ), 
+        ),
         const SizedBox(height: 160),
         SizedBox(
           width: double.infinity,
@@ -175,14 +181,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               bool formOk = _store.formKey.currentState!.validate();
 
               bool ret = await LoadingOverlay.of(context).during(
-                _store.ForgotPassWordChangePassword(),
+                _store.forgotPassWordChangePassword(),
               );
 
               if (ret) {
                 _store.nextPage();
               } else {
-                SnackBarHelper.snackBar(context,
-                    message: "Falha ao solicitar redefinição de senha");
+                SnackBarHelper.snackBar(
+                  context,
+                  isError: true,
+                  message: "Falha ao solicitar redefinição de senha",
+                );
               }
 
               if (!formOk) return;
@@ -203,7 +212,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () { _store.navigateback(context); },
+            onPressed: () {
+              _store.navigateback(context);
+            },
             child: const Text("Entrar"),
           ),
         ),

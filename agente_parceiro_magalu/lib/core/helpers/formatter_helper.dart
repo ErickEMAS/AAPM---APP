@@ -2,12 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CpfCnpjInputMask extends TextInputFormatter {
+  final bool isCNPJ;
+
+  CpfCnpjInputMask({
+    this.isCNPJ = false,
+  });
+
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     var value = newValue.text.replaceAll(RegExp(r'\D'), '');
 
-    var formatted = '###.###.###-##';
+    String formatted;
+
+    if (isCNPJ) {
+      formatted = "##.###.###/####-##";
+    } else {
+      formatted = '###.###.###-##';
+    }
 
     for (var i = 0; i < value.length; i++) {
       formatted = formatted.replaceFirst('#', value[i]);

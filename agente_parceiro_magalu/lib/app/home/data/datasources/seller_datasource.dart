@@ -24,11 +24,17 @@ class SellerDatasource implements ISellerDatasource {
   @override
   Future getSellerList() async {
     try {
+      Map<String, dynamic> params = {
+        "size": 5,
+        "page": 0,
+      };
+
       final response = await _httpWithAuth.get(
         Endpoints.getSellerListByAgentId,
+        queryParameters: params,
       );
 
-      print(response);
+      print(response["content"]);
     } on DioError catch (err) {
       rethrow;
     } catch (err) {
@@ -44,7 +50,7 @@ class SellerDatasource implements ISellerDatasource {
         return;
       }
 
-      final response = await _httpWithAuth.get(
+      final response = await _httpWithAuth.post(
         Endpoints.postSeller,
         data: sellerModel.toJson(),
       );

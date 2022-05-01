@@ -79,8 +79,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (ret) {
                     _store.nextPage();
                   } else {
-                    SnackBarHelper.snackBar(context,
-                        message: "CPF não autenticado");
+                    SnackBarHelper.snackBar(
+                      context,
+                      isError: true,
+                      message: "CPF não autenticado",
+                    );
                   }
                 },
                 child: const Text("Próximo"),
@@ -150,13 +153,19 @@ class _SignUpPageState extends State<SignUpPage> {
                     );
 
                     if (ret) {
-                      SnackBarHelper.snackBar(context,
-                          message:
-                              "Usuario ${_store.userModel.roles.first}, cadastrado com sucesso!");
+                      SnackBarHelper.snackBar(
+                        context,
+                        message:
+                            "Usuario ${_store.userModel.roles.first}, cadastrado com sucesso!",
+                      );
+
                       _store.navigateToDashboard(context);
                     } else {
-                      SnackBarHelper.snackBar(context,
-                          message: "Algo inesperado aconteceu");
+                      SnackBarHelper.snackBar(
+                        context,
+                        isError: true,
+                        message: "Algo inesperado aconteceu",
+                      );
                     }
                   },
                   child: const Text("Cadastrar"),

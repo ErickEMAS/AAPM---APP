@@ -83,8 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                       if (ret) {
                         _store.navigateToHome(context);
                       } else {
-                        SnackBarHelper.snackBar(context,
-                            message: "Falha na autentificação");
+                        SnackBarHelper.snackBar(
+                          context,
+                          isError: true,
+                          message: "Falha na autentificação",
+                        );
                       }
 
                       if (!formOk) return;

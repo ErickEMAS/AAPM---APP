@@ -24,7 +24,7 @@ abstract class _ForgotPassWordStoreBase with Store {
 
   bool _unauthorized = false;
 
-  Future<bool> ForgotPassWordSendCode() async {
+  Future<bool> forgotPassWordSendCode() async {
     try {
       await _authUseCase.forgotPassWordSendCode(email: emailController.text);
 
@@ -35,9 +35,10 @@ abstract class _ForgotPassWordStoreBase with Store {
     }
   }
 
-  Future<bool> ForgotPassWordConfirmCode() async {
+  Future<bool> forgotPassWordConfirmCode() async {
     try {
-      await _authUseCase.forgotPassWordConfirmeCode(email: emailController.text, code: codeController.text);
+      await _authUseCase.forgotPassWordConfirmeCode(
+          email: emailController.text, code: codeController.text);
 
       return true;
     } on Unauthorized {
@@ -46,16 +47,17 @@ abstract class _ForgotPassWordStoreBase with Store {
     }
   }
 
-  Future<bool> ForgotPassWordChangePassword() async {
+  Future<bool> forgotPassWordChangePassword() async {
     ChangePassword changepassword = ChangePassword(
-        email: emailController.text,
-        code: codeController.text,
-        password: passwordController.text,
-        passwordConfirm: passwordConfirmController.text,
-      );
-    
+      email: emailController.text,
+      code: codeController.text,
+      password: passwordController.text,
+      passwordConfirm: passwordConfirmController.text,
+    );
+
     try {
-      await _authUseCase.forgotPassWordChangePassword(changePassword: changepassword);
+      await _authUseCase.forgotPassWordChangePassword(
+          changePassword: changepassword);
 
       return true;
     } on Unauthorized {
