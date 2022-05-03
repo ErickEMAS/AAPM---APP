@@ -32,12 +32,6 @@ class _SellerPageState extends State<SellerPage> {
     });
   }
 
-  // @override
-  // void dispose() {
-  //   _store.reset();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return AppSafeArea(

@@ -1,4 +1,5 @@
 import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/home/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
 import 'package:agente_parceiro_magalu/core/http/http_service.dart';
 import 'package:agente_parceiro_magalu/core/http/interceptor/auth_interceptor.dart';
@@ -12,6 +13,9 @@ abstract class ISellerDatasource {
     required int page,
   });
   Future addSeller({SellerModel? sellerModel});
+  Future<SellerModel> getSellerById({String? sellerId});
+  Future<List<TagModel>> getTags();
+  Future addTag({required TagModel tagModel});
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -66,6 +70,65 @@ class SellerDatasource implements ISellerDatasource {
       final response = await _httpWithAuth.post(
         Endpoints.postSeller,
         data: sellerModel.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      rethrow;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SellerModel> getSellerById({String? sellerId}) async {
+    try {
+      Map<String, dynamic> params = {
+        "sellerId": sellerId,
+      };
+
+      final response = await _httpWithAuth.get(
+        Endpoints.getSellerById,
+        queryParameters: params,
+      );
+
+      SellerModel sellerModel = SellerModel.fromJson(response);
+
+      return sellerModel;
+    } on DioError catch (err) {
+      rethrow;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<TagModel>> getTags() async {
+    try {
+      final response = await _httpWithAuth.get(
+        Endpoints.getTags,
+      );
+
+      List<TagModel> tags =
+          (response as List).map((e) => TagModel.fromJson(e)).toList();
+
+      return tags;
+    } on DioError catch (err) {
+      rethrow;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future addTag({required TagModel tagModel}) async {
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.addTag,
+        data: tagModel.toJson(),
       );
 
       print(response);

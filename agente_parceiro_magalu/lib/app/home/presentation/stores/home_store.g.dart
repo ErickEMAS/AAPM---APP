@@ -24,10 +24,26 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  final _$currentPageAtom = Atom(name: '_HomeStoreBase.currentPage');
+
+  @override
+  String get currentPage {
+    _$currentPageAtom.reportRead();
+    return super.currentPage;
+  }
+
+  @override
+  set currentPage(String value) {
+    _$currentPageAtom.reportWrite(value, super.currentPage, () {
+      super.currentPage = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
-userRole: ${userRole}
+userRole: ${userRole},
+currentPage: ${currentPage}
     ''';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/edit_seller_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/user_account_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/agente_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/calendar_page.dart';
@@ -47,6 +48,13 @@ class AppRouter {
       case AppRoutes.sellers:
         return PageRouteBuilder(
           pageBuilder: (context, __, ___) => SellerPage(),
+        );
+      case AppRoutes.editSeller:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => EditSellerPage(
+            sellerId: settings.arguments.toString(),
+          ),
         );
       case AppRoutes.calendar:
         return PageRouteBuilder(

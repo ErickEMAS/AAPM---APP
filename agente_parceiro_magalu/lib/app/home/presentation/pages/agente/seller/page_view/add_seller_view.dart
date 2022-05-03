@@ -18,6 +18,7 @@ class AddSellerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double phoneWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(AppDimens.margin),
@@ -36,7 +37,6 @@ class AddSellerView extends StatelessWidget {
                   inputHint: "Digite o CNPJ",
                   onChanged: (value) {
                     _store.sellerModel.cnpj = value;
-                    print(_store.sellerModel.cnpj);
                   },
                   inputFormatters: [CpfCnpjInputMask(isCNPJ: true)]),
               ..._addSellerColumn(
@@ -67,20 +67,28 @@ class AddSellerView extends StatelessWidget {
                   _store.sellerModel.email = value;
                 },
               ),
-              ..._addSellerColumn(
-                title: "Cidade",
-                inputHint: "Digite a cidade",
-                onChanged: (value) {
-                  _store.sellerModel.cidade = value;
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ..._addSellerColumn(
+                    width: phoneWidth * 0.4,
+                    title: "Cidade",
+                    inputHint: "Digite a cidade",
+                    onChanged: (value) {
+                      _store.sellerModel.cidade = value;
+                    },
+                  ),
+                  ..._addSellerColumn(
+                    width: phoneWidth * 0.2,
+                    title: "UF",
+                    inputHint: "Digite o UF",
+                    onChanged: (value) {
+                      _store.sellerModel.uf = value;
+                    },
+                  ),
+                ],
               ),
-              ..._addSellerColumn(
-                title: "UF",
-                inputHint: "Digite o UF",
-                onChanged: (value) {
-                  _store.sellerModel.uf = value;
-                },
-              ),
+              SizedBox(height: AppDimens.space * 0.5),
               ..._addSellerColumn(
                 title: "CEP",
                 inputHint: "Digite o CEP",
@@ -88,20 +96,28 @@ class AddSellerView extends StatelessWidget {
                   _store.sellerModel.cep = value;
                 },
               ),
-              ..._addSellerColumn(
-                title: "Endereço",
-                inputHint: "Digite o endereço",
-                onChanged: (value) {
-                  _store.sellerModel.endereco = value;
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ..._addSellerColumn(
+                    title: "Endereço",
+                    width: phoneWidth * 0.4,
+                    inputHint: "Digite o endereço",
+                    onChanged: (value) {
+                      _store.sellerModel.endereco = value;
+                    },
+                  ),
+                  ..._addSellerColumn(
+                    title: "Número",
+                    width: phoneWidth * 0.2,
+                    inputHint: "Digite o número",
+                    onChanged: (value) {
+                      _store.sellerModel.numero = value;
+                    },
+                  ),
+                ],
               ),
-              ..._addSellerColumn(
-                title: "Número",
-                inputHint: "Digite o número",
-                onChanged: (value) {
-                  _store.sellerModel.numero = value;
-                },
-              ),
+              SizedBox(height: AppDimens.space * 0.5),
               ..._addSellerColumn(
                 title: "Complemento",
                 inputHint: "Digite o complemento",
@@ -137,6 +153,7 @@ class AddSellerView extends StatelessWidget {
                     if (ret) {
                       SnackBarHelper.snackBar(context,
                           message: "Seller cadastrado com sucesso!");
+                      await _store.onSellerInit();
                       _store.previousPage();
                       _store.formKey.currentState!.reset();
                     } else {
@@ -162,24 +179,27 @@ class AddSellerView extends StatelessWidget {
     required String title,
     required String inputHint,
     void Function(String)? onChanged,
+    double? width,
     String? Function(String?)? validator,
     List<TextInputFormatter>? inputFormatters,
   }) {
     return [
-      Text(
-        title,
-        style: AppTextStyles.regular(
-          size: 14,
-          color: AppColors.primary,
+      SizedBox(
+        width: width ?? double.infinity,
+        child: TextFormField(
+          onChanged: onChanged,
+          validator: validator ?? InputValidatorHelper.validateCommonField,
+          inputFormatters: inputFormatters,
+          decoration: InputDecoration(
+            hintText: inputHint,
+            label: Text(
+              title,
+              style: AppTextStyles.bold(size: 12, color: AppColors.primary),
+            ),
+          ),
         ),
       ),
-      TextFormField(
-        onChanged: onChanged,
-        validator: validator ?? InputValidatorHelper.validateCommonField,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(hintText: inputHint),
-      ),
-      SizedBox(height: AppDimens.space * 3)
+      SizedBox(height: AppDimens.space * 0.5),
     ];
   }
 }

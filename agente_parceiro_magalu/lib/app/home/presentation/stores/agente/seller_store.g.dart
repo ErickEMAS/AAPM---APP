@@ -54,6 +54,21 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
+  final _$sellerEditModelAtom = Atom(name: '_SellerStoreBase.sellerEditModel');
+
+  @override
+  SellerModel get sellerEditModel {
+    _$sellerEditModelAtom.reportRead();
+    return super.sellerEditModel;
+  }
+
+  @override
+  set sellerEditModel(SellerModel value) {
+    _$sellerEditModelAtom.reportWrite(value, super.sellerEditModel, () {
+      super.sellerEditModel = value;
+    });
+  }
+
   final _$_SellerStoreBaseActionController =
       ActionController(name: '_SellerStoreBase');
 
@@ -74,6 +89,17 @@ mixin _$SellerStore on _SellerStoreBase, Store {
         name: '_SellerStoreBase.previousPage');
     try {
       return super.previousPage();
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic _setEditSellerModel(SellerModel newData) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase._setEditSellerModel');
+    try {
+      return super._setEditSellerModel(newData);
     } finally {
       _$_SellerStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -106,7 +132,8 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     return '''
 pageController: ${pageController},
 currentPage: ${currentPage},
-sellerModel: ${sellerModel}
+sellerModel: ${sellerModel},
+sellerEditModel: ${sellerEditModel}
     ''';
   }
 }

@@ -1,10 +1,19 @@
 enum CodeType {
-    EMAIL_CONFIRM,
-    EMAIL_CHANGE,
-    PASSWORD_CHANGE,
+  EMAIL_CONFIRM,
+  EMAIL_CHANGE,
+  PASSWORD_CHANGE,
 }
 
 enum TypeField {
-    TEXT,
-    INT,
+  TEXT,
+  INT,
+}
+
+enum TagColors {
+  amarelo,
+  laranja,
+  rosa,
+  roxo,
+  azul,
+  verde,
 }

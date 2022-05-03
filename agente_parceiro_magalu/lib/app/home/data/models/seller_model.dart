@@ -4,6 +4,7 @@ part 'seller_model.g.dart';
 
 @JsonSerializable()
 class SellerModel {
+  String? id;
   String cnpj;
   String helenaSellerCode;
   String nome;
@@ -22,6 +23,7 @@ class SellerModel {
   List? tags;
 
   SellerModel({
+    this.id,
     required this.cnpj,
     required this.helenaSellerCode,
     required this.nome,

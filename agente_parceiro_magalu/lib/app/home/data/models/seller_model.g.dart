@@ -7,6 +7,7 @@ part of 'seller_model.dart';
 // **************************************************************************
 
 SellerModel _$SellerModelFromJson(Map<String, dynamic> json) => SellerModel(
+      id: json['id'] as String?,
       cnpj: json['cnpj'] as String,
       helenaSellerCode: json['helenaSellerCode'] as String,
       nome: json['nome'] as String,
@@ -27,6 +28,7 @@ SellerModel _$SellerModelFromJson(Map<String, dynamic> json) => SellerModel(
 
 Map<String, dynamic> _$SellerModelToJson(SellerModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'cnpj': instance.cnpj,
       'helenaSellerCode': instance.helenaSellerCode,
       'nome': instance.nome,

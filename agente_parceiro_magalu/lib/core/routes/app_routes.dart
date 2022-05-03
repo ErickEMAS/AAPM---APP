@@ -9,6 +9,8 @@ class AppRoutes {
   static const home = '/home';
 
   static const sellers = '/sellers';
+  static const editSeller = sellers + "/edit";
+
   static const calendar = '/calendar';
   static const userAccount = '/userAccount';
   static const adminAccount = '/adminAccount';

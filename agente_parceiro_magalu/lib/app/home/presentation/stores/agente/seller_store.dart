@@ -1,8 +1,10 @@
 import 'package:agente_parceiro_magalu/app/home/data/datasources/seller_datasource.dart';
 import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/home/data/models/tag_model.dart';
+import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
-import 'package:flutter/foundation.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'seller_store.g.dart';
@@ -53,8 +55,14 @@ abstract class _SellerStoreBase with Store {
     dataPedidoTeste: "",
   );
 
-  ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
+  @observable
+  late SellerModel sellerEditModel;
+  @action
+  _setEditSellerModel(SellerModel newData) {
+    sellerEditModel = newData;
+  }
 
+  ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
   @action
   _setSellerList(List<SellerModel> data) {
     sellerList.addAll(data);
@@ -63,6 +71,19 @@ abstract class _SellerStoreBase with Store {
   @action
   reset() {
     sellerList.clear();
+  }
+
+  @observable
+  late TagModel tagModel;
+  @action
+  _setTagModel(TagModel newData) {
+    tagModel = newData;
+  }
+
+  ObservableList<TagModel> tagList = ObservableList<TagModel>();
+  @action
+  _setTagList(List<TagModel> data) {
+    tagList.addAll(data);
   }
 
   Future<bool> onSellerInit() async {
@@ -88,5 +109,45 @@ abstract class _SellerStoreBase with Store {
     } catch (err) {
       return false;
     }
+  }
+
+  Future<bool> getSellerById({required String sellerId}) async {
+    try {
+      SellerModel ret = await _datasource.getSellerById(sellerId: sellerId);
+
+      _setEditSellerModel(ret);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> getTags() async {
+    try {
+      var ret = await _datasource.getTags();
+      _setTagList(ret);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> addTags() async {
+    try {
+      await _datasource.addTag(tagModel: tagModel);
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.editSeller, arguments: sellerId)
+        .then(
+          (value) => false,
+        );
   }
 }
