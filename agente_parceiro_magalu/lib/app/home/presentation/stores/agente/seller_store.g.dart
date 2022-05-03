@@ -69,6 +69,21 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
+  final _$selectedColorAtom = Atom(name: '_SellerStoreBase.selectedColor');
+
+  @override
+  Color? get selectedColor {
+    _$selectedColorAtom.reportRead();
+    return super.selectedColor;
+  }
+
+  @override
+  set selectedColor(Color? value) {
+    _$selectedColorAtom.reportWrite(value, super.selectedColor, () {
+      super.selectedColor = value;
+    });
+  }
+
   final _$_SellerStoreBaseActionController =
       ActionController(name: '_SellerStoreBase');
 
@@ -128,12 +143,35 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
+  dynamic _setTagList(List<TagModel> data) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase._setTagList');
+    try {
+      return super._setTagList(data);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setSelectedColor(Color newData) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase.setSelectedColor');
+    try {
+      return super.setSelectedColor(newData);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 pageController: ${pageController},
 currentPage: ${currentPage},
 sellerModel: ${sellerModel},
-sellerEditModel: ${sellerEditModel}
+sellerEditModel: ${sellerEditModel},
+selectedColor: ${selectedColor}
     ''';
   }
 }

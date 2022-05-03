@@ -1,9 +1,11 @@
-import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
-import 'package:agente_parceiro_magalu/app/home/data/models/tag_model.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/constants/enums.dart';
+import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_dialog_widget.dart';
@@ -43,117 +45,21 @@ class _SellerListViewState extends State<SellerListView> {
               itemCount: _store.sellerList.length,
               padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
               itemBuilder: (context, index) {
-                return _sellerCard(
-                  sellerModel: _store.sellerList[index],
-                );
+                return SellerCardWidget(
+                    sellerModel: _store.sellerList[index],
+                    onAddButtonPressed: () {
+                      _store.getTags();
+                      _addTags();
+                    });
+                // return _sellerCard(
+                //   sellerModel: _store.sellerList[index],
+                // );
               },
             ),
           );
         }),
         SizedBox(height: AppDimens.margin * 3)
       ],
-    );
-  }
-
-  _sellerCard({
-    required SellerModel sellerModel,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        _store.navigateToEditSeller(context, sellerModel.id!);
-      },
-      child: Column(
-        children: [
-          Container(
-            clipBehavior: Clip.none,
-            padding: EdgeInsets.all(AppDimens.space * 2),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.inputHint.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ..._sellerInfoRow(
-                      title: "Nome: ",
-                      content: sellerModel.nome,
-                    ),
-                    Row(
-                      children: [
-                        ..._sellerInfoRow(
-                          title: "Cidade: ",
-                          content: sellerModel.cidade,
-                        ),
-                        SizedBox(width: AppDimens.space),
-                        ..._sellerInfoRow(
-                          title: "UF: ",
-                          content: sellerModel.uf,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppDimens.space),
-                    Wrap(
-                      children: [
-                        _tag(),
-                      ],
-                    )
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _store.getTags();
-                    _addTags();
-                  },
-                  child: Icon(Icons.add),
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(AppDimens.space),
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: AppDimens.space * 2)
-        ],
-      ),
-    );
-  }
-
-  _sellerInfoRow({required String title, required String content}) {
-    return [
-      Row(
-        children: [
-          Text(
-            title,
-            style: AppTextStyles.bold(
-              size: 13,
-              color: AppColors.primary,
-            ),
-          ),
-          Text(
-            content,
-            style: AppTextStyles.bold(size: 13),
-          ),
-        ],
-      ),
-      SizedBox(height: AppDimens.space),
-    ];
-  }
-
-  _tag() {
-    return Container(
-      child: Text("teste"),
     );
   }
 
@@ -167,41 +73,110 @@ class _SellerListViewState extends State<SellerListView> {
           color: AppColors.primary,
         ),
       ),
-      content: Padding(
-        padding: EdgeInsets.all(AppDimens.margin),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "Tags atuais",
-              style: AppTextStyles.bold(
-                size: 15,
-                color: AppColors.primary,
+      content: Observer(builder: (_) {
+        return Padding(
+          padding: EdgeInsets.all(AppDimens.margin),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Tags atuais",
+                style: AppTextStyles.bold(
+                  size: 15,
+                  color: AppColors.primary,
+                ),
               ),
-            ),
-            Text(
-              "Adicionar nova tag",
-              style: AppTextStyles.bold(
-                size: 15,
-                color: AppColors.primary,
+              SizedBox(height: AppDimens.space),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.63,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  direction: Axis.horizontal,
+                  spacing: AppDimens.space,
+                  runSpacing: AppDimens.space * 0.5,
+                  children: [
+                    ..._currentTags(),
+                  ],
+                ),
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: "nome da tag",
+              SizedBox(height: AppDimens.margin),
+              Text(
+                "Adicionar nova tag",
+                style: AppTextStyles.bold(
+                  size: 15,
+                  color: AppColors.primary,
+                ),
               ),
-            ),
-            SizedBox(height: AppDimens.space * 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ..._tags(),
-              ],
-            )
-          ],
-        ),
-      ),
+              TextFormField(
+                controller: _store.tagNameController,
+                decoration: const InputDecoration(
+                  hintText: "Nome da tag",
+                  labelText: "Nome",
+                ),
+              ),
+              SizedBox(height: AppDimens.space * 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ..._tags(),
+                ],
+              ),
+              SizedBox(height: AppDimens.space * 2),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    bool ret = await LoadingOverlay.of(context).during(
+                      _store.addTags().whenComplete(
+                            () => _store.getTags(),
+                          ),
+                    );
+                    if (ret) {
+                      SnackBarHelper.snackBar(
+                        context,
+                        message:
+                            "Tag \"${_store.tagModel.name}\" foi criada com sucesso",
+                      );
+                    } else {
+                      SnackBarHelper.snackBar(
+                        context,
+                        isError: true,
+                        message: "Ocorreu um erro",
+                      );
+                    }
+                  },
+                  child: const Text("Adicionar"),
+                ),
+              )
+            ],
+          ),
+        );
+      }),
     );
+  }
+
+  _currentTags() {
+    List<Widget> list = [];
+    list.addAll(_store.tagList.map((tag) {
+      return Container(
+        decoration: BoxDecoration(
+            color: SwitchTagEnum.switchEnumColor(tag.color),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimens.space,
+            vertical: 3,
+          ),
+          child: Text(
+            tag.name,
+            style: AppTextStyles.bold(color: AppColors.white, size: 12),
+          ),
+        ),
+      );
+    }).toList());
+
+    return list;
   }
 
   _tags() {
@@ -209,7 +184,10 @@ class _SellerListViewState extends State<SellerListView> {
     list = TagColors.values.map((e) {
       return Row(
         children: [
-          _tagContainer(_switchEnumColor(e)),
+          _tagContainer(
+            color: SwitchTagEnum.switchEnumColor(e),
+            tagColors: e,
+          ),
         ],
       );
     }).toList();
@@ -217,34 +195,24 @@ class _SellerListViewState extends State<SellerListView> {
     return list;
   }
 
-  _switchEnumColor(TagColors color) {
-    switch (color) {
-      case TagColors.amarelo:
-        return AppColors.amarelo;
-      case TagColors.azul:
-        return AppColors.azul;
-      case TagColors.verde:
-        return AppColors.verde;
-      case TagColors.laranja:
-        return AppColors.laranja;
-      case TagColors.rosa:
-        return AppColors.rosa;
-      case TagColors.roxo:
-        return AppColors.roxo;
-      default:
-        AppColors.primary;
-    }
-  }
-
-  Widget _tagContainer(Color color) {
+  Widget _tagContainer({required Color color, required TagColors tagColors}) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        _store.tagModel.color = tagColors;
+        _store.setSelectedColor(color);
+      },
       child: Container(
         width: 20,
         height: 20,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.all(
+          border: Border.all(
+            color: _store.selectedColor == color
+                ? AppColors.white
+                : AppColors.black.withOpacity(0.4),
+            width: 2,
+          ),
+          borderRadius: const BorderRadius.all(
             Radius.circular(50),
           ),
         ),

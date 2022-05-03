@@ -14,7 +14,7 @@ appDialog({
     context: context,
     builder: (context) {
       return AlertDialog(
-        titlePadding: EdgeInsets.symmetric(horizontal: AppDimens.space),
+        titlePadding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
         contentPadding: EdgeInsets.only(bottom: AppDimens.margin),
         actionsPadding: EdgeInsets.zero,
         backgroundColor: AppColors.white,
