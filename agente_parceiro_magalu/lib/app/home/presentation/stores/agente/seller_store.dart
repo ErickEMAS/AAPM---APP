@@ -56,7 +56,7 @@ abstract class _SellerStoreBase with Store {
   );
 
   @observable
-  late SellerModel sellerEditModel;
+  SellerModel? sellerEditModel;
   @action
   _setEditSellerModel(SellerModel newData) {
     sellerEditModel = newData;

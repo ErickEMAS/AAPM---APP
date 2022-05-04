@@ -57,13 +57,13 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   final _$sellerEditModelAtom = Atom(name: '_SellerStoreBase.sellerEditModel');
 
   @override
-  SellerModel get sellerEditModel {
+  SellerModel? get sellerEditModel {
     _$sellerEditModelAtom.reportRead();
     return super.sellerEditModel;
   }
 
   @override
-  set sellerEditModel(SellerModel value) {
+  set sellerEditModel(SellerModel? value) {
     _$sellerEditModelAtom.reportWrite(value, super.sellerEditModel, () {
       super.sellerEditModel = value;
     });

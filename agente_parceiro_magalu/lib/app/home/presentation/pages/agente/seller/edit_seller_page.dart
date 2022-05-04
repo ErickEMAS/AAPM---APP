@@ -1,3 +1,4 @@
+import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
@@ -29,6 +30,8 @@ class _EditSellerPageState extends State<EditSellerPage> {
 
   double phoneWidth = 0;
 
+  late SellerModel sellerModel;
+
   @override
   void initState() {
     SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -43,7 +46,7 @@ class _EditSellerPageState extends State<EditSellerPage> {
   Widget build(BuildContext context) {
     phoneWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBarGradient(
+      appBar: const AppBarGradient(
         title: "Editar Seller",
       ),
       body: SingleChildScrollView(
@@ -72,42 +75,42 @@ class _EditSellerPageState extends State<EditSellerPage> {
                 SizedBox(height: AppDimens.space * 4),
                 ..._addSellerColumn(
                     title: "CNPJ",
-                    initialValue: _store.sellerEditModel.cnpj,
+                    initialValue: _store.sellerEditModel!.cnpj,
                     inputHint: "Digite o CNPJ",
                     onChanged: (value) {
-                      _store.sellerEditModel.cnpj = value;
+                      _store.sellerEditModel!.cnpj = value;
                     },
                     inputFormatters: [CpfCnpjInputMask(isCNPJ: true)]),
                 ..._addSellerColumn(
                   title: "Nome",
-                  initialValue: _store.sellerEditModel.nome,
+                  initialValue: _store.sellerEditModel!.nome,
                   inputHint: "Digite o nome",
                   onChanged: (value) {
-                    _store.sellerEditModel.nome = value;
+                    _store.sellerEditModel!.nome = value;
                   },
                 ),
                 ..._addSellerColumn(
                   title: "Helena Seller Code",
-                  initialValue: _store.sellerEditModel.helenaSellerCode,
+                  initialValue: _store.sellerEditModel!.helenaSellerCode,
                   inputHint: "Digite o helena seller code",
                   onChanged: (value) {
-                    _store.sellerEditModel.helenaSellerCode = value;
+                    _store.sellerEditModel!.helenaSellerCode = value;
                   },
                 ),
                 ..._addSellerColumn(
                   title: "Telefone",
-                  initialValue: _store.sellerEditModel.telefone,
+                  initialValue: _store.sellerEditModel!.telefone,
                   inputHint: "Digite o telefone",
                   onChanged: (value) {
-                    _store.sellerEditModel.telefone = value;
+                    _store.sellerEditModel!.telefone = value;
                   },
                 ),
                 ..._addSellerColumn(
                   title: "E-mail",
-                  initialValue: _store.sellerEditModel.telefone,
+                  initialValue: _store.sellerEditModel!.telefone,
                   inputHint: "Digite o e-mail",
                   onChanged: (value) {
-                    _store.sellerEditModel.email = value;
+                    _store.sellerEditModel!.email = value;
                   },
                 ),
                 Row(
@@ -116,19 +119,19 @@ class _EditSellerPageState extends State<EditSellerPage> {
                     ..._addSellerColumn(
                       width: phoneWidth * 0.4,
                       title: "Cidade",
-                      initialValue: _store.sellerEditModel.cidade,
+                      initialValue: _store.sellerEditModel!.cidade,
                       inputHint: "Digite a cidade",
                       onChanged: (value) {
-                        _store.sellerEditModel.cidade = value;
+                        _store.sellerEditModel!.cidade = value;
                       },
                     ),
                     ..._addSellerColumn(
                       width: phoneWidth * 0.2,
                       title: "UF",
-                      initialValue: _store.sellerEditModel.uf,
+                      initialValue: _store.sellerEditModel!.uf,
                       inputHint: "Digite o UF",
                       onChanged: (value) {
-                        _store.sellerEditModel.uf = value;
+                        _store.sellerEditModel!.uf = value;
                       },
                     ),
                   ],
@@ -136,10 +139,10 @@ class _EditSellerPageState extends State<EditSellerPage> {
                 SizedBox(height: AppDimens.space * 0.5),
                 ..._addSellerColumn(
                   title: "CEP",
-                  initialValue: _store.sellerEditModel.cep,
+                  initialValue: _store.sellerEditModel!.cep,
                   inputHint: "Digite o CEP",
                   onChanged: (value) {
-                    _store.sellerEditModel.cep = value;
+                    _store.sellerEditModel!.cep = value;
                   },
                 ),
                 Row(
@@ -147,20 +150,20 @@ class _EditSellerPageState extends State<EditSellerPage> {
                   children: [
                     ..._addSellerColumn(
                       title: "Endereço",
-                      initialValue: _store.sellerEditModel.endereco,
+                      initialValue: _store.sellerEditModel!.endereco,
                       width: phoneWidth * 0.4,
                       inputHint: "Digite o endereço",
                       onChanged: (value) {
-                        _store.sellerEditModel.endereco = value;
+                        _store.sellerEditModel!.endereco = value;
                       },
                     ),
                     ..._addSellerColumn(
                       title: "Número",
-                      initialValue: _store.sellerEditModel.numero,
+                      initialValue: _store.sellerEditModel!.numero,
                       width: phoneWidth * 0.2,
                       inputHint: "Digite o número",
                       onChanged: (value) {
-                        _store.sellerEditModel.numero = value;
+                        _store.sellerEditModel!.numero = value;
                       },
                     ),
                   ],
@@ -168,26 +171,26 @@ class _EditSellerPageState extends State<EditSellerPage> {
                 SizedBox(height: AppDimens.space * 0.5),
                 ..._addSellerColumn(
                   title: "Complemento",
-                  initialValue: _store.sellerEditModel.complemento,
+                  initialValue: _store.sellerEditModel!.complemento,
                   inputHint: "Digite o complemento",
                   onChanged: (value) {
-                    _store.sellerEditModel.complemento = value;
+                    _store.sellerEditModel!.complemento = value;
                   },
                 ),
                 ..._addSellerColumn(
                   title: "Cadastro",
-                  initialValue: _store.sellerEditModel.cadastro,
+                  initialValue: _store.sellerEditModel!.cadastro,
                   inputHint: "Digite o cadastro",
                   onChanged: (value) {
-                    _store.sellerEditModel.cadastro = value;
+                    _store.sellerEditModel!.cadastro = value;
                   },
                 ),
                 ..._addSellerColumn(
                   title: "Data de pedido",
-                  initialValue: _store.sellerEditModel.dataPedidoTeste,
+                  initialValue: _store.sellerEditModel!.dataPedidoTeste,
                   inputHint: "Digite a data de pedido",
                   onChanged: (value) {
-                    _store.sellerEditModel.dataPedidoTeste = value;
+                    _store.sellerEditModel!.dataPedidoTeste = value;
                   },
                 ),
                 SizedBox(height: AppDimens.space * 3),
