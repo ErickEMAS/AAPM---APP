@@ -1,17 +1,35 @@
+import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/stores/home_store.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
+import 'package:flutter/scheduler.dart';
 import '../../core/routes/app_routes.dart';
 
-class AppBottomBar extends StatelessWidget {
+class AppBottomBar extends StatefulWidget {
   AppBottomBar({Key? key}) : super(key: key);
 
+  @override
+  State<AppBottomBar> createState() => _AppBottomBarState();
+}
+
+class _AppBottomBarState extends State<AppBottomBar> {
   final HomeStore _store = serviceLocator<HomeStore>();
-  final bool isAdmin = false;
+
+  @override
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      LoadingOverlay.of(context).during(_store.onHomeInit());
+    });
+    super.initState();
+    print(_store.userRole);
+  }
+
 
   @override
   Widget build(BuildContext context) {
+  bool isAdmin = _store.userRole == "ROLE_ADMIN";
+  print(_store.userRole);
     return BottomAppBar(
       notchMargin: 2.0,
       child: SizedBox(

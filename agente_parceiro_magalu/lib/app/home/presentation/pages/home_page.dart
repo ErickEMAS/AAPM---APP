@@ -6,6 +6,7 @@ import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart
 import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -29,14 +30,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppSafeArea(
-      child: Scaffold(
-        appBar: const AppBarGradient(
-          automaticallyImplyLeading: false,
-          title: "home page",
-        ),
-        bottomNavigationBar: AppBottomBar(),
-      ),
+    return Observer(
+      builder: (_) {
+        return AppSafeArea(
+          child: Scaffold(
+            appBar: const AppBarGradient(
+              automaticallyImplyLeading: false,
+              title: "home page",
+            ),
+            bottomNavigationBar: AppBottomBar(),
+          ),
+        );
+      },
     );
   }
 }

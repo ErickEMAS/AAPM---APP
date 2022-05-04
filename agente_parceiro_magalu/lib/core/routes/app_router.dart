@@ -39,14 +39,17 @@ class AppRouter {
 
       case AppRoutes.home:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, __, ___) => HomePage(),
         );
       case AppRoutes.agent:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, __, ___) => AgentPage(),
         );
       case AppRoutes.sellers:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, __, ___) => SellerPage(),
         );
       case AppRoutes.editSeller:
@@ -58,14 +61,17 @@ class AppRouter {
         );
       case AppRoutes.calendar:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, __, ___) => CalendarPage(),
         );
       case AppRoutes.userAccount:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, __, ___) => UserAccountPage(),
         );
       case AppRoutes.adminAccount:
         return PageRouteBuilder(
+          settings: settings,
           pageBuilder: (context, __, ___) => const AdminAccountPage(),
         );
       // case AppRoutes.home:

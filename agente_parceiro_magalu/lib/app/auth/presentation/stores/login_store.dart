@@ -51,13 +51,10 @@ abstract class _LoginStoreBase with Store {
   }
 
   Future<bool> navigateToHome(BuildContext context) async {
-    String? role = await SecureStorageHelper.read(key: StorageKeys.userRole);
-
     return Navigator.pushNamedAndRemoveUntil(
       context,
       AppRoutes.home,
       ModalRoute.withName(AppRoutes.login),
-      arguments: role,
     ).then((value) => false);
   }
 

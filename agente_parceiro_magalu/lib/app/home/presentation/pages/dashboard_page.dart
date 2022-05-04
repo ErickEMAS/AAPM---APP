@@ -15,6 +15,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    _store.navigateToHomeIfToken(context);
+    
     return WillPopScope(
       onWillPop: () async => false,
       child: AppSafeArea(
