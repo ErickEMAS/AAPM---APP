@@ -5,10 +5,12 @@ part 'tag_model.g.dart';
 
 @JsonSerializable()
 class TagModel {
+  String? id;
   String name;
   TagColors color;
 
   TagModel({
+    this.id,
     required this.name,
     required this.color,
   });

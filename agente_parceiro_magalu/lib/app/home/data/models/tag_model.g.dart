@@ -7,11 +7,13 @@ part of 'tag_model.dart';
 // **************************************************************************
 
 TagModel _$TagModelFromJson(Map<String, dynamic> json) => TagModel(
+      id: json['id'] as String?,
       name: json['name'] as String,
       color: $enumDecode(_$TagColorsEnumMap, json['color']),
     );
 
 Map<String, dynamic> _$TagModelToJson(TagModel instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'color': _$TagColorsEnumMap[instance.color],
     };

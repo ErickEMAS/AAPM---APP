@@ -1,4 +1,5 @@
 import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
@@ -65,20 +66,19 @@ class SellerCardWidget extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: AppDimens.space),
+                    TagListBuilder(
+                      sellerModel: sellerModel,
+                    )
                   ],
                 ),
                 ElevatedButton(
                   onPressed: onAddButtonPressed,
-                  // () {
-                  // _store.getTags();
-                  // _addTags();
-                  // },
                   child: Icon(Icons.add),
                   style: ElevatedButton.styleFrom(
                     shape: CircleBorder(),
                     padding: EdgeInsets.all(AppDimens.space),
                   ),
-                )
+                ),
               ],
             ),
           ),

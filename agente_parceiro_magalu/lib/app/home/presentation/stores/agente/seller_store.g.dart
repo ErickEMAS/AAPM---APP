@@ -84,6 +84,21 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
+  final _$tagSelectedIdAtom = Atom(name: '_SellerStoreBase.tagSelectedId');
+
+  @override
+  String? get tagSelectedId {
+    _$tagSelectedIdAtom.reportRead();
+    return super.tagSelectedId;
+  }
+
+  @override
+  set tagSelectedId(String? value) {
+    _$tagSelectedIdAtom.reportWrite(value, super.tagSelectedId, () {
+      super.tagSelectedId = value;
+    });
+  }
+
   final _$_SellerStoreBaseActionController =
       ActionController(name: '_SellerStoreBase');
 
@@ -165,13 +180,25 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
+  dynamic setTagNameSelected(String newData) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase.setTagNameSelected');
+    try {
+      return super.setTagNameSelected(newData);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 pageController: ${pageController},
 currentPage: ${currentPage},
 sellerModel: ${sellerModel},
 sellerEditModel: ${sellerEditModel},
-selectedColor: ${selectedColor}
+selectedColor: ${selectedColor},
+tagSelectedId: ${tagSelectedId}
     ''';
   }
 }

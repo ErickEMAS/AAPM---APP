@@ -23,7 +23,9 @@ SellerModel _$SellerModelFromJson(Map<String, dynamic> json) => SellerModel(
       dataPedidoTeste: json['dataPedidoTeste'] as String,
       sellerFields: json['sellerFields'] as List<dynamic>?,
       checkListVisitas: json['checkListVisitas'] as List<dynamic>?,
-      tags: json['tags'] as List<dynamic>?,
+      tags: (json['tags'] as List<dynamic>?)
+          ?.map((e) => TagModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$SellerModelToJson(SellerModel instance) =>

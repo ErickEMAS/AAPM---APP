@@ -65,6 +65,7 @@ abstract class _SellerStoreBase with Store {
   ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
   @action
   _setSellerList(List<SellerModel> data) {
+    sellerList.clear();
     sellerList.addAll(data);
   }
 
@@ -131,6 +132,13 @@ abstract class _SellerStoreBase with Store {
     selectedColor = newData;
   }
 
+  @observable
+  String? tagSelectedId;
+  @action
+  setTagNameSelected(String newData) {
+    tagSelectedId = newData;
+  }
+
   Future<bool> getTags() async {
     try {
       var ret = await _datasource.getTags();
@@ -142,11 +150,25 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
-  Future<bool> addTags() async {
+  Future<bool> addTag() async {
     try {
       tagModel.name = tagNameController.text;
       await _datasource.addTag(tagModel: tagModel);
       _tagCreateReset();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> addTagInSeller({
+    required String sellerId,
+  }) async {
+    try {
+      await _datasource.addTagInSeller(
+        tagId: tagSelectedId!,
+        sellerId: sellerId,
+      );
       return true;
     } catch (err) {
       return false;

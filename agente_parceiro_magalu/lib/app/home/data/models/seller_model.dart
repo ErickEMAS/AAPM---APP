@@ -1,3 +1,4 @@
+import 'package:agente_parceiro_magalu/app/home/data/models/tag_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'seller_model.g.dart';
@@ -20,7 +21,7 @@ class SellerModel {
   String dataPedidoTeste;
   List? sellerFields;
   List? checkListVisitas;
-  List? tags;
+  List<TagModel>? tags;
 
   SellerModel({
     this.id,

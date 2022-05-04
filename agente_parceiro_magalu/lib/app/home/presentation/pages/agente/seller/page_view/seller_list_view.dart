@@ -1,5 +1,6 @@
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/constants/enums.dart';
@@ -49,11 +50,8 @@ class _SellerListViewState extends State<SellerListView> {
                     sellerModel: _store.sellerList[index],
                     onAddButtonPressed: () {
                       _store.getTags();
-                      _addTags();
+                      _addTags(sellerId: _store.sellerList[index].id!);
                     });
-                // return _sellerCard(
-                //   sellerModel: _store.sellerList[index],
-                // );
               },
             ),
           );
@@ -63,7 +61,7 @@ class _SellerListViewState extends State<SellerListView> {
     );
   }
 
-  _addTags() {
+  _addTags({required String sellerId}) {
     return appDialog(
       context: context,
       title: Text(
@@ -80,75 +78,8 @@ class _SellerListViewState extends State<SellerListView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                "Tags atuais",
-                style: AppTextStyles.bold(
-                  size: 15,
-                  color: AppColors.primary,
-                ),
-              ),
-              SizedBox(height: AppDimens.space),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.63,
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  direction: Axis.horizontal,
-                  spacing: AppDimens.space,
-                  runSpacing: AppDimens.space * 0.5,
-                  children: [
-                    ..._currentTags(),
-                  ],
-                ),
-              ),
-              SizedBox(height: AppDimens.margin),
-              Text(
-                "Adicionar nova tag",
-                style: AppTextStyles.bold(
-                  size: 15,
-                  color: AppColors.primary,
-                ),
-              ),
-              TextFormField(
-                controller: _store.tagNameController,
-                decoration: const InputDecoration(
-                  hintText: "Nome da tag",
-                  labelText: "Nome",
-                ),
-              ),
-              SizedBox(height: AppDimens.space * 2),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ..._tags(),
-                ],
-              ),
-              SizedBox(height: AppDimens.space * 2),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    bool ret = await LoadingOverlay.of(context).during(
-                      _store.addTags().whenComplete(
-                            () => _store.getTags(),
-                          ),
-                    );
-                    if (ret) {
-                      SnackBarHelper.snackBar(
-                        context,
-                        message:
-                            "Tag \"${_store.tagModel.name}\" foi criada com sucesso",
-                      );
-                    } else {
-                      SnackBarHelper.snackBar(
-                        context,
-                        isError: true,
-                        message: "Ocorreu um erro",
-                      );
-                    }
-                  },
-                  child: const Text("Adicionar"),
-                ),
-              )
+              ..._tagsAlreadyExistents(sellerId: sellerId),
+              ..._createNewTag(),
             ],
           ),
         );
@@ -156,27 +87,102 @@ class _SellerListViewState extends State<SellerListView> {
     );
   }
 
-  _currentTags() {
-    List<Widget> list = [];
-    list.addAll(_store.tagList.map((tag) {
-      return Container(
-        decoration: BoxDecoration(
-            color: SwitchTagEnum.switchEnumColor(tag.color),
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimens.space,
-            vertical: 3,
-          ),
-          child: Text(
-            tag.name,
-            style: AppTextStyles.bold(color: AppColors.white, size: 12),
-          ),
+  _tagsAlreadyExistents({required String sellerId}) {
+    return [
+      Text(
+        "Selecione uma tag existente",
+        style: AppTextStyles.bold(
+          size: 15,
+          color: AppColors.primary,
         ),
-      );
-    }).toList());
+      ),
+      SizedBox(height: AppDimens.space),
+      TagListBuilder(),
+      SizedBox(height: AppDimens.margin),
+      SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () async {
+            bool ret = await LoadingOverlay.of(context).during(
+              _store
+                  .addTagInSeller(
+                    sellerId: sellerId,
+                  )
+                  .whenComplete(
+                    () => _store.onSellerInit(),
+                  ),
+            );
+            if (ret) {
+              SnackBarHelper.snackBar(
+                context,
+                message: "Tag foi adicionada com sucesso",
+              );
+            } else {
+              SnackBarHelper.snackBar(
+                context,
+                isError: true,
+                message: "Ocorreu um erro",
+              );
+            }
+          },
+          child: const Text("Adicionar tag ao Seller"),
+        ),
+      ),
+    ];
+  }
 
-    return list;
+  _createNewTag() {
+    return [
+      SizedBox(height: AppDimens.margin),
+      Text(
+        "Adicionar nova tag",
+        style: AppTextStyles.bold(
+          size: 15,
+          color: AppColors.primary,
+        ),
+      ),
+      TextFormField(
+        controller: _store.tagNameController,
+        decoration: const InputDecoration(
+          hintText: "Nome da tag",
+          labelText: "Nome",
+        ),
+      ),
+      SizedBox(height: AppDimens.space * 2),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ..._tags(),
+        ],
+      ),
+      SizedBox(height: AppDimens.space * 2),
+      SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () async {
+            bool ret = await LoadingOverlay.of(context).during(
+              _store.addTag().whenComplete(
+                    () => _store.getTags(),
+                  ),
+            );
+            if (ret) {
+              SnackBarHelper.snackBar(
+                context,
+                message:
+                    "Tag \"${_store.tagModel.name}\" foi criada com sucesso",
+              );
+            } else {
+              SnackBarHelper.snackBar(
+                context,
+                isError: true,
+                message: "Ocorreu um erro",
+              );
+            }
+          },
+          child: const Text("Criar tag"),
+        ),
+      )
+    ];
   }
 
   _tags() {
