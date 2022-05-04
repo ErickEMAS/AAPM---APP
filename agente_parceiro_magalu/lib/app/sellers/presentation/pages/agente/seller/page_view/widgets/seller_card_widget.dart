@@ -1,6 +1,6 @@
-import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
@@ -23,7 +23,7 @@ class SellerCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _store.navigateToEditSeller(context, sellerModel.id!);
+        _store.navigateToSellerOverview(context, sellerModel.id!);
       },
       child: Column(
         children: [

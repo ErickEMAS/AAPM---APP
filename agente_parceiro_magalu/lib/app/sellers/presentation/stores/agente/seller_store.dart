@@ -1,11 +1,10 @@
-import 'package:agente_parceiro_magalu/app/home/data/datasources/seller_datasource.dart';
-import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
-import 'package:agente_parceiro_magalu/app/home/data/models/tag_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/datasources/seller_datasource.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
-import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'seller_store.g.dart';
@@ -186,6 +185,14 @@ abstract class _SellerStoreBase with Store {
   Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
     return Navigator.of(context)
         .pushNamed(AppRoutes.editSeller, arguments: sellerId)
+        .then(
+          (value) => false,
+        );
+  }
+
+  Future<bool> navigateToSellerOverview(BuildContext context, String sellerId) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.sellerOverview, arguments: sellerId)
         .then(
           (value) => false,
         );

@@ -1,5 +1,5 @@
-import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
-import 'package:agente_parceiro_magalu/app/home/data/models/tag_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
 import 'package:agente_parceiro_magalu/core/http/http_service.dart';
 import 'package:agente_parceiro_magalu/core/http/interceptor/auth_interceptor.dart';

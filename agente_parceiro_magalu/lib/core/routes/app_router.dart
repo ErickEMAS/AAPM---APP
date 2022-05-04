@@ -1,13 +1,14 @@
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/edit_seller_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/user_account_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/agente_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/calendar_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/seller_page.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/edit_seller_page.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/seller_overview_page.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/seller_page.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +52,13 @@ class AppRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (context, __, ___) => SellerPage(),
+        );
+      case AppRoutes.sellerOverview:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => SellerOverviewPage(
+            sellerId: settings.arguments.toString(),
+          ),
         );
       case AppRoutes.editSeller:
         return MaterialPageRoute(

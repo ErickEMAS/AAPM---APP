@@ -1,6 +1,6 @@
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/add_seller_view.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/seller_list_view.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/add_seller_view.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/seller_list_view.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
@@ -67,7 +67,7 @@ class _SellerPageState extends State<SellerPage> {
             physics: const NeverScrollableScrollPhysics(),
             controller: _store.pageController,
             itemBuilder: (context, index) {
-              return index == 0 ? SellerListView() : AddSellerView();
+              return index == 0 ? const SellerListView() : AddSellerView();
             },
           ),
           bottomNavigationBar: AppBottomBar(),

@@ -1,4 +1,4 @@
-import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/user_account_store.dart';
+import 'package:agente_parceiro_magalu/app/home/presentation/stores/user_account_store.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
@@ -34,7 +34,6 @@ class _UserAccountPageState extends State<UserAccountPage> {
   Widget build(BuildContext context) {
     return AppSafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.lightGrey,
         bottomNavigationBar: AppBottomBar(),
         appBar: const AppBarGradient(
           title: "Minha conta",

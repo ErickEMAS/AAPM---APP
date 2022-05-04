@@ -1,7 +1,8 @@
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/app_dropdown.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
@@ -23,6 +24,15 @@ class SellerListView extends StatefulWidget {
 class _SellerListViewState extends State<SellerListView> {
   final SellerStore _store = serviceLocator<SellerStore>();
 
+  String? dropdownSelection;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _store.getTags();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,13 +40,39 @@ class _SellerListViewState extends State<SellerListView> {
       children: [
         Padding(
           padding: EdgeInsets.all(AppDimens.margin),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
-              Text(
-                "Lista de Sellers",
-                style: AppTextStyles.bold(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Lista de Sellers",
+                    style: AppTextStyles.bold(),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.search),
+                  )
+                ],
               ),
+              Container(
+                child: Column(
+                  children: [
+                    TextFormField(),
+                    SizedBox(height: AppDimens.space),
+                    AppDropdown(
+                      onChange: (value) {
+                        dropdownSelection = value;
+                        setState(() {});
+                      },
+                      value: dropdownSelection,
+                      list: _store.tagList
+                          .map((tag) => tag.id.toString())
+                          .toList(),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),

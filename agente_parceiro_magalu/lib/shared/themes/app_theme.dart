@@ -6,6 +6,7 @@ class ThemeProvider extends ChangeNotifier {}
 
 class AppThemes {
   static final theme = ThemeData(
+    scaffoldBackgroundColor: AppColors.lightGrey,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primary,
       elevation: 0,
