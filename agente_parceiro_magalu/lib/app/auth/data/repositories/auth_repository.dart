@@ -45,4 +45,9 @@ class AuthRepository implements IAuthRepository {
   Future changePassword({required ChangePassword changePassword}) {
     return _datasource.changePassword(changePassword: changePassword);
   }
+
+  @override
+  Future confirmeEmail({required String email, required String code}) {
+    return _datasource.confirmeEmail(email: email, code: code);
+  }
 }

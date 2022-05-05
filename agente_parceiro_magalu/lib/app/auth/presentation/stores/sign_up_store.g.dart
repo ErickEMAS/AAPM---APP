@@ -40,6 +40,36 @@ mixin _$SignUpStore on _SignUpStoreBase, Store {
     });
   }
 
+  final _$fullNameAtom = Atom(name: '_SignUpStoreBase.fullName');
+
+  @override
+  String get fullName {
+    _$fullNameAtom.reportRead();
+    return super.fullName;
+  }
+
+  @override
+  set fullName(String value) {
+    _$fullNameAtom.reportWrite(value, super.fullName, () {
+      super.fullName = value;
+    });
+  }
+
+  final _$emailAtom = Atom(name: '_SignUpStoreBase.email');
+
+  @override
+  String get email {
+    _$emailAtom.reportRead();
+    return super.email;
+  }
+
+  @override
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
+      super.email = value;
+    });
+  }
+
   final _$_SignUpStoreBaseActionController =
       ActionController(name: '_SignUpStoreBase');
 
@@ -49,6 +79,17 @@ mixin _$SignUpStore on _SignUpStoreBase, Store {
         name: '_SignUpStoreBase.reset');
     try {
       return super.reset();
+    } finally {
+      _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDefault(UserModel user) {
+    final _$actionInfo = _$_SignUpStoreBaseActionController.startAction(
+        name: '_SignUpStoreBase.setDefault');
+    try {
+      return super.setDefault(user);
     } finally {
       _$_SignUpStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -80,7 +121,9 @@ mixin _$SignUpStore on _SignUpStoreBase, Store {
   String toString() {
     return '''
 isObscure: ${isObscure},
-isObscureConfirm: ${isObscureConfirm}
+isObscureConfirm: ${isObscureConfirm},
+fullName: ${fullName},
+email: ${email}
     ''';
   }
 }

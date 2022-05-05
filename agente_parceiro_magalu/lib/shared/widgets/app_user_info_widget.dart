@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 
+import '../../core/routes/app_routes.dart';
+
 class AppUserInfo extends StatelessWidget {
   String name;
   String role;
@@ -16,7 +18,9 @@ class AppUserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => print("Atualizar Dados"),
+      onTap: () => Navigator.of(context)
+          .pushNamed(AppRoutes.userDetail)
+          .then((value) => true),
       child: Container(
         height: 80,
         width: double.infinity,
@@ -32,7 +36,7 @@ class AppUserInfo extends StatelessWidget {
                     name != null ? name[0] : "",
                     style: const TextStyle(
                       fontSize: 24,
-                      fontWeight: FontWeight.w200,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.white,
                     ),
                   ),
@@ -52,13 +56,15 @@ class AppUserInfo extends StatelessWidget {
                           color: AppColors.darkGrey,
                         ),
                       ),
-                      Text(
-                        role,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.grey,
-                        ),
-                      ),
+                      role == ""
+                          ? Container()
+                          : Text(
+                              role,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.grey,
+                              ),
+                            ),
                     ],
                   ),
                 )
@@ -67,13 +73,15 @@ class AppUserInfo extends StatelessWidget {
             emailConfirmed
                 ? Container()
                 : GestureDetector(
-                  onTap: () => print("Confirmar e-mail"),
-                  child: Container(
-                    height: 80,
-                    child: Row(
+                    onTap: () => Navigator.of(context)
+                        .pushNamed(AppRoutes.confirmEmail)
+                        .then((value) => true),
+                    child: Container(
+                      height: 80,
+                      child: Row(
                         children: const [
                           Text(
-                            "Conrifmar E-mail",
+                            "Confirmar E-mail",
                             style: TextStyle(
                               fontSize: 12,
                               color: AppColors.vermelho,
@@ -82,8 +90,8 @@ class AppUserInfo extends StatelessWidget {
                           SizedBox(width: 16),
                         ],
                       ),
+                    ),
                   ),
-                ),
           ],
         ),
       ),

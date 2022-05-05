@@ -14,17 +14,10 @@ class LoginStore = _LoginStoreBase with _$LoginStore;
 
 abstract class _LoginStoreBase with Store {
   final IAuthUseCase _authUseCase = serviceLocator<IAuthUseCase>();
-  final ForgotPassWordStore _forgotPasswordStore =
-      serviceLocator<ForgotPassWordStore>();
+  final ForgotPassWordStore _forgotPasswordStore = serviceLocator<ForgotPassWordStore>();
 
-//adm login
-  // TextEditingController emailController =
-  //     TextEditingController(text: 'admin@apm.com.br');
-  //user login
-  TextEditingController emailController =
-      TextEditingController(text: 'testesdaluacoding@gmail.com');
-  TextEditingController passwordController =
-      TextEditingController(text: 'Teste!23');
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -32,6 +25,15 @@ abstract class _LoginStoreBase with Store {
 
   @observable
   bool isObscure = true;
+
+  @action
+  void reset() {
+    emailController.clear();
+    passwordController.clear();
+
+    _unauthorized = false;
+    isObscure = true;
+  }
 
   @action
   passwordVisibilityToggle() {
@@ -62,6 +64,12 @@ abstract class _LoginStoreBase with Store {
     _forgotPasswordStore.emailController = emailController;
     return Navigator.of(context)
         .pushNamed(AppRoutes.forgotPassword)
+        .then((value) => true);
+  }
+
+  Future<bool> navigateToSignUp(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.signUp)
         .then((value) => true);
   }
 

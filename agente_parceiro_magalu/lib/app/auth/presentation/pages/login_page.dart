@@ -18,6 +18,12 @@ class _LoginPageState extends State<LoginPage> {
   final LoginStore _store = serviceLocator<LoginStore>();
 
   @override
+  void dispose() {
+    _store.reset();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -95,14 +101,27 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text("Entrar"),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    _store.navigateToForgotPassword(context);
-                  },
-                  child: const Text(
-                    "Esqueci minha senha",
-                  ),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _store.navigateToForgotPassword(context);
+                      },
+                      child: const Text(
+                        "Esqueci minha senha",
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        _store.navigateToSignUp(context);
+                      },
+                      child: const Text(
+                        "Primeiro acesso",
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           );

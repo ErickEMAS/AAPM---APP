@@ -46,7 +46,7 @@ Future<void> logout({required BuildContext context}) async {
     await SecureStorageHelper.write(key: StorageKeys.loggedUser, value: "");
     Navigator.pushNamedAndRemoveUntil(
         context,
-        AppRoutes.login,
-        ModalRoute.withName(AppRoutes.login),
+        AppRoutes.dashboard,
+        ModalRoute.withName(AppRoutes.dashboard),
       ).then((value) => false);
   }

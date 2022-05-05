@@ -6,6 +6,10 @@ class Endpoints {
   static const String sendCode = '/user/send-code';
   static const String confirmCodeChangePassword = '/user/change-password-step1';
   static const String changePassword = '/user/change-password-step2';
+  static const String confirmEmail = '/user/confirm-email';
+  static const String changeEmail = '/user/change-email';
+  static const String signUpAgente = '/user/sign-up';
+  static const String signUpAdmin = '/user/sign-up-admin';
 
   //seller
   static const String getSellerListByAgentId = "/seller/get-sellers";

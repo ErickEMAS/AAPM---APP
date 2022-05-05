@@ -25,11 +25,9 @@ class _AppBottomBarState extends State<AppBottomBar> {
     print(_store.userRole);
   }
 
-
   @override
   Widget build(BuildContext context) {
-  bool isAdmin = _store.userRole == "ROLE_ADMIN";
-  print(_store.userRole);
+    bool isAdmin = _store.userRole == "ROLE_ADMIN";
     return BottomAppBar(
       notchMargin: 2.0,
       child: SizedBox(
@@ -125,7 +123,7 @@ bottomIcon({
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-              width: 6, color: active ? AppColors.primary : Colors.transparent),
+              width: 4, color: active ? AppColors.primary : Colors.transparent),
         ),
       ),
       child: Column(

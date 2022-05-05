@@ -5,11 +5,10 @@ part 'sign_up_model.g.dart';
 @JsonSerializable()
 class SignUpModel {
   String? id;
-  String email;
-  String fullName;
-  String nickName;
-  String password;
-  String passwordConfirm;
+  String? email;
+  String? fullName;
+  String? password;
+  String? passwordConfirm;
   String cpf;
 
   SignUpModel({
@@ -17,7 +16,6 @@ class SignUpModel {
     required this.email,
     required this.cpf,
     required this.fullName,
-    required this.nickName,
     required this.password,
     required this.passwordConfirm,
   });

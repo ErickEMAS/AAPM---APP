@@ -26,7 +26,6 @@ abstract class _DashboardStoreBase with Store {
   Future<void> navigateToHomeIfToken(BuildContext context) async {
 
     String? token = await SecureStorageHelper.read(key: StorageKeys.token);
-    print(token);
     
     if (token !=  null && token !=  "" ) {
       Navigator.pushNamedAndRemoveUntil(

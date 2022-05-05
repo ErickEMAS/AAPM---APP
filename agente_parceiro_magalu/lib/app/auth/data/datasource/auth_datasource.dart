@@ -18,6 +18,7 @@ abstract class IAuthDatasource {
   Future sendCode({required SendCode sendCode});
   Future confirmeCode({required String email, required String code});
   Future changePassword({required ChangePassword changePassword});
+  Future confirmeEmail({required String email, required String code});
 }
 
 class AuthDatasource implements IAuthDatasource {
@@ -99,7 +100,7 @@ class AuthDatasource implements IAuthDatasource {
       signUpModel.cpf = signUpModel.cpf.replaceAll(".", "").replaceAll("-", "");
       final response = await HttpService().post(
         Endpoints.signUp,
-        data: json.encode(signUpModel.toJson()),
+        data: signUpModel.toJson(),
       );
       print(response);
     } on DioError catch (err) {
@@ -155,6 +156,28 @@ class AuthDatasource implements IAuthDatasource {
       final response = await HttpService().post(
         Endpoints.changePassword,
         data: changePassword.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future confirmeEmail({required String email, required String code}) async {
+    Map<String, dynamic> data = {
+      "email": email,
+      "code": code,
+    };
+
+    try {
+      final response = await HttpService().post(
+        Endpoints.confirmEmail,
+        data: data,
       );
 
       print(response);

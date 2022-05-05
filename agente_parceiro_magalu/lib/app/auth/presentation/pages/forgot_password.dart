@@ -18,19 +18,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final ForgotPassWordStore _store = serviceLocator<ForgotPassWordStore>();
 
   @override
+  void dispose() {
+    _store.reset();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var route = ModalRoute.of(context);
-
-    if (route != null) {
-      List<String>? path = ModalRoute.of(context)?.settings.name?.split("/");
-      print("path");
-      print(path![1]);
-
-      print(route);
-      print(route.settings);
-      print(route.settings.name);
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const AppBarGradient(

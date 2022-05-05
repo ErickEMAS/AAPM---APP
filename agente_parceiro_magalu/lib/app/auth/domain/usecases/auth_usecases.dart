@@ -11,11 +11,12 @@ abstract class IAuthUseCase {
     required String password,
   });
 
-  Future verifyCpf({required String cpf});
+  Future<UserModel> verifyCpf({required String cpf});
   Future signUp({required SignUpModel signUpModel});
   Future forgotPassWordSendCode({required String email});
   Future forgotPassWordConfirmeCode({required String email, required String code});
   Future forgotPassWordChangePassword({required ChangePassword changePassword});
+  Future confirmeEmail({required String email, required String code});
 }
 
 class AuthUseCase implements IAuthUseCase {
@@ -43,6 +44,16 @@ class AuthUseCase implements IAuthUseCase {
   }) async {
     try {
       final response = await _repository.verifyCpf(cpf: cpf);
+      return response;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserModel> confirmeEmail({required String email, required String code}) async {
+    try {
+      final response = await _repository.confirmeEmail(email: email, code: code);
       return response;
     } catch (err) {
       rethrow;
