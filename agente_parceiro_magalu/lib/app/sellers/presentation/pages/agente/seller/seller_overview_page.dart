@@ -1,3 +1,5 @@
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/checklist_store.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
@@ -23,6 +25,7 @@ class SellerOverviewPage extends StatefulWidget {
 
 class _SellerOverviewPageState extends State<SellerOverviewPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
+  final ChecklistStore _checklistStore = serviceLocator<ChecklistStore>();
 
   @override
   void initState() {
@@ -45,7 +48,10 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
           children: [
             _sellerInfo(),
             SizedBox(height: AppDimens.margin),
-            _checklistVisita(),
+            _store.sellerEditModel!.checkListVisitas != null &&
+                    _store.sellerEditModel!.checkListVisitas!.isNotEmpty
+                ? _checklistVisita()
+                : _initVisita(_store.sellerEditModel!),
           ],
         );
       }),
@@ -54,59 +60,93 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
 
   _sellerInfo() {
     return Container(
-      padding: EdgeInsets.all(AppDimens.margin),
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Informações do seller",
-                style: AppTextStyles.bold(),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("editar"),
-              )
-            ],
-          ),
-          SizedBox(height: AppDimens.margin),
-          _infoRow(title: "Nome", content: _store.sellerEditModel!.nome),
-          _infoRow(title: "CEP", content: _store.sellerEditModel!.cep),
-          _infoRow(
-              title: "Endereço", content: _store.sellerEditModel!.endereco),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.7,
-            child: Row(
+        padding: EdgeInsets.all(AppDimens.margin),
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _infoRow(
-                    title: "Cidade", content: _store.sellerEditModel!.cidade),
-                _infoRow(title: "UF", content: _store.sellerEditModel!.uf),
+                Text(
+                  "Informações do seller",
+                  style: AppTextStyles.bold(),
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text("editar"),
+                )
               ],
             ),
-          ),
-          _infoRow(
-              title: "Complemento",
-              content: _store.sellerEditModel!.complemento),
-          _infoRow(title: "CNPJ", content: _store.sellerEditModel!.cnpj),
-          _infoRow(
-              title: "Data de pedido",
-              content: _store.sellerEditModel!.dataPedidoTeste),
-          _infoRow(title: "Email", content: _store.sellerEditModel!.email),
-          _infoRow(
-              title: "Telefone", content: _store.sellerEditModel!.telefone),
-        ],
-      ),
-    );
+            SizedBox(height: AppDimens.margin),
+            _store.sellerEditModel != null
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _infoRow(
+                          title: "Nome", content: _store.sellerEditModel!.nome),
+                      _infoRow(
+                          title: "CEP", content: _store.sellerEditModel!.cep),
+                      _infoRow(
+                          title: "Endereço",
+                          content: _store.sellerEditModel!.endereco),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _infoRow(
+                                title: "Cidade",
+                                content: _store.sellerEditModel!.cidade),
+                            _infoRow(
+                                title: "UF",
+                                content: _store.sellerEditModel!.uf),
+                          ],
+                        ),
+                      ),
+                      _infoRow(
+                          title: "Complemento",
+                          content: _store.sellerEditModel!.complemento),
+                      _infoRow(
+                          title: "CNPJ", content: _store.sellerEditModel!.cnpj),
+                      _infoRow(
+                          title: "Data de pedido",
+                          content: _store.sellerEditModel!.dataPedidoTeste),
+                      _infoRow(
+                          title: "Email",
+                          content: _store.sellerEditModel!.email),
+                      _infoRow(
+                          title: "Telefone",
+                          content: _store.sellerEditModel!.telefone),
+                    ],
+                  )
+                : SizedBox(),
+          ],
+        ));
   }
 
   _checklistVisita() {
-    return Column();
+    return Column(
+      children: [
+        Text("checklist"),
+      ],
+    );
+  }
+
+  _initVisita(SellerModel sellerModel) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          _checklistStore.startChecklist(sellerModel.id!);
+        },
+        child: Text(
+          "Iniciar checklist visita",
+        ),
+      ),
+    );
   }
 
   _infoRow({required String title, required String content}) {

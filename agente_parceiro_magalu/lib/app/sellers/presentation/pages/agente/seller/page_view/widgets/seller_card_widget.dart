@@ -33,14 +33,14 @@ class SellerCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.inputHint.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: AppColors.inputHint.withOpacity(0.5),
+              //     spreadRadius: 1,
+              //     blurRadius: 7,
+              //     offset: const Offset(0, 3), // changes position of shadow
+              //   ),
+              // ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

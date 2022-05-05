@@ -9,10 +9,12 @@ class Endpoints {
 
   //seller
   static const String getSellerListByAgentId = "/seller/get-sellers";
+  static const String postSeller = "/seller/add-seller";
   static const String getSellerById = "/seller/get-seller";
+
   static const String getTags = "/seller/get-tags";
   static const String addTag = "/seller/add-tag";
-  static const String addTagInSelelr = "/seller//add-tag-seller";
+  static const String addTagInSelelr = "/seller/add-tag-seller";
 
-  static const String postSeller = "/seller/add-seller";
+  static const String startChecklist = "/seller/start-checklist-by-selerid";
 }

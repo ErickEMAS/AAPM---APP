@@ -1,7 +1,5 @@
 import 'package:agente_parceiro_magalu/app/sellers/data/datasources/seller_datasource.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
-import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
-import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
@@ -77,14 +75,14 @@ abstract class _SellerStoreBase with Store {
   @observable
   String? tagId;
   @action
-  setTagId(String newData) {
+  setTagId(String? newData) {
     tagId = newData;
   }
 
   @observable
   String? nomeSeller;
   @action
-  setNomeSeller(String newData) {
+  setNomeSeller(String? newData) {
     nomeSeller = newData;
   }
 

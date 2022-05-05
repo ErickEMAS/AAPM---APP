@@ -19,6 +19,8 @@ abstract class ISellerDatasource {
   Future<List<TagModel>> getTags();
   Future addTag({required TagModel tagModel});
   Future addTagInSeller({required String sellerId, required String tagId});
+
+  Future startChecklistBySellerId({required String sellerId});
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -164,6 +166,27 @@ class SellerDatasource implements ISellerDatasource {
 
       final response = await _httpWithAuth.post(
         Endpoints.addTagInSelelr,
+        data: params,
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      rethrow;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future startChecklistBySellerId({required String sellerId}) async {
+    try {
+      Map<String, dynamic> params = {
+        "sellerId": sellerId,
+      };
+
+      final response = await _httpWithAuth.post(
+        Endpoints.startChecklist,
         data: params,
       );
 

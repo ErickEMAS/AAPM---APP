@@ -28,6 +28,8 @@ class _SellerListViewState extends State<SellerListView> {
 
   String? dropdownSelection;
 
+  TextEditingController nomeSearchController = TextEditingController();
+
   @override
   void initState() {
     _tagStore.getTags();
@@ -61,47 +63,64 @@ class _SellerListViewState extends State<SellerListView> {
                   ],
                 ),
                 _sellerStore.searchClicked
-                    ? Column(
-                        children: [
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: "Nome",
-                              hintText: "Nome do seller",
-                            ),
-                          ),
-                          SizedBox(height: AppDimens.space),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.56,
-                                child: AppDropdown(
-                                  onChange: (value) {
-                                    dropdownSelection = value;
-
-                                    // setState(() {});
-                                  },
-                                  value: dropdownSelection,
-                                  list: _tagStore.tagList
-                                      .map((tag) => tag.id.toString())
-                                      .toList(),
-                                ),
+                    ? Observer(builder: (_) {
+                        return Column(
+                          children: [
+                            TextFormField(
+                              controller: nomeSearchController,
+                              decoration: const InputDecoration(
+                                labelText: "Nome",
+                                hintText: "Nome do seller",
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: const FittedBox(
-                                    child: Text(
-                                      "pesquisar",
-                                    ),
+                              onChanged: (value) {
+                                _sellerStore.setNomeSeller(value);
+                                _sellerStore.getSellersWithFilter();
+                              },
+                            ),
+                            SizedBox(height: AppDimens.space),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.56,
+                                  child: AppDropdown(
+                                    onChange: (value) {
+                                      setState(() {
+                                        dropdownSelection = value;
+                                      });
+                                      _sellerStore.setTagId(value);
+                                      _sellerStore.getSellersWithFilter();
+                                    },
+                                    value: dropdownSelection,
+                                    list: _tagStore.tagList
+                                        .map((tag) => tag.id.toString())
+                                        .toList(),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
-                      )
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      dropdownSelection = null;
+                                      nomeSearchController.text = ("");
+                                      _sellerStore.setTagId(null);
+                                      _sellerStore.setNomeSeller(null);
+                                      _sellerStore.getSellersWithFilter();
+                                    },
+                                    child: const FittedBox(
+                                      child: Text(
+                                        "limpar",
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        );
+                      })
                     : SizedBox(),
               ],
             );
