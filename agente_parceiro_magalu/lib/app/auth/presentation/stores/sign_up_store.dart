@@ -1,4 +1,3 @@
-import 'package:agente_parceiro_magalu/app/auth/data/datasource/auth_datasource.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/domain/usecases/auth_usecases.dart';
@@ -74,6 +73,9 @@ abstract class _SignUpStoreBase with Store {
 
   Future<bool> onSignUpSubmitted() async {
     try {
+      formSignUp.id = userModel.id;
+      formSignUp.cpf = userModel.cpf;
+
       await _authUseCase.signUp(signUpModel: formSignUp);
 
       return true;

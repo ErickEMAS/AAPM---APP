@@ -3,6 +3,7 @@ import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/sel
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/tag_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
@@ -22,14 +23,14 @@ class SellerListView extends StatefulWidget {
 }
 
 class _SellerListViewState extends State<SellerListView> {
-  final SellerStore _store = serviceLocator<SellerStore>();
+  final SellerStore _sellerStore = serviceLocator<SellerStore>();
+  final TagStore _tagStore = serviceLocator<TagStore>();
 
   String? dropdownSelection;
 
   @override
   void initState() {
-    // TODO: implement initState
-    _store.getTags();
+    _tagStore.getTags();
     super.initState();
   }
 
@@ -40,53 +41,83 @@ class _SellerListViewState extends State<SellerListView> {
       children: [
         Padding(
           padding: EdgeInsets.all(AppDimens.margin),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Lista de Sellers",
-                    style: AppTextStyles.bold(),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.search),
-                  )
-                ],
-              ),
-              Container(
-                child: Column(
+          child: Observer(builder: (_) {
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextFormField(),
-                    SizedBox(height: AppDimens.space),
-                    AppDropdown(
-                      onChange: (value) {
-                        dropdownSelection = value;
-                        setState(() {});
+                    Text(
+                      "Lista de Sellers",
+                      style: AppTextStyles.bold(),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        _sellerStore
+                            .setSearchClicked(!_sellerStore.searchClicked);
                       },
-                      value: dropdownSelection,
-                      list: _store.tagList
-                          .map((tag) => tag.id.toString())
-                          .toList(),
+                      icon: const Icon(Icons.search),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+                _sellerStore.searchClicked
+                    ? Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Nome",
+                              hintText: "Nome do seller",
+                            ),
+                          ),
+                          SizedBox(height: AppDimens.space),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.56,
+                                child: AppDropdown(
+                                  onChange: (value) {
+                                    dropdownSelection = value;
+
+                                    // setState(() {});
+                                  },
+                                  value: dropdownSelection,
+                                  list: _tagStore.tagList
+                                      .map((tag) => tag.id.toString())
+                                      .toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: const FittedBox(
+                                    child: Text(
+                                      "pesquisar",
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
+              ],
+            );
+          }),
         ),
         Observer(builder: (_) {
           return Expanded(
             child: ListView.builder(
-              itemCount: _store.sellerList.length,
-              padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+              itemCount: _sellerStore.sellerList.length,
+              // padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
               itemBuilder: (context, index) {
                 return SellerCardWidget(
-                    sellerModel: _store.sellerList[index],
+                    sellerModel: _sellerStore.sellerList[index],
                     onAddButtonPressed: () {
-                      _store.getTags();
-                      _addTags(sellerId: _store.sellerList[index].id!);
+                      _tagStore.getTags();
+                      _addTags(sellerId: _sellerStore.sellerList[index].id!);
                     });
               },
             ),
@@ -140,12 +171,12 @@ class _SellerListViewState extends State<SellerListView> {
         child: ElevatedButton(
           onPressed: () async {
             bool ret = await LoadingOverlay.of(context).during(
-              _store
+              _tagStore
                   .addTagInSeller(
                     sellerId: sellerId,
                   )
                   .whenComplete(
-                    () => _store.onSellerInit(),
+                    () => _sellerStore.onSellerInit(),
                   ),
             );
             if (ret) {
@@ -178,7 +209,7 @@ class _SellerListViewState extends State<SellerListView> {
         ),
       ),
       TextFormField(
-        controller: _store.tagNameController,
+        controller: _tagStore.tagNameController,
         decoration: const InputDecoration(
           hintText: "Nome da tag",
           labelText: "Nome",
@@ -197,15 +228,15 @@ class _SellerListViewState extends State<SellerListView> {
         child: ElevatedButton(
           onPressed: () async {
             bool ret = await LoadingOverlay.of(context).during(
-              _store.addTag().whenComplete(
-                    () => _store.getTags(),
+              _tagStore.addTag().whenComplete(
+                    () => _tagStore.getTags(),
                   ),
             );
             if (ret) {
               SnackBarHelper.snackBar(
                 context,
                 message:
-                    "Tag \"${_store.tagModel.name}\" foi criada com sucesso",
+                    "Tag \"${_tagStore.tagModel.name}\" foi criada com sucesso",
               );
             } else {
               SnackBarHelper.snackBar(
@@ -240,8 +271,8 @@ class _SellerListViewState extends State<SellerListView> {
   Widget _tagContainer({required Color color, required TagColors tagColors}) {
     return GestureDetector(
       onTap: () {
-        _store.tagModel.color = tagColors;
-        _store.setSelectedColor(color);
+        _tagStore.tagModel.color = tagColors;
+        _tagStore.setSelectedColor(color);
       },
       child: Container(
         width: 20,
@@ -249,7 +280,7 @@ class _SellerListViewState extends State<SellerListView> {
         decoration: BoxDecoration(
           color: color,
           border: Border.all(
-            color: _store.selectedColor == color
+            color: _tagStore.selectedColor == color
                 ? AppColors.white
                 : AppColors.black.withOpacity(0.4),
             width: 2,

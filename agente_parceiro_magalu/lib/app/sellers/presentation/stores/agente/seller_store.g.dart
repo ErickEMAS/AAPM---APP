@@ -69,33 +69,18 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
-  final _$selectedColorAtom = Atom(name: '_SellerStoreBase.selectedColor');
+  final _$searchClickedAtom = Atom(name: '_SellerStoreBase.searchClicked');
 
   @override
-  Color? get selectedColor {
-    _$selectedColorAtom.reportRead();
-    return super.selectedColor;
+  bool get searchClicked {
+    _$searchClickedAtom.reportRead();
+    return super.searchClicked;
   }
 
   @override
-  set selectedColor(Color? value) {
-    _$selectedColorAtom.reportWrite(value, super.selectedColor, () {
-      super.selectedColor = value;
-    });
-  }
-
-  final _$tagSelectedIdAtom = Atom(name: '_SellerStoreBase.tagSelectedId');
-
-  @override
-  String? get tagSelectedId {
-    _$tagSelectedIdAtom.reportRead();
-    return super.tagSelectedId;
-  }
-
-  @override
-  set tagSelectedId(String? value) {
-    _$tagSelectedIdAtom.reportWrite(value, super.tagSelectedId, () {
-      super.tagSelectedId = value;
+  set searchClicked(bool value) {
+    _$searchClickedAtom.reportWrite(value, super.searchClicked, () {
+      super.searchClicked = value;
     });
   }
 
@@ -136,6 +121,17 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
+  dynamic setSearchClicked(bool newData) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase.setSearchClicked');
+    try {
+      return super.setSearchClicked(newData);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic _setSellerList(List<SellerModel> data) {
     final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
         name: '_SellerStoreBase._setSellerList');
@@ -158,47 +154,13 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
-  dynamic _setTagList(List<TagModel> data) {
-    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
-        name: '_SellerStoreBase._setTagList');
-    try {
-      return super._setTagList(data);
-    } finally {
-      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic setSelectedColor(Color newData) {
-    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
-        name: '_SellerStoreBase.setSelectedColor');
-    try {
-      return super.setSelectedColor(newData);
-    } finally {
-      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic setTagNameSelected(String newData) {
-    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
-        name: '_SellerStoreBase.setTagNameSelected');
-    try {
-      return super.setTagNameSelected(newData);
-    } finally {
-      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 pageController: ${pageController},
 currentPage: ${currentPage},
 sellerModel: ${sellerModel},
 sellerEditModel: ${sellerEditModel},
-selectedColor: ${selectedColor},
-tagSelectedId: ${tagSelectedId}
+searchClicked: ${searchClicked}
     ''';
   }
 }

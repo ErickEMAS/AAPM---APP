@@ -13,30 +13,6 @@ class SellerStore = _SellerStoreBase with _$SellerStore;
 
 abstract class _SellerStoreBase with Store {
   final ISellerDatasource _datasource = serviceLocator<ISellerDatasource>();
-
-  final formKey = GlobalKey<FormState>();
-//Page view navigation
-  @observable
-  PageController pageController = PageController();
-  @observable
-  int currentPage = 0;
-  @action
-  nextPage() {
-    pageController.nextPage(
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
-    currentPage = 1;
-  }
-
-  @action
-  previousPage() {
-    pageController.previousPage(
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
-    currentPage = 0;
-  }
-
-  int pageableSize = 15;
-  int pageablePage = 0;
-
   @observable
   SellerModel sellerModel = SellerModel(
     cnpj: "",
@@ -54,11 +30,21 @@ abstract class _SellerStoreBase with Store {
     dataPedidoTeste: "",
   );
 
+  int pageableSize = 15;
+  int pageablePage = 0;
+
   @observable
   SellerModel? sellerEditModel;
   @action
   _setEditSellerModel(SellerModel newData) {
     sellerEditModel = newData;
+  }
+
+  @observable
+  bool searchClicked = false;
+  @action
+  setSearchClicked(bool newData) {
+    searchClicked = newData;
   }
 
   ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
@@ -78,6 +64,37 @@ abstract class _SellerStoreBase with Store {
       PageListModel pageList = await _datasource.getSellerList(
         size: pageableSize,
         page: pageablePage,
+      );
+
+      _setSellerList(pageList.content.cast<SellerModel>().toList());
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  @observable
+  String? tagId;
+  @action
+  setTagId(String newData) {
+    tagId = newData;
+  }
+
+  @observable
+  String? nomeSeller;
+  @action
+  setNomeSeller(String newData) {
+    nomeSeller = newData;
+  }
+
+  Future<bool> getSellersWithFilter() async {
+    try {
+      PageListModel pageList = await _datasource.getSellerList(
+        size: pageableSize,
+        page: pageablePage,
+        tagId: tagId,
+        nome: nomeSeller,
       );
 
       _setSellerList(pageList.content.cast<SellerModel>().toList());
@@ -109,79 +126,26 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
-  //(*************)
-  //tags
-  //(*************)
-
-  TagModel tagModel = TagModel(name: "", color: TagColors.amarelo);
-
-  TextEditingController tagNameController = TextEditingController();
-
-  ObservableList<TagModel> tagList = ObservableList<TagModel>();
-  @action
-  _setTagList(List<TagModel> data) {
-    tagList.clear();
-    tagList.addAll(data);
-  }
-
+  //Page view navigation
+  final formKey = GlobalKey<FormState>();
   @observable
-  Color? selectedColor;
-  @action
-  setSelectedColor(Color newData) {
-    selectedColor = newData;
-  }
-
+  PageController pageController = PageController();
   @observable
-  String? tagSelectedId;
+  int currentPage = 0;
   @action
-  setTagNameSelected(String newData) {
-    tagSelectedId = newData;
+  nextPage() {
+    pageController.nextPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
+    currentPage = 1;
   }
 
-  Future<bool> getTags() async {
-    try {
-      var ret = await _datasource.getTags();
-      _setTagList(ret);
-
-      return true;
-    } catch (err) {
-      return false;
-    }
+  @action
+  previousPage() {
+    pageController.previousPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
+    currentPage = 0;
   }
 
-  Future<bool> addTag() async {
-    try {
-      tagModel.name = tagNameController.text;
-      await _datasource.addTag(tagModel: tagModel);
-      _tagCreateReset();
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-
-  Future<bool> addTagInSeller({
-    required String sellerId,
-  }) async {
-    try {
-      await _datasource.addTagInSeller(
-        tagId: tagSelectedId!,
-        sellerId: sellerId,
-      );
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-
-  _tagCreateReset() {
-    tagNameController = TextEditingController();
-    selectedColor = null;
-  }
-
-  //(*************)
-  //navigation
-  //(*************)
   Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
     return Navigator.of(context)
         .pushNamed(AppRoutes.editSeller, arguments: sellerId)

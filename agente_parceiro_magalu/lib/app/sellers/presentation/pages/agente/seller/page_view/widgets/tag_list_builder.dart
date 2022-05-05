@@ -2,6 +2,7 @@ import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart
 import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/tag_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
@@ -17,7 +18,8 @@ class TagListBuilder extends StatelessWidget {
     this.sellerModel,
   }) : super(key: key);
 
-  final SellerStore _store = serviceLocator<SellerStore>();
+  final SellerStore _sellerStore = serviceLocator<SellerStore>();
+  final TagStore _tagStore = serviceLocator<TagStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +41,12 @@ class TagListBuilder extends StatelessWidget {
     bool isSeller = sellerModel != null;
     List<Widget> list = [];
 
-    List<TagModel> tagList = isSeller ? sellerModel!.tags! : _store.tagList;
+    List<TagModel> tagList = isSeller ? sellerModel!.tags! : _tagStore.tagList;
 
     list.addAll(tagList.map((tag) {
       return GestureDetector(
         onTap: () {
-          _store.setTagNameSelected(tag.id!);
+          _tagStore.setTagNameSelected(tag.id!);
         },
         child: Container(
           decoration: BoxDecoration(
@@ -52,7 +54,7 @@ class TagListBuilder extends StatelessWidget {
             border: isSeller
                 ? null
                 : Border.all(
-                    color: _store.tagSelectedId == tag.id!
+                    color: _tagStore.tagSelectedId == tag.id!
                         ? AppColors.white
                         : AppColors.black.withOpacity(0.4),
                     width: 2,
