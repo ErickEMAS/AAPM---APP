@@ -11,4 +11,5 @@ abstract class IAuthRepository {
   Future sendCode({required SendCode sendCode});
   Future confirmeCode({required String email, required String code});
   Future changePassword({required ChangePassword changePassword});
+  Future confirmeEmail({required String email, required String code});
 }

@@ -15,55 +15,78 @@ abstract class _SignUpStoreBase with Store {
 
   final PageController pageController = PageController();
 
+  final TextEditingController cpfController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   late final UserModel userModel;
 
   SignUpModel formSignUp = SignUpModel(
-    email: '',
-    cpf: '',
-    fullName: '',
-    nickName: '',
-    password: '',
-    passwordConfirm: '',
+    id: "",
+    email: "",
+    cpf: "",
+    fullName: "",
+    password: "",
+    passwordConfirm: "",
   );
-
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController cpfController = TextEditingController();
-  final TextEditingController nomeController = TextEditingController();
-  final TextEditingController apelidoController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordConfirmController =
-      TextEditingController();
 
   @observable
   bool isObscure = true;
+
   @observable
   bool isObscureConfirm = true;
+
+  @observable
+  String fullName = "";
+
+  @observable
+  String email = "";
+
+  String id = "";
 
   @action
   void reset() {
     pageController.initialPage;
-
-    UserModel(id: "", cpf: '', emailIsConfirmed: false, roles: []);
-
+    codeController.clear();
     cpfController.clear();
-    nomeController.clear();
-    apelidoController.clear();
-    passwordController.clear();
-    passwordConfirmController.clear();
 
-    isObscure = true;
+    userModel = UserModel(
+      id: "",
+      cpf: "",
+      emailIsConfirmed: false,
+      roles: [],
+    );
+
+    formSignUp = SignUpModel(
+      id: "",
+      email: "",
+      cpf: "",
+      fullName: "",
+      password: "",
+      passwordConfirm: "",
+    );
+
     isObscureConfirm = true;
+    isObscure = true;
+    fullName = "";
+    email = "";
+    id = "";
+  }
+
+  @action
+  void setDefault(UserModel user) {
+    fullName = userModel.fullName ?? "";
+    email = userModel.email ?? "";
+    id = userModel.id;
+    cpfController.text = userModel.cpf;
   }
 
   Future<bool> verifyCpf() async {
     try {
       userModel = await _authUseCase.verifyCpf(cpf: cpfController.text);
 
-      emailController.text = userModel.email ?? "";
-      nomeController.text = userModel.fullName ?? "";
-      apelidoController.text = userModel.nickName ?? "";
+      setDefault(userModel);
 
       return true;
     } on Unauthorized {
@@ -73,17 +96,32 @@ abstract class _SignUpStoreBase with Store {
 
   Future<bool> onSignUpSubmitted() async {
     try {
-      formSignUp.id = userModel.id;
-      formSignUp.cpf = userModel.cpf;
+      SignUpModel signUpModel = SignUpModel(
+        id: id,
+        email: email,
+        cpf: cpfController.text.replaceAll(".", "").replaceAll("-", ""),
+        fullName: fullName,
+        password: formSignUp.password,
+        passwordConfirm: formSignUp.passwordConfirm,
+      );
 
-      await _authUseCase.signUp(signUpModel: formSignUp);
+      await _authUseCase.signUp(signUpModel: signUpModel);
 
       return true;
     } on Unauthorized {
       return false;
     } catch (err) {
-      print(err);
       throw false;
+    }
+  }
+
+  Future<bool> confirmEmail() async {
+    try {
+      await _authUseCase.confirmeEmail(email: email, code: codeController.text);
+
+      return true;
+    } on Unauthorized {
+      return false;
     }
   }
 
@@ -142,8 +180,9 @@ abstract class _SignUpStoreBase with Store {
 
   String? validateConfirmPassword(String? password) {
     if (password!.isEmpty) return "Campo não pode ser vazio";
-    if (password != passwordController.text)
+    if (password != password) {
       return "A confirmaçao de senha não é igual a senha";
+    }
 
     return null;
   }

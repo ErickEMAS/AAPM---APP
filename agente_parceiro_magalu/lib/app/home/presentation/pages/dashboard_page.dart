@@ -65,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                child: const Text("Criar conta"),
+                child: const Text("Primeiro acesso"),
                 onPressed: () {
                   _store.navigateToSignUp(context);
                 },

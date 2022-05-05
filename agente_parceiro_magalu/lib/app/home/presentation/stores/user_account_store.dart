@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../../core/constants/storage_keys.dart';
@@ -19,7 +17,8 @@ abstract class _UserAccountStoreBase with Store {
 
   @action
   Future<void> onInit() async {
-    var user = jsonDecode((await SecureStorageHelper.read(key: StorageKeys.loggedUser))!);
+    var user = jsonDecode(
+        (await SecureStorageHelper.read(key: StorageKeys.loggedUser))!);
     userName = user["fullName"];
     emailConfirmed = user["emailIsConfirmed"];
   }

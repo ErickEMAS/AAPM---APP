@@ -8,7 +8,6 @@ class UserModel {
   String? email;
   String cpf;
   String? fullName;
-  String? nickName;
   bool emailIsConfirmed;
   List<String> roles;
 
@@ -17,7 +16,6 @@ class UserModel {
     this.email,
     required this.cpf,
     this.fullName,
-    this.nickName,
     required this.emailIsConfirmed,
     required this.roles,
   });

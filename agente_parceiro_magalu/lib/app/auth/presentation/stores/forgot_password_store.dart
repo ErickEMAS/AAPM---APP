@@ -1,7 +1,6 @@
 import 'package:agente_parceiro_magalu/app/auth/domain/usecases/auth_usecases.dart';
 import 'package:agente_parceiro_magalu/core/http/exceptions/exceptions.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
-import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
@@ -23,6 +22,16 @@ abstract class _ForgotPassWordStoreBase with Store {
   final formKey = GlobalKey<FormState>();
 
   bool _unauthorized = false;
+
+  @action
+  void reset() {
+    emailController.clear();
+    codeController.clear();
+    passwordController.clear();
+    passwordConfirmController.clear();
+
+    _unauthorized = false;
+  }
 
   Future<bool> forgotPassWordSendCode() async {
     try {

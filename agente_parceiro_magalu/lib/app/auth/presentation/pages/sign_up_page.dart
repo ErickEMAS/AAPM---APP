@@ -42,6 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               _cpfFormView(),
               _infoForm(),
+              _codeFormView(),
             ],
           ),
         ),
@@ -78,6 +79,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   );
 
                   if (ret) {
+                    _store.formSignUp.email = "_store.userModel.email";
+                    _store.formSignUp.fullName = "_store.userModel.fullName";
                     _store.nextPage();
                   } else {
                     SnackBarHelper.snackBar(
@@ -107,31 +110,25 @@ class _SignUpPageState extends State<SignUpPage> {
             validator: _store.validateEmail,
             hint: "Digite seu e-mail",
             label: "E-mail",
+            initialValue: _store.email,
             onChanged: (value) {
-              _store.formSignUp.email = value;
+              _store.email = value;
             },
           ),
           ..._formColumn(
             validator: InputValidatorHelper.validateCommonField,
             hint: "Digite seu nome completo",
             label: "Nome",
+            initialValue: _store.fullName,
             onChanged: (value) {
-              _store.formSignUp.fullName = value;
-            },
-          ),
-          ..._formColumn(
-            validator: InputValidatorHelper.validateCommonField,
-            hint: "Digite seu apelido",
-            label: "Apelido",
-            onChanged: (value) {
-              _store.formSignUp.nickName = value;
+              _store.fullName = value;
             },
           ),
           ..._formColumn(
             isPassword: true,
             isObscure: _store.isObscure,
             onTapSulfixIcon: _store.passwordVisibilityToggle,
-            validator: _store.validatePassword,
+            validator: (value) => _store.validatePassword(value),
             onChanged: (value) {
               _store.formSignUp.password = value;
             },
@@ -163,13 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     );
                     if (!formOk) return;
                     if (ret) {
-                      SnackBarHelper.snackBar(
-                        context,
-                        message:
-                            "Usuario ${_store.userModel.roles.first}, cadastrado com sucesso!",
-                      );
-
-                      _store.navigateToDashboard(context);
+                      _store.nextPage();
                     } else {
                       SnackBarHelper.snackBar(
                         context,
@@ -194,6 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
   _formColumn({
     required String hint,
     required String label,
+    String? initialValue,
     bool isPassword = false,
     bool isObscure = false,
     Function? onTapSulfixIcon,
@@ -202,6 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }) {
     return [
       TextFormField(
+        initialValue: initialValue,
         obscureText: isObscure,
         validator: validator,
         onChanged: onChanged,
@@ -231,5 +224,58 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       SizedBox(height: AppDimens.space),
     ];
+  }
+
+  _codeFormView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TextFormField(
+          controller: _store.codeController,
+          decoration: const InputDecoration(
+            hintText: "Digite o código recebido",
+            labelText: "Código",
+          ),
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          "Informe o código de confirmação recebido por e-mail",
+        ),
+        const SizedBox(height: 150),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              bool formOk = _store.formKey.currentState!.validate();
+
+              bool ret = await LoadingOverlay.of(context).during(
+                _store.confirmEmail(),
+              );
+
+              print(ret);
+
+              if (ret) {
+                SnackBarHelper.snackBar(
+                  context,
+                  message:
+                      "E-mail confirmado com sucesso!",
+                );
+                _store.navigateToDashboard(context);
+              } else {
+                SnackBarHelper.snackBar(
+                  context,
+                  isError: true,
+                  message: "Falha ao confirmar e-mail",
+                );
+              }
+
+              if (!formOk) return;
+            },
+            child: const Text("Confirmar código"),
+          ),
+        ),
+      ],
+    );
   }
 }
