@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:agente_parceiro_magalu/app/auth/data/datasource/auth_datasource.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/change_password_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/send_code_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/domain/repositories_interfaces/i_auth_repository.dart';
-import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 
 class AuthRepository implements IAuthRepository {
   final IAuthDatasource _datasource;

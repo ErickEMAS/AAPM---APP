@@ -67,8 +67,6 @@ class SellerDatasource implements ISellerDatasource {
       pageList.content = listSellerModel;
 
       return pageList;
-    } on DioError catch (err) {
-      rethrow;
     } catch (err) {
       print(err);
       rethrow;
@@ -88,8 +86,6 @@ class SellerDatasource implements ISellerDatasource {
       );
 
       print(response);
-    } on DioError catch (err) {
-      rethrow;
     } catch (err) {
       print(err);
       rethrow;
@@ -111,8 +107,6 @@ class SellerDatasource implements ISellerDatasource {
       SellerModel sellerModel = SellerModel.fromJson(response);
 
       return sellerModel;
-    } on DioError catch (err) {
-      rethrow;
     } catch (err) {
       print(err);
       rethrow;
@@ -130,8 +124,6 @@ class SellerDatasource implements ISellerDatasource {
           (response as List).map((e) => TagModel.fromJson(e)).toList();
 
       return tags;
-    } on DioError catch (err) {
-      rethrow;
     } catch (err) {
       print(err);
       rethrow;

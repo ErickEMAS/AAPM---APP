@@ -22,7 +22,7 @@ class _SellerFieldsPageState extends State<SellerFieldsPage> {
         appBar: const AppBarGradient(
           title: "seller_fields",
         ),
-        body: Text("seller_fields_page")
+        body: const Text("seller_fields_page")
       ),
     );
   }

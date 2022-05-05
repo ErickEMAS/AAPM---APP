@@ -39,8 +39,6 @@ class _AddAgentePageState extends State<AddAgentePage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height - 144;
-
     return AppSafeArea(
       child: Scaffold(
         backgroundColor: AppColors.lightGrey,
