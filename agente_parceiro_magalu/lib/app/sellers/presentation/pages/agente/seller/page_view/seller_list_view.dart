@@ -1,4 +1,5 @@
-import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/app_dropdown.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/search_filter_widget.dart';
+import 'package:agente_parceiro_magalu/shared/widgets/app_dropdown.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
@@ -25,10 +26,6 @@ class SellerListView extends StatefulWidget {
 class _SellerListViewState extends State<SellerListView> {
   final SellerStore _sellerStore = serviceLocator<SellerStore>();
   final TagStore _tagStore = serviceLocator<TagStore>();
-
-  String? dropdownSelection;
-
-  TextEditingController nomeSearchController = TextEditingController();
 
   @override
   void initState() {
@@ -62,66 +59,7 @@ class _SellerListViewState extends State<SellerListView> {
                     )
                   ],
                 ),
-                _sellerStore.searchClicked
-                    ? Observer(builder: (_) {
-                        return Column(
-                          children: [
-                            TextFormField(
-                              controller: nomeSearchController,
-                              decoration: const InputDecoration(
-                                labelText: "Nome",
-                                hintText: "Nome do seller",
-                              ),
-                              onChanged: (value) {
-                                _sellerStore.setNomeSeller(value);
-                                _sellerStore.getSellersWithFilter();
-                              },
-                            ),
-                            SizedBox(height: AppDimens.space),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.56,
-                                  child: AppDropdown(
-                                    onChange: (value) {
-                                      setState(() {
-                                        dropdownSelection = value;
-                                      });
-                                      _sellerStore.setTagId(value);
-                                      _sellerStore.getSellersWithFilter();
-                                    },
-                                    value: dropdownSelection,
-                                    list: _tagStore.tagList
-                                        .map((tag) => tag.id.toString())
-                                        .toList(),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      dropdownSelection = null;
-                                      nomeSearchController.text = ("");
-                                      _sellerStore.setTagId(null);
-                                      _sellerStore.setNomeSeller(null);
-                                      _sellerStore.getSellersWithFilter();
-                                    },
-                                    child: const FittedBox(
-                                      child: Text(
-                                        "limpar",
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        );
-                      })
-                    : SizedBox(),
+                _sellerStore.searchClicked ? SearchFilterWidget() : SizedBox(),
               ],
             );
           }),

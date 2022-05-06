@@ -11,10 +11,11 @@ class AppRoutes {
   static const sellers = '/sellers';
   static const sellerOverview = sellers + "/overview";
   static const editSeller = sellers + "/edit";
+  static const checklistVisitaSeller = sellers + "/checklistVisitaSeller";
 
   static const calendar = '/calendar';
   static const agent = '/agent';
-  
+
   static const userAccount = '/userAccount';
   static const userDetail = userAccount + '/userDetail';
   static const confirmEmail = userAccount + '/confirmEmail';

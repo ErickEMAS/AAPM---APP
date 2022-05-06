@@ -152,6 +152,15 @@ abstract class _SellerStoreBase with Store {
         );
   }
 
+  Future<bool> navigateToChecklistVisita(
+      BuildContext context, String sellerId) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.checklistVisitaSeller, arguments: sellerId)
+        .then(
+          (value) => false,
+        );
+  }
+
   Future<bool> navigateToSellerOverview(BuildContext context, String sellerId) {
     return Navigator.of(context)
         .pushNamed(AppRoutes.sellerOverview, arguments: sellerId)

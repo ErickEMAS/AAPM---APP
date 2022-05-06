@@ -7,23 +7,17 @@ class AppDropdown extends StatelessWidget {
   final dynamic value;
   final String textHint;
   final bool isDisable;
-  final String? disableHint;
-  final IconData iconAsIconData;
-  final String iconAsImage;
   final double width;
   final Function(dynamic)? onChange;
 
-  AppDropdown({
+  const AppDropdown({
     Key? key,
     this.list,
     required this.onChange,
     this.value,
     this.textHint = "",
     this.isDisable = false,
-    this.disableHint,
     this.customItems,
-    this.iconAsIconData = Icons.arrow_drop_down,
-    this.iconAsImage = "",
     this.width = double.infinity,
   }) : super(key: key);
 
@@ -33,13 +27,16 @@ class AppDropdown extends StatelessWidget {
       width: width,
       height: 45,
       padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
-      decoration: BoxDecoration(),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.inputHint,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
       child: DropdownButton(
         value: value,
-        disabledHint: isDisable ? Text(disableHint ?? "") : null,
-        dropdownColor: const Color(0xFFF1F3F5),
+        dropdownColor: AppColors.lightGrey,
         elevation: 4,
-        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(12)),
         underline: Container(),
         isExpanded: true,
         hint: Text(

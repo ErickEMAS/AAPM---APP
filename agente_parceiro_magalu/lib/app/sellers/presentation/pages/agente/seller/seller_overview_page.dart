@@ -44,106 +44,101 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
         title: "Seller Overview",
       ),
       body: Observer(builder: (_) {
-        return Column(
-          children: [
-            _sellerInfo(),
-            SizedBox(height: AppDimens.margin),
-            _store.sellerEditModel!.checkListVisitas != null &&
-                    _store.sellerEditModel!.checkListVisitas!.isNotEmpty
-                ? _checklistVisita()
-                : _initVisita(_store.sellerEditModel!),
-          ],
-        );
+        return _store.sellerEditModel != null
+            ? Column(
+                children: [
+                  _sellerInfo(),
+                  SizedBox(height: AppDimens.margin),
+                  _store.sellerEditModel!.checkListVisitas != null &&
+                          _store.sellerEditModel!.checkListVisitas!.isNotEmpty
+                      ? _checklistVisita()
+                      : _initVisita(_store.sellerEditModel!),
+                ],
+              )
+            : Container();
       }),
     );
   }
 
   _sellerInfo() {
     return Container(
-        padding: EdgeInsets.all(AppDimens.margin),
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Informações do seller",
-                  style: AppTextStyles.bold(),
+      padding: EdgeInsets.all(AppDimens.margin),
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Informações do seller",
+                style: AppTextStyles.bold(),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text("editar"),
+              )
+            ],
+          ),
+          SizedBox(height: AppDimens.margin),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _infoRow(title: "Nome", content: _store.sellerEditModel!.nome),
+              _infoRow(title: "CEP", content: _store.sellerEditModel!.cep),
+              _infoRow(
+                  title: "Endereço", content: _store.sellerEditModel!.endereco),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _infoRow(
+                        title: "Cidade",
+                        content: _store.sellerEditModel!.cidade),
+                    _infoRow(title: "UF", content: _store.sellerEditModel!.uf),
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text("editar"),
-                )
-              ],
-            ),
-            SizedBox(height: AppDimens.margin),
-            _store.sellerEditModel != null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _infoRow(
-                          title: "Nome", content: _store.sellerEditModel!.nome),
-                      _infoRow(
-                          title: "CEP", content: _store.sellerEditModel!.cep),
-                      _infoRow(
-                          title: "Endereço",
-                          content: _store.sellerEditModel!.endereco),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _infoRow(
-                                title: "Cidade",
-                                content: _store.sellerEditModel!.cidade),
-                            _infoRow(
-                                title: "UF",
-                                content: _store.sellerEditModel!.uf),
-                          ],
-                        ),
-                      ),
-                      _infoRow(
-                          title: "Complemento",
-                          content: _store.sellerEditModel!.complemento),
-                      _infoRow(
-                          title: "CNPJ", content: _store.sellerEditModel!.cnpj),
-                      _infoRow(
-                          title: "Data de pedido",
-                          content: _store.sellerEditModel!.dataPedidoTeste),
-                      _infoRow(
-                          title: "Email",
-                          content: _store.sellerEditModel!.email),
-                      _infoRow(
-                          title: "Telefone",
-                          content: _store.sellerEditModel!.telefone),
-                    ],
-                  )
-                : SizedBox(),
-          ],
-        ));
+              ),
+              _infoRow(
+                  title: "Complemento",
+                  content: _store.sellerEditModel!.complemento),
+              _infoRow(title: "CNPJ", content: _store.sellerEditModel!.cnpj),
+              _infoRow(
+                  title: "Data de pedido",
+                  content: _store.sellerEditModel!.dataPedidoTeste),
+              _infoRow(title: "Email", content: _store.sellerEditModel!.email),
+              _infoRow(
+                  title: "Telefone", content: _store.sellerEditModel!.telefone),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   _checklistVisita() {
     return Column(
-      children: [
+      children: const [
         Text("checklist"),
       ],
     );
   }
 
   _initVisita(SellerModel sellerModel) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          _checklistStore.startChecklist(sellerModel.id!);
-        },
-        child: Text(
-          "Iniciar checklist visita",
+    return Padding(
+      padding: EdgeInsets.all(AppDimens.margin),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            _store.navigateToChecklistVisita(context, sellerModel.id!);
+          },
+          child: const Text(
+            "Iniciar visita",
+          ),
         ),
       ),
     );
