@@ -5,11 +5,12 @@ part 'alternatives_model.g.dart';
 @JsonSerializable()
 class AlternativesModel {
   String? id;
-  String? tittle;
+  @JsonKey(name: 'tittle')
+  String? title;
 
   AlternativesModel({
     this.id,
-    required this.tittle,
+    required this.title,
   });
 
   factory AlternativesModel.fromJson(Map<String, dynamic> json) =>

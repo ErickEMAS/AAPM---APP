@@ -20,7 +20,7 @@ abstract class _ChecklistStoreBase with Store {
   Future<bool> startChecklist(String sellerId) async {
     try {
       var ret = await _datasource.startChecklistBySellerId(sellerId: sellerId);
-      print(ret);
+
       _setChecklistModel(ret);
       return true;
     } catch (err) {

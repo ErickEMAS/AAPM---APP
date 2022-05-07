@@ -11,15 +11,16 @@ class QuestionsModel {
   bool? answerRequired;
   bool? active;
   String? fieldUpdateId;
+  String? answer;
 
-  QuestionsModel({
-    this.id,
-    this.question,
-    this.alternatives,
-    this.answerRequired,
-    this.active,
-    this.fieldUpdateId,
-  });
+  QuestionsModel(
+      {this.id,
+      this.question,
+      this.alternatives,
+      this.answerRequired,
+      this.active,
+      this.fieldUpdateId,
+      this.answer});
 
   factory QuestionsModel.fromJson(Map<String, dynamic> json) =>
       _$QuestionsModelFromJson(json);
