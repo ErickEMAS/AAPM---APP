@@ -13,7 +13,7 @@ class UserDatailStore = _UserDatailStoreBase with _$UserDatailStore;
 
 abstract class _UserDatailStoreBase with Store {
   @observable
-  UserModel user = UserModel(id: "", cpf: "", emailIsConfirmed: true, roles: []);
+  UserModel user = UserModel(id: "", cpf: "", emailConfirmed: true, roles: []);
 
   @action
   Future<void> onInit() async {

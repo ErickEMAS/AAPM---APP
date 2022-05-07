@@ -21,7 +21,7 @@ abstract class _UserAccountStoreBase with Store {
   Future<void> onInit() async {
     var user = jsonDecode((await SecureStorageHelper.read(key: StorageKeys.loggedUser))!);
     userName = user["fullName"];
-    emailConfirmed = user["emailIsConfirmed"];
+    emailConfirmed = user["emailConfirmed"];
   }
 
   Future<bool> navigateToConfirmEmail(BuildContext context) {
