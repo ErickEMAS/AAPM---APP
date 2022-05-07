@@ -93,7 +93,7 @@ class _AdminAccountPageState extends State<AdminAccountPage> {
                           AppUserAccountItemList(
                             tittle: "FAQ",
                             iconData: Icons.quiz,
-                            onClick: () => print("Faq"),
+                            onClick: () => _store.navigateToFAQ(context),
                           ),
                           AppLogout(),
                         ],
