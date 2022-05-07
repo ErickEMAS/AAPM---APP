@@ -3,8 +3,10 @@ import 'package:agente_parceiro_magalu/app/account/presentation/pages/add_agente
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_email/change_email_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_password/change_password_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/confirm_email/confirm_email_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/faq/faq_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_account/adm/admin_account_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_account/agente/user_account_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_tags/my_tags_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/questions_checklist_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/seller_fields/seller_fields_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
@@ -92,6 +94,16 @@ class AppRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (context, __, ___) => const UserAccountPage(),
+        );
+      case AppRoutes.myTags:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const MyTagsPage(),
+        );
+      case AppRoutes.faq:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const FAQPage(),
         );
       case AppRoutes.adminAccount:
         return PageRouteBuilder(

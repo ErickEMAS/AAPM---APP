@@ -15,10 +15,8 @@ abstract class _LoginStoreBase with Store {
   final ForgotPassWordStore _forgotPasswordStore =
       serviceLocator<ForgotPassWordStore>();
 
-  TextEditingController emailController =
-      TextEditingController(text: "testesdaluacoding@gmail.com");
-  TextEditingController passwordController =
-      TextEditingController(text: "Teste!23");
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
