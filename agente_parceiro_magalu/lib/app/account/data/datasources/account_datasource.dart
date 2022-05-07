@@ -12,15 +12,19 @@ import '../../../../core/http/exceptions/exceptions.dart';
 import '../../../../core/http/interceptor/auth_interceptor.dart';
 import '../../../../core/locators/service_locators.dart';
 import '../../../auth/data/models/send_code_model.dart';
+import '../../../sellers/data/models/tag_model.dart';
 
 abstract class IAccountDatasource {
   Future sendCode({required SendCode sendCode});
-  confirmeEmail({required String email, required String code});
-  confirmeCodeChangePassword({required String email, required String code});
-  changePassword({required ChangePassword changePassword});
-  changeEmail({required String code, required String newEmail});
-  signUpAgente({required SignUpModel signUpModel});
-  signUpAdmin({required SignUpModel signUpModel});
+  Future confirmeEmail({required String email, required String code});
+  Future confirmeCodeChangePassword({required String email, required String code});
+  Future changePassword({required ChangePassword changePassword});
+  Future changeEmail({required String code, required String newEmail});
+  Future signUpAgente({required SignUpModel signUpModel});
+  Future signUpAdmin({required SignUpModel signUpModel});
+  Future<List<TagModel>> getTagList();
+  Future addTag({required TagModel tagModel});
+  Future updateTag({required TagModel tagModel});
 }
 
 class AccountDatasource implements IAccountDatasource {
@@ -43,6 +47,26 @@ class AccountDatasource implements IAccountDatasource {
       );
 
       print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<TagModel>> getTagList() async {
+    try {
+      final response = await _httpWithAuth.get(
+        Endpoints.getTags,
+      );
+
+      print(response);
+
+      List<TagModel> tags =(response as List).map((e) => TagModel.fromJson(e)).toList();
+
+      return tags;
     } on DioError catch (err) {
       if (err.response!.statusCode == 400) throw Unauthorized();
       rethrow;
@@ -159,6 +183,40 @@ class AccountDatasource implements IAccountDatasource {
       final response = await HttpService().post(
         Endpoints.sendCode,
         data: sendCode.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future addTag({required TagModel tagModel}) async {
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.addTag,
+        data: tagModel.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future updateTag({required TagModel tagModel}) async {
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.updateTag,
+        data: tagModel.toJson(),
       );
 
       print(response);

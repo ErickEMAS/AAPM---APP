@@ -15,7 +15,7 @@ part 'confirm_email_store.g.dart';
 class ConfirmEmailStore = _ConfirmEmailStoreBase with _$ConfirmEmailStore;
 
 abstract class _ConfirmEmailStoreBase with Store {
-  final IAccountDatasource _authUseCase = serviceLocator<IAccountDatasource>();
+  final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
   
   final formKey = GlobalKey<FormState>();
   final PageController pageController = PageController();
@@ -44,7 +44,7 @@ abstract class _ConfirmEmailStoreBase with Store {
 
   Future<bool> forgotPassWordSendCode() async {
     try {
-      await _authUseCase.sendCode(sendCode: SendCode(email: email, codeType: CodeType.EMAIL_CONFIRM));
+      await _datasource.sendCode(sendCode: SendCode(email: email, codeType: CodeType.EMAIL_CONFIRM));
 
       return true;
     } on Unauthorized {
@@ -54,7 +54,7 @@ abstract class _ConfirmEmailStoreBase with Store {
 
   Future<bool> confirmEmail() async {
     try {
-      await _authUseCase.confirmeEmail(email: email, code: codeController.text);
+      await _datasource.confirmeEmail(email: email, code: codeController.text);
 
       return true;
     } on Unauthorized {

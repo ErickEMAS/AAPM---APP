@@ -16,7 +16,7 @@ part 'change_password_store.g.dart';
 class ChangePasswordStore = _ChangePasswordStoreBase with _$ChangePasswordStore;
 
 abstract class _ChangePasswordStoreBase with Store {
-  final IAccountDatasource _authUseCase = serviceLocator<IAccountDatasource>();
+  final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
   
   final formKey = GlobalKey<FormState>();
   final PageController pageController = PageController();
@@ -50,7 +50,7 @@ abstract class _ChangePasswordStoreBase with Store {
 
   Future<bool> changePassWordConfirmCode() async {
     try {
-      await _authUseCase.confirmeCodeChangePassword(email: email, code: codeController.text);
+      await _datasource.confirmeCodeChangePassword(email: email, code: codeController.text);
 
       return true;
     } on Unauthorized {
@@ -61,7 +61,7 @@ abstract class _ChangePasswordStoreBase with Store {
 
   Future<bool> changePassword() async {
     try {
-      await _authUseCase.changePassword(changePassword: ChangePassword(email: email, code: codeController.text, password: passwordController.text, passwordConfirm: passwordConfirmController.text));
+      await _datasource.changePassword(changePassword: ChangePassword(email: email, code: codeController.text, password: passwordController.text, passwordConfirm: passwordConfirmController.text));
 
       return true;
     } on Unauthorized {
@@ -72,7 +72,7 @@ abstract class _ChangePasswordStoreBase with Store {
 
   Future<bool> changePassWordSendCode() async {
     try {
-      await _authUseCase.sendCode(sendCode: SendCode(email: email, codeType: CodeType.PASSWORD_CHANGE));
+      await _datasource.sendCode(sendCode: SendCode(email: email, codeType: CodeType.PASSWORD_CHANGE));
 
       return true;
     } on Unauthorized {

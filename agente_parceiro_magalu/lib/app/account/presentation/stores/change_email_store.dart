@@ -15,7 +15,7 @@ part 'change_email_store.g.dart';
 class ChangeEmailStore = _ChangeEmailStoreBase with _$ChangeEmailStore;
 
 abstract class _ChangeEmailStoreBase with Store {
-  final IAccountDatasource _authUseCase = serviceLocator<IAccountDatasource>();
+  final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
   
   final formKey = GlobalKey<FormState>();
   final PageController pageController = PageController();
@@ -44,7 +44,7 @@ abstract class _ChangeEmailStoreBase with Store {
 
   Future<bool> changeEmail() async {
     try {
-      await _authUseCase.changeEmail(newEmail: newEmailController.text, code: codeController.text);
+      await _datasource.changeEmail(newEmail: newEmailController.text, code: codeController.text);
 
       return true;
     } on Unauthorized {
@@ -54,7 +54,7 @@ abstract class _ChangeEmailStoreBase with Store {
 
   Future<bool> changeEmailSendCode() async {
     try {
-      await _authUseCase.sendCode(sendCode: SendCode(email: email, codeType: CodeType.EMAIL_CHANGE));
+      await _datasource.sendCode(sendCode: SendCode(email: email, codeType: CodeType.EMAIL_CHANGE));
 
       return true;
     } on Unauthorized {
