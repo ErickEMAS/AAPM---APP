@@ -14,6 +14,7 @@ abstract class _HomeStoreBase with Store {
   String currentPage = AppRoutes.home;
 
   Future<bool> onHomeInit() async {
+    currentPage = AppRoutes.home;
     try {
       userRole = (await SecureStorageHelper.read(key: StorageKeys.userRole))!;
       return true;
