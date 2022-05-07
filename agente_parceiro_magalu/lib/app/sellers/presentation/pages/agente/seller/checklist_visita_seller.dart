@@ -5,6 +5,7 @@ import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/ch
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
@@ -26,7 +27,7 @@ class ChecklistVisitaSeller extends StatefulWidget {
 
 class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
   final ChecklistStore _checklistStore = serviceLocator<ChecklistStore>();
-  // List<String> isChecked = [];
+
   List<ChecklistModel> isChecked = [];
   @override
   void initState() {
@@ -45,25 +46,49 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
         title: "Checklist Visita",
       ),
       body: Observer(builder: (_) {
-        return Column(
-          children: [
-            _checklistStore.checklistModel!.questions!.isEmpty
-                ? Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: AppDimens.margin),
-                      itemCount:
-                          _checklistStore.checklistModel!.questions!.length,
-                      itemBuilder: (context, index) {
-                        return _questionCard(
-                          _checklistStore.checklistModel!.questions![index],
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+            child: Column(
+              children: [
+                SizedBox(height: AppDimens.margin),
+                _checklistStore.checklistModel!.questions != null
+                    ? ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount:
+                            _checklistStore.checklistModel!.questions!.length,
+                        itemBuilder: (context, index) {
+                          return _questionCard(
+                            _checklistStore.checklistModel!.questions![index],
+                          );
+                        },
+                      )
+                    : SizedBox(),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      int isCheckedQuestionLenght = 0;
+                      isChecked.map(
+                          (e) => isCheckedQuestionLenght = e.questions!.length);
+
+                      if (isCheckedQuestionLenght <
+                          _checklistStore.checklistModel!.questions!.length) {
+                        SnackBarHelper.snackBar(
+                          context,
+                          isError: true,
+                          message: "Você deve marcar todos os campos",
                         );
-                      },
-                    ),
-                  )
-                : SizedBox(),
-          ],
+                      } else {}
+                    },
+                    child: Text("Enviar checklist"),
+                  ),
+                ),
+                SizedBox(height: AppDimens.margin * 4),
+              ],
+            ),
+          ),
         );
       }),
     );
@@ -88,7 +113,7 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
               questionsModel: questionsModel,
             );
           },
-        )
+        ),
       ],
     );
   }
@@ -105,42 +130,44 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
 
     return Column(
       children: [
-        CheckboxListTile(
-            title: Text(
-              alternativesModel.title ?? "",
-              style: AppTextStyles.regular(size: 15),
-            ),
-            dense: true,
-            value: checklistValue,
-            controlAffinity: ListTileControlAffinity.leading,
-            onChanged: (bool? value) {
-              if (value! == true) {
-                QuestionsModel questionsModelMock = QuestionsModel();
-                questionsModelMock.id = questionsModel.id;
-                questionsModelMock.question = questionsModel.question;
-                questionsModelMock.answer = alternativesModel.title;
-                setState(() {
-                  ChecklistModel checklistAdd = ChecklistModel(
-                    id: _checklistStore.checklistModel!.id,
-                    dataVisita: DateTime.now(),
-                    questions: [questionsModelMock],
-                  );
-                  isChecked.add(checklistAdd);
-                });
-              } else {
-                setState(() {
-                  isChecked.removeWhere((check) {
-                    bool test = check.questions!.any(
-                      (question) => question.answer == alternativesModel.title,
+        SizedBox(
+          height: 40,
+          child: CheckboxListTile(
+              title: Text(
+                alternativesModel.title ?? "",
+                style: AppTextStyles.regular(size: 15),
+              ),
+              // dense: true,
+              value: checklistValue,
+              controlAffinity: ListTileControlAffinity.leading,
+              onChanged: (bool? value) {
+                if (value! == true) {
+                  QuestionsModel questionsModelMock = QuestionsModel();
+                  questionsModelMock.id = questionsModel.id;
+                  questionsModelMock.question = questionsModel.question;
+                  questionsModelMock.answer = alternativesModel.title;
+                  setState(() {
+                    ChecklistModel checklistAdd = ChecklistModel(
+                      id: _checklistStore.checklistModel!.id,
+                      dataVisita: DateTime.now(),
+                      questions: [questionsModelMock],
                     );
-                    return test;
+                    isChecked.add(checklistAdd);
                   });
-                });
-              }
-            }),
-        alternativesModel.title == "Outro" ||
-                alternativesModel.title == "Outros" ||
-                alternativesModel.title == "Outro:"
+                } else {
+                  setState(() {
+                    isChecked.removeWhere((check) {
+                      bool test = check.questions!.any(
+                        (question) =>
+                            question.answer == alternativesModel.title,
+                      );
+                      return test;
+                    });
+                  });
+                }
+              }),
+        ),
+        alternativesModel.title == "Outro"
             ? SizedBox(
                 width: MediaQuery.of(context).size.width * 0.77,
                 child: TextFormField(
@@ -152,7 +179,7 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
                       focusedBorder: OutlineInputBorder()),
                 ),
               )
-            : SizedBox()
+            : const SizedBox(),
       ],
     );
   }

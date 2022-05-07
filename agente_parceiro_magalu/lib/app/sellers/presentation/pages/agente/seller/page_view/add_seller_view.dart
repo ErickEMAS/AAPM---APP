@@ -1,3 +1,4 @@
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/uf_builder.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
@@ -6,15 +7,22 @@ import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
+import 'package:agente_parceiro_magalu/shared/widgets/app_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../../../../core/locators/service_locators.dart';
 
-class AddSellerView extends StatelessWidget {
+class AddSellerView extends StatefulWidget {
   AddSellerView({Key? key}) : super(key: key);
 
+  @override
+  State<AddSellerView> createState() => _AddSellerViewState();
+}
+
+class _AddSellerViewState extends State<AddSellerView> {
   final SellerStore _store = serviceLocator<SellerStore>();
+  String? dropdownSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +46,7 @@ class AddSellerView extends StatelessWidget {
                   onChanged: (value) {
                     _store.sellerModel.cnpj = value;
                   },
+                  keyboardType: TextInputType.number,
                   inputFormatters: [CpfCnpjInputMask(isCNPJ: true)]),
               ..._addSellerColumn(
                 title: "Nome",
@@ -59,10 +68,15 @@ class AddSellerView extends StatelessWidget {
                 onChanged: (value) {
                   _store.sellerModel.telefone = value;
                 },
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  GeneralInputMask(formatterString: "(##) ####-####")
+                ],
               ),
               ..._addSellerColumn(
                 title: "E-mail",
                 inputHint: "Digite o e-mail",
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   _store.sellerModel.email = value;
                 },
@@ -78,13 +92,41 @@ class AddSellerView extends StatelessWidget {
                       _store.sellerModel.cidade = value;
                     },
                   ),
-                  ..._addSellerColumn(
-                    width: phoneWidth * 0.2,
-                    title: "UF",
-                    inputHint: "Digite o UF",
-                    onChanged: (value) {
-                      _store.sellerModel.uf = value;
-                    },
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "UF",
+                        style: AppTextStyles.bold(
+                            size: 12, color: AppColors.primary),
+                      ),
+                      AppDropdown(
+                        textHint: "UF",
+                        width: phoneWidth * 0.4,
+                        value: dropdownSelection,
+                        customItems: UFbuilder.uf().map((uf) {
+                          return DropdownMenuItem(
+                            child: Text(
+                              uf.toUpperCase(),
+                              style: AppTextStyles.regular(
+                                size: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            onTap: () {
+                              _store.sellerModel.uf = uf;
+                            },
+                            value: uf,
+                          );
+                        }).toList(),
+                        onChange: (value) {
+                          print(dropdownSelection);
+                          setState(() {
+                            dropdownSelection = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -95,6 +137,10 @@ class AddSellerView extends StatelessWidget {
                 onChanged: (value) {
                   _store.sellerModel.cep = value;
                 },
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  GeneralInputMask(formatterString: "#####-###")
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,6 +157,7 @@ class AddSellerView extends StatelessWidget {
                     title: "Número",
                     width: phoneWidth * 0.2,
                     inputHint: "Digite o número",
+                    keyboardType: TextInputType.number,
                     onChanged: (value) {
                       _store.sellerModel.numero = value;
                     },
@@ -181,6 +228,7 @@ class AddSellerView extends StatelessWidget {
     void Function(String)? onChanged,
     double? width,
     String? Function(String?)? validator,
+    TextInputType? keyboardType,
     List<TextInputFormatter>? inputFormatters,
   }) {
     return [
@@ -189,6 +237,7 @@ class AddSellerView extends StatelessWidget {
         child: TextFormField(
           onChanged: onChanged,
           validator: validator ?? InputValidatorHelper.validateCommonField,
+          keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
             hintText: inputHint,

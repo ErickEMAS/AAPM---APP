@@ -5,7 +5,7 @@ part 'alternatives_model.g.dart';
 @JsonSerializable()
 class AlternativesModel {
   String? id;
-  @JsonKey(name: 'tittle')
+  @JsonKey(name: 'name')
   String? title;
 
   AlternativesModel({

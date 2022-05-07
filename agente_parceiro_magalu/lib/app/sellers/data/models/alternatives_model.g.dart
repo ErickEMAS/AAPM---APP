@@ -9,11 +9,11 @@ part of 'alternatives_model.dart';
 AlternativesModel _$AlternativesModelFromJson(Map<String, dynamic> json) =>
     AlternativesModel(
       id: json['id'] as String?,
-      title: json['tittle'] as String?,
+      title: json['name'] as String?,
     );
 
 Map<String, dynamic> _$AlternativesModelToJson(AlternativesModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'tittle': instance.title,
+      'name': instance.title,
     };

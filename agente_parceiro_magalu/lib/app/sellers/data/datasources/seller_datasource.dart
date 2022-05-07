@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:agente_parceiro_magalu/app/sellers/data/models/alternatives_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
-import 'package:agente_parceiro_magalu/app/sellers/data/models/question_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
@@ -178,6 +175,28 @@ class SellerDatasource implements ISellerDatasource {
   @override
   Future<ChecklistModel> startChecklistBySellerId(
       {required String sellerId}) async {
+    try {
+      Map<String, dynamic> params = {
+        "id": sellerId,
+      };
+
+      final response = await _httpWithAuth.post(
+        Endpoints.startChecklist,
+        data: json.encode(params),
+      );
+      ChecklistModel checklistModel = ChecklistModel.fromJson(response);
+
+      return checklistModel;
+    } on DioError catch (err) {
+      rethrow;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future answerChecklist({required String sellerId}) async {
     try {
       Map<String, dynamic> params = {
         "id": sellerId,

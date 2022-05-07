@@ -121,7 +121,9 @@ class _SellerListViewState extends State<SellerListView> {
         ),
       ),
       SizedBox(height: AppDimens.space),
-      TagListBuilder(),
+      Observer(builder: (_) {
+        return TagListBuilder();
+      }),
       SizedBox(height: AppDimens.margin),
       SizedBox(
         width: double.infinity,

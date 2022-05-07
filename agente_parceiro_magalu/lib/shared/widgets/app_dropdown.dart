@@ -31,7 +31,7 @@ class AppDropdown extends StatelessWidget {
         border: Border.all(
           color: AppColors.inputHint,
         ),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: DropdownButton(
         value: value,
