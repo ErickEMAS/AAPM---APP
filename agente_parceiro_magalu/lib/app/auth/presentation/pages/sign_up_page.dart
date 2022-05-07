@@ -79,8 +79,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   );
 
                   if (ret) {
-                    _store.formSignUp.email = "_store.userModel.email";
-                    _store.formSignUp.fullName = "_store.userModel.fullName";
+                    _store.formSignUp.email = _store.userModel.email;
+                    _store.formSignUp.fullName = _store.userModel.fullName;
                     _store.nextPage();
                   } else {
                     SnackBarHelper.snackBar(

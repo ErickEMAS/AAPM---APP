@@ -20,7 +20,12 @@ abstract class _SignUpStoreBase with Store {
 
   final formKey = GlobalKey<FormState>();
 
-  late final UserModel userModel;
+  late UserModel userModel = UserModel(
+      id: "",
+      cpf: "",
+      emailConfirmed: false,
+      roles: [],
+    );
 
   SignUpModel formSignUp = SignUpModel(
     id: "",
@@ -54,7 +59,7 @@ abstract class _SignUpStoreBase with Store {
     userModel = UserModel(
       id: "",
       cpf: "",
-      emailIsConfirmed: false,
+      emailConfirmed: false,
       roles: [],
     );
 

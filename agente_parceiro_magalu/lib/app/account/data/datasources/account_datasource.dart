@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_email/change_email_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/change_password_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
