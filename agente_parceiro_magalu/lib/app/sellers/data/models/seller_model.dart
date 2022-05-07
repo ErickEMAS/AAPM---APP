@@ -1,4 +1,5 @@
 import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/shared/sheets/sheets_field.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'seller_model.g.dart';
@@ -47,4 +48,24 @@ class SellerModel {
       _$SellerModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$SellerModelToJson(this);
+
+  static SellerModel fromJsonSheet(Map<String, dynamic> json) {
+    SellerModel sm = SellerModel(
+      cnpj: json[SellerField.cnpj],
+      helenaSellerCode: json[SellerField.helenaSellerCode],
+      nome: json[SellerField.nome],
+      telefone: json[SellerField.telefone],
+      email: json[SellerField.email],
+      cidade: json[SellerField.cidade],
+      uf: json[SellerField.uf],
+      cep: json[SellerField.cep],
+      endereco: json[SellerField.endereco],
+      numero: json[SellerField.numero],
+      complemento: json[SellerField.complemento],
+      cadastro: json[SellerField.cadastro],
+      dataPedidoTeste: json[SellerField.dataPedidoTeste],
+    );
+
+    return sm;
+  }
 }

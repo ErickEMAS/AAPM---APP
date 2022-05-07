@@ -45,6 +45,7 @@ class _SellerListViewState extends State<SellerListView> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _sellerStore.reset();
     super.dispose();
   }
 

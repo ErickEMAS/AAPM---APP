@@ -133,6 +133,17 @@ mixin _$SellerStore on _SellerStoreBase, Store {
       ActionController(name: '_SellerStoreBase');
 
   @override
+  dynamic setSellerModel(SellerModel newData) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase.setSellerModel');
+    try {
+      return super.setSellerModel(newData);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic _setPage(int value) {
     final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
         name: '_SellerStoreBase._setPage');

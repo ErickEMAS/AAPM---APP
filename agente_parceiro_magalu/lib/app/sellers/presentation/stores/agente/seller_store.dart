@@ -11,6 +11,7 @@ class SellerStore = _SellerStoreBase with _$SellerStore;
 
 abstract class _SellerStoreBase with Store {
   final ISellerDatasource _datasource = serviceLocator<ISellerDatasource>();
+
   @observable
   SellerModel sellerModel = SellerModel(
     cnpj: "",
@@ -27,9 +28,13 @@ abstract class _SellerStoreBase with Store {
     cadastro: "",
     dataPedidoTeste: "",
   );
+  @action
+  setSellerModel(SellerModel newData) {
+    sellerModel = newData;
+  }
 
   @observable
-  int pageablePage = -1;
+  int pageablePage = 0;
 
   @action
   _setPage(int value) => pageablePage = value;
@@ -53,12 +58,31 @@ abstract class _SellerStoreBase with Store {
   ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
   @action
   _setSellerList(List<SellerModel> data) {
+    // sellerList.clear();
     sellerList.addAll(data);
   }
 
   @action
   reset() {
     sellerList.clear();
+    setSearchClicked(false);
+    int pageablePage = 0;
+    _setPage(0);
+    // setSellerModel(SellerModel(
+    //   cnpj: "",
+    //   helenaSellerCode: "",
+    //   nome: "",
+    //   telefone: "",
+    //   email: "",
+    //   cidade: "",
+    //   uf: "",
+    //   cep: "",
+    //   endereco: "",
+    //   numero: "",
+    //   complemento: "",
+    //   cadastro: "",
+    //   dataPedidoTeste: "",
+    // ));
   }
 
   Future<bool> onSellerInit() async {
@@ -145,6 +169,34 @@ abstract class _SellerStoreBase with Store {
     } catch (err) {
       return false;
     }
+  }
+
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController helenaController = TextEditingController();
+  TextEditingController telefoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController cidadeController = TextEditingController();
+  TextEditingController cepController = TextEditingController();
+  TextEditingController enderecoController = TextEditingController();
+  TextEditingController numeroController = TextEditingController();
+  TextEditingController complementoController = TextEditingController();
+  TextEditingController cadastroController = TextEditingController();
+  TextEditingController dataPedidoController = TextEditingController();
+  TextEditingController cnpjController = TextEditingController();
+
+  void fillAddSeller() {
+    cnpjController.text = sellerModel.cnpj;
+    nomeController.text = sellerModel.nome;
+    helenaController.text = sellerModel.helenaSellerCode;
+    telefoneController.text = sellerModel.telefone;
+    emailController.text = sellerModel.email;
+    cidadeController.text = sellerModel.cidade;
+    cepController.text = sellerModel.cep;
+    enderecoController.text = sellerModel.endereco;
+    numeroController.text = sellerModel.numero;
+    complementoController.text = sellerModel.complemento;
+    cadastroController.text = sellerModel.cadastro;
+    dataPedidoController.text = sellerModel.dataPedidoTeste;
   }
 
   //Page view navigation
