@@ -15,7 +15,7 @@ QuestionsModel _$QuestionsModelFromJson(Map<String, dynamic> json) =>
           .toList(),
       answerRequired: json['answerRequired'] as bool?,
       active: json['active'] as bool?,
-      fieldUpdateId: json['fieldUpdateId'] as String?,
+      fieldUpdateId: json['fieldUpdateID'] as String?,
       answer: json['answer'] as String?,
     );
 
@@ -26,6 +26,6 @@ Map<String, dynamic> _$QuestionsModelToJson(QuestionsModel instance) =>
       'alternatives': instance.alternatives,
       'answerRequired': instance.answerRequired,
       'active': instance.active,
-      'fieldUpdateId': instance.fieldUpdateId,
+      'fieldUpdateID': instance.fieldUpdateId,
       'answer': instance.answer,
     };

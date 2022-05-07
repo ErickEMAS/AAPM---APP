@@ -28,8 +28,13 @@ abstract class _SellerStoreBase with Store {
     dataPedidoTeste: "",
   );
 
-  int pageableSize = 15;
-  int pageablePage = 0;
+  @observable
+  int pageablePage = -1;
+
+  @action
+  _setPage(int value) => pageablePage = value;
+
+  int pageableSize = 5;
 
   @observable
   SellerModel? sellerEditModel;
@@ -48,7 +53,6 @@ abstract class _SellerStoreBase with Store {
   ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
   @action
   _setSellerList(List<SellerModel> data) {
-    sellerList.clear();
     sellerList.addAll(data);
   }
 
@@ -68,6 +72,25 @@ abstract class _SellerStoreBase with Store {
 
       return true;
     } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> fetchNextPage() async {
+    try {
+      _setPage(pageablePage + 1);
+
+      PageListModel pageList = await _datasource.getSellerList(
+        size: pageableSize,
+        page: pageablePage,
+      );
+
+      _setSellerList(pageList.content.cast<SellerModel>().toList());
+
+      return true;
+    } catch (e) {
+      print("Error:  $e");
+
       return false;
     }
   }

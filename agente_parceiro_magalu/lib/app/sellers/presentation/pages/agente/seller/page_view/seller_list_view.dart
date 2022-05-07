@@ -27,10 +27,25 @@ class _SellerListViewState extends State<SellerListView> {
   final SellerStore _sellerStore = serviceLocator<SellerStore>();
   final TagStore _tagStore = serviceLocator<TagStore>();
 
+  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     _tagStore.getTags();
     super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        LoadingOverlay.of(context).during(_sellerStore.fetchNextPage());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -68,7 +83,7 @@ class _SellerListViewState extends State<SellerListView> {
           return Expanded(
             child: ListView.builder(
               itemCount: _sellerStore.sellerList.length,
-              // padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+              controller: _scrollController,
               itemBuilder: (context, index) {
                 return SellerCardWidget(
                     sellerModel: _sellerStore.sellerList[index],
