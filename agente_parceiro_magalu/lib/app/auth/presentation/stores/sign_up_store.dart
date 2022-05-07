@@ -116,7 +116,6 @@ abstract class _SignUpStoreBase with Store {
     } on Unauthorized {
       return false;
     } catch (err) {
-      print(err);
       throw false;
     }
   }
@@ -186,8 +185,9 @@ abstract class _SignUpStoreBase with Store {
 
   String? validateConfirmPassword(String? password) {
     if (password!.isEmpty) return "Campo não pode ser vazio";
-    if (password != password)
+    if (password != password) {
       return "A confirmaçao de senha não é igual a senha";
+    }
 
     return null;
   }

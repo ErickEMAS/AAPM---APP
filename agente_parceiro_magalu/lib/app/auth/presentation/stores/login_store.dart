@@ -1,6 +1,4 @@
 import 'package:agente_parceiro_magalu/app/auth/domain/usecases/auth_usecases.dart';
-import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
-import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/core/http/exceptions/exceptions.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
@@ -14,10 +12,13 @@ class LoginStore = _LoginStoreBase with _$LoginStore;
 
 abstract class _LoginStoreBase with Store {
   final IAuthUseCase _authUseCase = serviceLocator<IAuthUseCase>();
-  final ForgotPassWordStore _forgotPasswordStore = serviceLocator<ForgotPassWordStore>();
+  final ForgotPassWordStore _forgotPasswordStore =
+      serviceLocator<ForgotPassWordStore>();
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController =
+      TextEditingController(text: "testesdaluacoding@gmail.com");
+  TextEditingController passwordController =
+      TextEditingController(text: "Teste!23");
 
   final formKey = GlobalKey<FormState>();
 

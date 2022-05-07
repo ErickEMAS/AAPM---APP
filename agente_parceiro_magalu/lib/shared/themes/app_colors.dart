@@ -21,4 +21,14 @@ abstract class AppColors {
   static const Color azul = Color(0xFF583DFF);
   static const Color azulClaro = Color(0xFF00C1FF);
   static const Color verde = Color(0xFF16EE3D);
+
+  //tags
+  static const Color amareloTag = Color.fromARGB(221, 238, 201, 15);
+  static const Color laranjaTag = Color.fromARGB(255, 216, 98, 7);
+  static const Color vermelhoTag = Color.fromARGB(255, 255, 19, 2);
+  static const Color rosaTag = Color.fromARGB(255, 255, 2, 124);
+  static const Color roxoTag = Color.fromARGB(255, 109, 0, 172);
+  static const Color azulTag = Color.fromARGB(255, 99, 76, 247);
+  static const Color azulClaroTag = Color.fromARGB(255, 13, 159, 208);
+  static const Color verdeTag = Color.fromARGB(255, 29, 183, 57);
 }

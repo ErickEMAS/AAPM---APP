@@ -2,7 +2,6 @@ import 'package:agente_parceiro_magalu/app/auth/data/models/change_password_mode
 import 'package:agente_parceiro_magalu/app/auth/data/models/send_code_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/user_model.dart';
-import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 
 abstract class IAuthRepository {
   Future<UserModel> login({required String email, required String password});

@@ -45,11 +45,11 @@ class AuthDatasource implements IAuthDatasource {
       await SecureStorageHelper.write(
           key: StorageKeys.token, value: response["access_token"]);
 
-      var Token = await SecureStorageHelper.read(
+      var token = await SecureStorageHelper.read(
         key: StorageKeys.token,
       );
 
-      print("TOKEN AQUI $Token");
+      print("TOKEN AQUI $token");
 
       await SecureStorageHelper.write(
           key: StorageKeys.loggedUser, value: json.encode(user));

@@ -21,7 +21,7 @@ class AddAdminPage extends StatefulWidget {
 }
 
 class _AddAdminPageState extends State<AddAdminPage> {
-final AddAdminStore _store = serviceLocator<AddAdminStore>();
+  final AddAdminStore _store = serviceLocator<AddAdminStore>();
 
   @override
   void initState() {
@@ -39,8 +39,6 @@ final AddAdminStore _store = serviceLocator<AddAdminStore>();
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height - 144;
-
     return AppSafeArea(
       child: Scaffold(
         backgroundColor: AppColors.lightGrey,

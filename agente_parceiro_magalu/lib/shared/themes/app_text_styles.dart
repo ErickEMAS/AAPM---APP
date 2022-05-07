@@ -10,7 +10,7 @@ class AppTextStyles {
       GoogleFonts.mPlusRounded1c(
         color: color ?? AppColors.black,
         fontSize: size ?? 12,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
       );
 
   static TextStyle bold({

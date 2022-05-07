@@ -139,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
             isPassword: true,
             isObscure: _store.isObscureConfirm,
             onTapSulfixIcon: _store.passwordConfirmVisibilityToggle,
-            validator: _store.validateConfirmPassword,
+            // validator: _store.validateConfirmPassword,
             onChanged: (value) {
               _store.formSignUp.passwordConfirm = value;
             },
@@ -154,12 +154,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     bool formOk = _store.formKey.currentState!.validate();
-                    if (!formOk) return;
 
                     bool ret = await LoadingOverlay.of(context).during(
                       _store.onSignUpSubmitted(),
                     );
-
+                    if (!formOk) return;
                     if (ret) {
                       _store.nextPage();
                     } else {

@@ -5,17 +5,17 @@ class SwitchTagEnum {
   static switchEnumColor(TagColors color) {
     switch (color) {
       case TagColors.amarelo:
-        return AppColors.amarelo;
+        return AppColors.amareloTag;
       case TagColors.azul:
-        return AppColors.azul;
+        return AppColors.azulTag;
       case TagColors.verde:
-        return AppColors.verde;
+        return AppColors.verdeTag;
       case TagColors.laranja:
-        return AppColors.laranja;
+        return AppColors.laranjaTag;
       case TagColors.rosa:
-        return AppColors.rosa;
+        return AppColors.rosaTag;
       case TagColors.roxo:
-        return AppColors.roxo;
+        return AppColors.roxoTag;
       default:
         AppColors.primary;
     }

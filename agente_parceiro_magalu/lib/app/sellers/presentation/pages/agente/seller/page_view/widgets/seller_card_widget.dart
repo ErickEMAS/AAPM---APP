@@ -1,6 +1,6 @@
-import 'package:agente_parceiro_magalu/app/home/data/models/seller_model.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
@@ -23,7 +23,7 @@ class SellerCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _store.navigateToEditSeller(context, sellerModel.id!);
+        _store.navigateToSellerOverview(context, sellerModel.id!);
       },
       child: Column(
         children: [
@@ -33,14 +33,14 @@ class SellerCardWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.inputHint.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: AppColors.inputHint.withOpacity(0.5),
+              //     spreadRadius: 1,
+              //     blurRadius: 7,
+              //     offset: const Offset(0, 3), // changes position of shadow
+              //   ),
+              // ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -22,7 +22,7 @@ class _QuestionsChecklistPageState extends State<QuestionsChecklistPage> {
         appBar: const AppBarGradient(
           title: "questions_checklist_page",
         ),
-        body: Text("questions_checklist_page")
+        body: const Text("questions_checklist_page")
       ),
     );
   }
