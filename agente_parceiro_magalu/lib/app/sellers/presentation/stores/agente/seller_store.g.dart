@@ -24,6 +24,21 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
+  final _$pageablePageAtom = Atom(name: '_SellerStoreBase.pageablePage');
+
+  @override
+  int get pageablePage {
+    _$pageablePageAtom.reportRead();
+    return super.pageablePage;
+  }
+
+  @override
+  set pageablePage(int value) {
+    _$pageablePageAtom.reportWrite(value, super.pageablePage, () {
+      super.pageablePage = value;
+    });
+  }
+
   final _$sellerEditModelAtom = Atom(name: '_SellerStoreBase.sellerEditModel');
 
   @override
@@ -118,6 +133,17 @@ mixin _$SellerStore on _SellerStoreBase, Store {
       ActionController(name: '_SellerStoreBase');
 
   @override
+  dynamic _setPage(int value) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase._setPage');
+    try {
+      return super._setPage(value);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic _setEditSellerModel(SellerModel newData) {
     final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
         name: '_SellerStoreBase._setEditSellerModel');
@@ -209,6 +235,7 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   String toString() {
     return '''
 sellerModel: ${sellerModel},
+pageablePage: ${pageablePage},
 sellerEditModel: ${sellerEditModel},
 searchClicked: ${searchClicked},
 tagId: ${tagId},

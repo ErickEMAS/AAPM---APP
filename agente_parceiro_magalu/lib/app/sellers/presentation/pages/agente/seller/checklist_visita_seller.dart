@@ -1,5 +1,4 @@
 import 'package:agente_parceiro_magalu/app/sellers/data/models/alternatives_model.dart';
-import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/question_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/checklist_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
@@ -28,7 +27,7 @@ class ChecklistVisitaSeller extends StatefulWidget {
 class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
   final ChecklistStore _checklistStore = serviceLocator<ChecklistStore>();
 
-  List<ChecklistModel> isChecked = [];
+  List<QuestionsModel> isQuestionChecked = [];
   @override
   void initState() {
     SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -64,25 +63,23 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
                           );
                         },
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      int isCheckedQuestionLenght = 0;
-                      isChecked.map(
-                          (e) => isCheckedQuestionLenght = e.questions!.length);
-
-                      if (isCheckedQuestionLenght <
-                          _checklistStore.checklistModel!.questions!.length) {
-                        SnackBarHelper.snackBar(
-                          context,
-                          isError: true,
-                          message: "Você deve marcar todos os campos",
-                        );
-                      } else {}
+                      // if (isQuestionCheckedQuestionLenght <
+                      //     _checklistStore.checklistModel!.questions!.length) {
+                      //   SnackBarHelper.snackBar(
+                      //     context,
+                      //     isError: true,
+                      //     message: "Você deve marcar todos os campos",
+                      //   );
+                      // } else {
+                      _checklistStore.answerChecklist(isQuestionChecked);
+                      // }
                     },
-                    child: Text("Enviar checklist"),
+                    child: const Text("Enviar checklist"),
                   ),
                 ),
                 SizedBox(height: AppDimens.margin * 4),
@@ -122,11 +119,9 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
     required AlternativesModel alternativesModel,
     required QuestionsModel questionsModel,
   }) {
-    bool checklistValue = isChecked.any(
-      (check) => check.questions!
-          .map((quest) => quest.answer)
-          .contains(alternativesModel.title),
-    );
+    bool checklistValue = isQuestionChecked
+        .map((quest) => quest.answer)
+        .contains(alternativesModel.title);
 
     return Column(
       children: [
@@ -143,26 +138,20 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
               onChanged: (bool? value) {
                 if (value! == true) {
                   QuestionsModel questionsModelMock = QuestionsModel();
-                  questionsModelMock.id = questionsModel.id;
-                  questionsModelMock.question = questionsModel.question;
                   questionsModelMock.answer = alternativesModel.title;
+                  questionsModelMock.id = questionsModel.id;
+                  questionsModelMock.fieldUpdateId =
+                      questionsModel.fieldUpdateId;
+                  questionsModelMock.active = true;
+
                   setState(() {
-                    ChecklistModel checklistAdd = ChecklistModel(
-                      id: _checklistStore.checklistModel!.id,
-                      dataVisita: DateTime.now(),
-                      questions: [questionsModelMock],
-                    );
-                    isChecked.add(checklistAdd);
+                    isQuestionChecked.add(questionsModelMock);
                   });
                 } else {
                   setState(() {
-                    isChecked.removeWhere((check) {
-                      bool test = check.questions!.any(
-                        (question) =>
-                            question.answer == alternativesModel.title,
-                      );
-                      return test;
-                    });
+                    isQuestionChecked.removeWhere(
+                      (item) => item.answer == alternativesModel.title,
+                    );
                   });
                 }
               }),

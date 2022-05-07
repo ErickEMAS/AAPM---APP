@@ -18,7 +18,6 @@ class TagListBuilder extends StatelessWidget {
     this.sellerModel,
   }) : super(key: key);
 
-  final SellerStore _sellerStore = serviceLocator<SellerStore>();
   final TagStore _tagStore = serviceLocator<TagStore>();
 
   @override
