@@ -64,26 +64,12 @@ abstract class _SellerStoreBase with Store {
 
   @action
   reset() {
-    sellerList.clear();
+    // sellerList.clear();
     setSearchClicked(false);
-    int pageablePage = 0;
     _setPage(0);
-    // setSellerModel(SellerModel(
-    //   cnpj: "",
-    //   helenaSellerCode: "",
-    //   nome: "",
-    //   telefone: "",
-    //   email: "",
-    //   cidade: "",
-    //   uf: "",
-    //   cep: "",
-    //   endereco: "",
-    //   numero: "",
-    //   complemento: "",
-    //   cadastro: "",
-    //   dataPedidoTeste: "",
-    // ));
   }
+
+  int pageListTotalElements = 0;
 
   Future<bool> onSellerInit() async {
     try {
@@ -91,6 +77,8 @@ abstract class _SellerStoreBase with Store {
         size: pageableSize,
         page: pageablePage,
       );
+
+      pageListTotalElements = pageList.totalElements;
 
       _setSellerList(pageList.content.cast<SellerModel>().toList());
 
@@ -102,14 +90,16 @@ abstract class _SellerStoreBase with Store {
 
   Future<bool> fetchNextPage() async {
     try {
-      _setPage(pageablePage + 1);
+      if (pageListTotalElements > sellerList.length) {
+        _setPage(pageablePage + 1);
 
-      PageListModel pageList = await _datasource.getSellerList(
-        size: pageableSize,
-        page: pageablePage,
-      );
+        PageListModel pageList = await _datasource.getSellerList(
+          size: pageableSize,
+          page: pageablePage,
+        );
 
-      _setSellerList(pageList.content.cast<SellerModel>().toList());
+        _setSellerList(pageList.content.cast<SellerModel>().toList());
+      }
 
       return true;
     } catch (e) {
@@ -199,25 +189,22 @@ abstract class _SellerStoreBase with Store {
     dataPedidoController.text = sellerModel.dataPedidoTeste;
   }
 
-  //Page view navigation
-  final formKey = GlobalKey<FormState>();
-  @observable
-  PageController pageController = PageController();
-  @observable
-  int currentPage = 0;
-  @action
-  nextPage() {
-    pageController.nextPage(
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
-    currentPage = 1;
+  void cleanAddSeller() {
+    nomeController = TextEditingController();
+    helenaController = TextEditingController();
+    telefoneController = TextEditingController();
+    emailController = TextEditingController();
+    cidadeController = TextEditingController();
+    cepController = TextEditingController();
+    enderecoController = TextEditingController();
+    numeroController = TextEditingController();
+    complementoController = TextEditingController();
+    cadastroController = TextEditingController();
+    dataPedidoController = TextEditingController();
+    cnpjController = TextEditingController();
   }
 
-  @action
-  previousPage() {
-    pageController.previousPage(
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
-    currentPage = 0;
-  }
+  //Page view navigation
 
   Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
     return Navigator.of(context)

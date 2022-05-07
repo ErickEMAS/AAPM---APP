@@ -23,13 +23,42 @@ class SellerPage extends StatefulWidget {
 class _SellerPageState extends State<SellerPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
 
+  PageController pageController = PageController();
+
+  int currentPage = 0;
+
+  _nextPage() {
+    pageController.nextPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
+    _store.sellerList.clear();
+    setState(() {
+      currentPage = 1;
+    });
+    _store.reset();
+  }
+
+  _previousPage() {
+    pageController.previousPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
+    LoadingOverlay.of(context).during(_store.onSellerInit());
+    setState(() {
+      currentPage = 0;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _store.reset();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       LoadingOverlay.of(context).during(_store.onSellerInit());
     });
+  }
+
+  @override
+  void dispose() {
+    _store.sellerList.clear();
+    _store.reset();
+    super.dispose();
   }
 
   @override
@@ -38,23 +67,23 @@ class _SellerPageState extends State<SellerPage> {
       child: Observer(builder: (_) {
         return Scaffold(
           appBar: AppBarGradient(
-            leading: _store.currentPage == 1
+            leading: currentPage == 1
                 ? BackButton(
-                    onPressed: () => _store.previousPage(),
+                    onPressed: () => _previousPage(),
                   )
                 : null,
             title: "Carteira",
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: _store.currentPage == 0
+          floatingActionButton: currentPage == 0
               ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        _store.nextPage();
+                        _nextPage();
                       },
                       child: const Text("Adicionar novo Seller"),
                     ),
@@ -65,9 +94,13 @@ class _SellerPageState extends State<SellerPage> {
             clipBehavior: Clip.none,
             itemCount: 2,
             physics: const NeverScrollableScrollPhysics(),
-            controller: _store.pageController,
+            controller: pageController,
             itemBuilder: (context, index) {
-              return index == 0 ? const SellerListView() : AddSellerView();
+              return index == 0
+                  ? const SellerListView()
+                  : AddSellerView(
+                      previousPage: _previousPage,
+                    );
             },
           ),
           bottomNavigationBar: AppBottomBar(),

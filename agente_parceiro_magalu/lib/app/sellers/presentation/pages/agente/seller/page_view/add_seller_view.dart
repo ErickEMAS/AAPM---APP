@@ -17,7 +17,11 @@ import 'package:flutter/services.dart';
 import '../../../../../../../core/locators/service_locators.dart';
 
 class AddSellerView extends StatefulWidget {
-  AddSellerView({Key? key}) : super(key: key);
+  Function previousPage;
+  AddSellerView({
+    Key? key,
+    required this.previousPage,
+  }) : super(key: key);
 
   @override
   State<AddSellerView> createState() => _AddSellerViewState();
@@ -27,16 +31,16 @@ class _AddSellerViewState extends State<AddSellerView> {
   final SellerStore _store = serviceLocator<SellerStore>();
   final SellerSheetStore _sellerSheetStore = serviceLocator<SellerSheetStore>();
   String? dropdownSelection;
-
+  final formKey = GlobalKey<FormState>();
   TextEditingController _cpnjImportController = TextEditingController();
 
   @override
   void dispose() {
-    _store.reset();
+    super.dispose();
     _cpnjImportController = TextEditingController();
     dropdownSelection = null;
-
-    super.dispose();
+    formKey.currentState?.reset();
+    _store.cleanAddSeller();
   }
 
   @override
@@ -46,7 +50,7 @@ class _AddSellerViewState extends State<AddSellerView> {
       child: Padding(
         padding: EdgeInsets.all(AppDimens.margin),
         child: Form(
-          key: _store.formKey,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -58,59 +62,7 @@ class _AddSellerViewState extends State<AddSellerView> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      appDialog(
-                          context: context,
-                          title: Text(
-                            "Importar seller da planilha pelo cnpj",
-                            style: AppTextStyles.bold(),
-                          ),
-                          content: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppDimens.margin),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(height: AppDimens.margin),
-                                TextFormField(
-                                  controller: _cpnjImportController,
-                                  inputFormatters: [
-                                    CpfCnpjInputMask(isCNPJ: true),
-                                  ],
-                                  decoration: const InputDecoration(
-                                      labelText: "CNPJ do seller",
-                                      hintText: "Digite o cnpj"),
-                                ),
-                                SizedBox(height: AppDimens.margin),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                      onPressed: () async {
-                                        print("apertado");
-                                        await _sellerSheetStore.init();
-                                        final sellerFromSheet =
-                                            await _sellerSheetStore
-                                                .getSellerByCNPJ(
-                                                    _cpnjImportController.text);
-
-                                        final sellerModel =
-                                            SellerModel.fromJsonSheet(
-                                                sellerFromSheet!.toJson());
-
-                                        _store.setSellerModel(sellerModel);
-                                        dropdownSelection = sellerModel.uf;
-                                        print(sellerModel.nome);
-                                        print(sellerFromSheet.toJson());
-                                        _store.fillAddSeller();
-                                        // setState(() {});
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(
-                                        "importar",
-                                      )),
-                                )
-                              ],
-                            ),
-                          ));
+                      _importSheetDialog();
                     },
                     child: const Text("importar planilha"),
                   )
@@ -279,7 +231,7 @@ class _AddSellerViewState extends State<AddSellerView> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    bool formOk = _store.formKey.currentState!.validate();
+                    bool formOk = formKey.currentState!.validate();
                     if (!formOk) return;
 
                     bool ret = await LoadingOverlay.of(context).during(
@@ -290,8 +242,7 @@ class _AddSellerViewState extends State<AddSellerView> {
                       SnackBarHelper.snackBar(context,
                           message: "Seller cadastrado com sucesso!");
                       await _store.onSellerInit();
-                      _store.previousPage();
-                      _store.formKey.currentState!.reset();
+                      widget.previousPage();
                     } else {
                       SnackBarHelper.snackBar(
                         context,
@@ -309,6 +260,56 @@ class _AddSellerViewState extends State<AddSellerView> {
         ),
       ),
     );
+  }
+
+  _importSheetDialog() {
+    return appDialog(
+        context: context,
+        title: Text(
+          "Importar seller da planilha pelo cnpj",
+          style: AppTextStyles.bold(),
+        ),
+        content: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: AppDimens.margin),
+              TextFormField(
+                controller: _cpnjImportController,
+                inputFormatters: [
+                  CpfCnpjInputMask(isCNPJ: true),
+                ],
+                decoration: const InputDecoration(
+                    labelText: "CNPJ do seller", hintText: "Digite o cnpj"),
+              ),
+              SizedBox(height: AppDimens.margin),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      print("apertado");
+                      await _sellerSheetStore.init();
+                      final sellerFromSheet = await _sellerSheetStore
+                          .getSellerByCNPJ(_cpnjImportController.text);
+
+                      final sellerModel =
+                          SellerModel.fromJsonSheet(sellerFromSheet!.toJson());
+
+                      _store.setSellerModel(sellerModel);
+                      _store.fillAddSeller();
+                      setState(() {
+                        dropdownSelection = sellerModel.uf;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "importar",
+                    )),
+              )
+            ],
+          ),
+        ));
   }
 
   _addSellerColumn({
