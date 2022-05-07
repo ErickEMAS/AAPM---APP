@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/question_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
@@ -23,6 +24,11 @@ abstract class ISellerDatasource {
   Future addTagInSeller({required String sellerId, required String tagId});
 
   Future<ChecklistModel> startChecklistBySellerId({required String sellerId});
+
+  Future answerChecklist({
+    required ChecklistModel checklistModel,
+    required List<QuestionsModel> listChecklist,
+  });
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -196,20 +202,31 @@ class SellerDatasource implements ISellerDatasource {
   }
 
   @override
-  Future answerChecklist({required String sellerId}) async {
+  Future answerChecklist({
+    required ChecklistModel checklistModel,
+    required List<QuestionsModel> listChecklist,
+  }) async {
     try {
-      Map<String, dynamic> params = {
-        "id": sellerId,
-      };
+      // ChecklistModel check = ChecklistModel(
+      //   id: checklistId,
+      //   dataVisita: checklistDataVisita,
+      // );
+
+      var json = checklistModel.toJson();
+
+      // json["questions"] = jsonEncode(listChecklist[0]);
+      json["questions"] = listChecklist;
+
+      print(jsonEncode(json));
 
       final response = await _httpWithAuth.post(
         Endpoints.startChecklist,
-        data: json.encode(params),
+        data: jsonEncode(json),
       );
-      ChecklistModel checklistModel = ChecklistModel.fromJson(response);
 
-      return checklistModel;
+      print(response);
     } on DioError catch (err) {
+      err.message;
       rethrow;
     } catch (err) {
       print(err);

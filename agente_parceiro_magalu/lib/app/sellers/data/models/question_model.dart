@@ -10,6 +10,7 @@ class QuestionsModel {
   List<AlternativesModel>? alternatives;
   bool? answerRequired;
   bool? active;
+  @JsonKey(name: "fieldUpdateID")
   String? fieldUpdateId;
   String? answer;
 
