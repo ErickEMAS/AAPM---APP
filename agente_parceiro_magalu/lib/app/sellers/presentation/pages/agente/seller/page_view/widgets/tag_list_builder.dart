@@ -1,14 +1,12 @@
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
-import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/tag_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class TagListBuilder extends StatelessWidget {
   SellerModel? sellerModel;

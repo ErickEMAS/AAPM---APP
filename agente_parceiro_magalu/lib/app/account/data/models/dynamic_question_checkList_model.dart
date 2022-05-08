@@ -29,4 +29,3 @@ class DynamicQuestionCheckListModel {
 
   Map<String, dynamic> toJson() => _$DynamicQuestionCheckListModelToJson(this);
 }
-

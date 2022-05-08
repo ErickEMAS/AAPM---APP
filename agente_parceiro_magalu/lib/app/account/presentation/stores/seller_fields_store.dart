@@ -7,7 +7,6 @@ import '../../../../core/models/page_list_model.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../data/datasources/account_datasource.dart';
 import '../../data/models/dynamic_field_model.dart';
-import '../../data/models/dynamic_question_checkList_model.dart';
 part 'seller_fields_store.g.dart';
 
 class SellerFieldsStore = _SellerFieldsStoreBase with _$SellerFieldsStore;
@@ -16,7 +15,7 @@ abstract class _SellerFieldsStoreBase with Store {
   final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
 
   bool update = false;
-  
+
   @observable
   DynamicFieldModel dynamicFieldModel = DynamicFieldModel(
     name: "",
@@ -40,7 +39,7 @@ abstract class _SellerFieldsStoreBase with Store {
   int pageableSize = 10;
 
   @observable
-  DynamicFieldModel dynamicFieldEditModel= DynamicFieldModel(
+  DynamicFieldModel dynamicFieldEditModel = DynamicFieldModel(
     name: "",
     type: TypeField.TEXT,
   );
@@ -58,8 +57,9 @@ abstract class _SellerFieldsStoreBase with Store {
     status = newData;
   }
 
-  ObservableList<DynamicFieldModel> dynamicFieldModelList = ObservableList<DynamicFieldModel>();
-  
+  ObservableList<DynamicFieldModel> dynamicFieldModelList =
+      ObservableList<DynamicFieldModel>();
+
   @action
   _setDynamicFieldModelList(List<DynamicFieldModel> data) {
     dynamicFieldModelList.addAll(data);
@@ -78,7 +78,8 @@ abstract class _SellerFieldsStoreBase with Store {
       );
 
       dynamicFieldModelList.clear();
-      _setDynamicFieldModelList(pageList.content.cast<DynamicFieldModel>().toList());
+      _setDynamicFieldModelList(
+          pageList.content.cast<DynamicFieldModel>().toList());
 
       return true;
     } catch (err) {
@@ -95,7 +96,8 @@ abstract class _SellerFieldsStoreBase with Store {
         page: pageablePage,
       );
 
-      _setDynamicFieldModelList(pageList.content.cast<DynamicFieldModel>().toList());
+      _setDynamicFieldModelList(
+          pageList.content.cast<DynamicFieldModel>().toList());
 
       return true;
     } catch (e) {
@@ -108,7 +110,7 @@ abstract class _SellerFieldsStoreBase with Store {
   Future<bool> addDynamicQuestion() async {
     try {
       await _datasource.addDynamicField(dynamicFieldModel: dynamicFieldModel);
-      
+
       return true;
     } catch (err) {
       return false;
@@ -117,7 +119,8 @@ abstract class _SellerFieldsStoreBase with Store {
 
   Future<bool> updateDynamicQuestion() async {
     try {
-      await _datasource.updateDynamicField(dynamicFieldModel: dynamicFieldEditModel);
+      await _datasource.updateDynamicField(
+          dynamicFieldModel: dynamicFieldEditModel);
 
       return true;
     } catch (err) {
@@ -130,10 +133,10 @@ abstract class _SellerFieldsStoreBase with Store {
 
   @observable
   PageController pageController = PageController();
-  
+
   @observable
   int currentPage = 0;
-  
+
   @action
   nextPage() {
     pageController.nextPage(
@@ -173,4 +176,3 @@ abstract class _SellerFieldsStoreBase with Store {
         );
   }
 }
-

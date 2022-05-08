@@ -1,5 +1,4 @@
 import 'package:agente_parceiro_magalu/app/account/data/models/alternative_model.dart';
-import 'package:agente_parceiro_magalu/app/account/data/models/dynamic_field_model.dart';
 import 'package:agente_parceiro_magalu/app/account/data/models/dynamic_question_checkList_model.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/widget/questions_checklist_search_filter_widget.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
@@ -24,7 +23,7 @@ class _FAQListViewState extends State<QuestionsChecklistListView> {
   final QuestionChecklistStore _store =
       serviceLocator<QuestionChecklistStore>();
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -69,8 +68,8 @@ class _FAQListViewState extends State<QuestionsChecklistListView> {
                   ],
                 ),
                 _store.searchClicked
-                    ? QuestionsChecklistSearchFilterWidget()
-                    : SizedBox(),
+                    ? const QuestionsChecklistSearchFilterWidget()
+                    : const SizedBox(),
               ],
             );
           }),
@@ -88,17 +87,15 @@ class _FAQListViewState extends State<QuestionsChecklistListView> {
                   margin: const EdgeInsets.only(bottom: 16, top: 16),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: phoneWidth * .8,
                         child: _questionItem(
-                          question:
-                              _store.questionList[index],
+                          question: _store.questionList[index],
                         ),
                       ),
                       IconButton(
                         onPressed: () => {
                           _store.update = true,
-
                           _store.dynamicQuestionCheckListEditModel =
                               _store.questionList[index],
                           _store.nextPage(),
@@ -119,136 +116,132 @@ class _FAQListViewState extends State<QuestionsChecklistListView> {
 
   Row _questionItem({required DynamicQuestionCheckListModel question}) {
     return Row(
-        children: [
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Questão: ",
-                      style: AppTextStyles.bold(
-                          size: 14, color: AppColors.primary),
-                    ),
-                    Text(
-                      question.question,
-                      style:
-                          AppTextStyles.bold(size: 14, color: AppColors.black),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Questão Obrigatório: ",
-                      style: AppTextStyles.bold(
-                          size: 14, color: AppColors.primary),
-                    ),
-                    Text(
-                      question.answerRequired ? "Sim" : "Não",
-                      style:
-                          AppTextStyles.bold(size: 14, color: AppColors.black),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Multipla escolha: ",
-                      style: AppTextStyles.bold(
-                          size: 14, color: AppColors.primary),
-                    ),
-                    Text(
-                      question.multipleAlternative ? "Sim" : "Não",
-                      style:
-                          AppTextStyles.bold(size: 14, color: AppColors.black),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Ativa: ",
-                      style: AppTextStyles.bold(
-                          size: 14, color: AppColors.primary),
-                    ),
-                    Text(
-                      question.active ? "Sim" : "Não",
-                      style:
-                          AppTextStyles.bold(size: 14, color: AppColors.black),
-                    ),
-                  ],
-                ),
-                Text(
-                  "Alternativas: ",
-                  style: AppTextStyles.bold(size: 14, color: AppColors.primary),
-                ),
-                Row(
-                  children: [
-                    const SizedBox(width: 16),
-                    Column(
-                      children: question.alternatives.map<Text>(
-                        (AlternativeModel alt) {
-                          return Text(
-                            alt.name,
+      children: [
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Questão: ",
+                    style:
+                        AppTextStyles.bold(size: 14, color: AppColors.primary),
+                  ),
+                  Text(
+                    question.question,
+                    style: AppTextStyles.bold(size: 14, color: AppColors.black),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Questão Obrigatório: ",
+                    style:
+                        AppTextStyles.bold(size: 14, color: AppColors.primary),
+                  ),
+                  Text(
+                    question.answerRequired ? "Sim" : "Não",
+                    style: AppTextStyles.bold(size: 14, color: AppColors.black),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Multipla escolha: ",
+                    style:
+                        AppTextStyles.bold(size: 14, color: AppColors.primary),
+                  ),
+                  Text(
+                    question.multipleAlternative ? "Sim" : "Não",
+                    style: AppTextStyles.bold(size: 14, color: AppColors.black),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Ativa: ",
+                    style:
+                        AppTextStyles.bold(size: 14, color: AppColors.primary),
+                  ),
+                  Text(
+                    question.active ? "Sim" : "Não",
+                    style: AppTextStyles.bold(size: 14, color: AppColors.black),
+                  ),
+                ],
+              ),
+              Text(
+                "Alternativas: ",
+                style: AppTextStyles.bold(size: 14, color: AppColors.primary),
+              ),
+              Row(
+                children: [
+                  const SizedBox(width: 16),
+                  Column(
+                    children: question.alternatives.map<Text>(
+                      (AlternativeModel alt) {
+                        return Text(
+                          alt.name,
+                          style: AppTextStyles.bold(
+                              size: 14, color: AppColors.black),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ],
+              ),
+              Text(
+                "Campo a ser atualizado: ",
+                style: AppTextStyles.bold(size: 14, color: AppColors.primary),
+              ),
+              Row(
+                children: [
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "nome: ",
+                            style: AppTextStyles.bold(
+                                size: 14, color: AppColors.primary),
+                          ),
+                          Text(
+                            question.fieldUpdate.name,
                             style: AppTextStyles.bold(
                                 size: 14, color: AppColors.black),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ],
-                ),
-                Text(
-                  "Campo a ser atualizado: ",
-                  style: AppTextStyles.bold(size: 14, color: AppColors.primary),
-                ),
-                Row(
-                  children: [
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "nome: ",
-                              style: AppTextStyles.bold(
-                                  size: 14, color: AppColors.primary),
-                            ),
-                            Text(
-                              question.fieldUpdate.name,
-                              style: AppTextStyles.bold(
-                                  size: 14, color: AppColors.black),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "tipo: ",
-                              style: AppTextStyles.bold(
-                                  size: 14, color: AppColors.primary),
-                            ),
-                            Text(
-                              question.fieldUpdate.type == TypeField.TEXT
-                                  ? "Texto"
-                                  : "Número",
-                              style: AppTextStyles.bold(
-                                  size: 14, color: AppColors.black),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "tipo: ",
+                            style: AppTextStyles.bold(
+                                size: 14, color: AppColors.primary),
+                          ),
+                          Text(
+                            question.fieldUpdate.type == TypeField.TEXT
+                                ? "Texto"
+                                : "Número",
+                            style: AppTextStyles.bold(
+                                size: 14, color: AppColors.black),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }

@@ -11,8 +11,8 @@ import 'package:flutter/services.dart';
 import '../../../../../../../core/locators/service_locators.dart';
 
 class AddOrUpdateFAQView extends StatefulWidget {
-  bool update;
-  AddOrUpdateFAQView({Key? key, required this.update}) : super(key: key);
+  final bool update;
+  const AddOrUpdateFAQView({Key? key, required this.update}) : super(key: key);
 
   @override
   State<AddOrUpdateFAQView> createState() => _AddFAQViewState();
@@ -24,8 +24,6 @@ class _AddFAQViewState extends State<AddOrUpdateFAQView> {
 
   @override
   Widget build(BuildContext context) {
-    double phoneWidth = MediaQuery.of(context).size.width;
-
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(AppDimens.margin),

@@ -13,8 +13,8 @@ import '../../../../../shared/widgets/app_dropdown.dart';
 import '../../stores/seller_fields_store.dart';
 
 class AddOrUpdateSellerFieldslistView extends StatefulWidget {
-  bool update;
-  AddOrUpdateSellerFieldslistView({Key? key, required this.update})
+  final bool update;
+  const AddOrUpdateSellerFieldslistView({Key? key, required this.update})
       : super(key: key);
 
   @override
@@ -63,7 +63,11 @@ class _AddFAQViewState extends State<AddOrUpdateSellerFieldslistView> {
                         AppTextStyles.bold(size: 12, color: AppColors.primary),
                   ),
                   AppDropdown(
-                    textHint: _store.dynamicFieldModel.type != null ? (_store.dynamicFieldModel.type == TypeField.TEXT ? "Texto" : "Número") : "Tipo",
+                    textHint: _store.dynamicFieldModel.type != null
+                        ? (_store.dynamicFieldModel.type == TypeField.TEXT
+                            ? "Texto"
+                            : "Número")
+                        : "Tipo",
                     width: phoneWidth,
                     value: dropdownSelection,
                     customItems: [

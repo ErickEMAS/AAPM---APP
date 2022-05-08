@@ -58,8 +58,6 @@ class SellerModel {
       endereco: json[SellerField.endereco],
       numero: json[SellerField.numero],
       complemento: json[SellerField.complemento],
-      cadastro: json[SellerField.cadastro],
-      dataPedidoTeste: json[SellerField.dataPedidoTeste],
     );
 
     return sm;

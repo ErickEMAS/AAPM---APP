@@ -19,7 +19,7 @@ class SellerFieldsListView extends StatefulWidget {
 class _FAQListViewState extends State<SellerFieldsListView> {
   final SellerFieldsStore _store = serviceLocator<SellerFieldsStore>();
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _FAQListViewState extends State<SellerFieldsListView> {
                   margin: const EdgeInsets.only(bottom: 16, top: 16),
                   child: Row(
                     children: [
-                      SizedBox(width: 16),
+                      SizedBox(width: AppDimens.space * 2),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +76,6 @@ class _FAQListViewState extends State<SellerFieldsListView> {
                                 ),
                               ],
                             ),
-                            
                             Row(
                               children: [
                                 Text(
