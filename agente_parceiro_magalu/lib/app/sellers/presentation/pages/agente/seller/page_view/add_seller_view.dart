@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/uf_builder.dart';
-import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_sheet_store.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/core/api/sheets/seller_sheets_api.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
 import 'package:agente_parceiro_magalu/core/helpers/input_validator_helper.dart';
@@ -29,7 +31,6 @@ class AddSellerView extends StatefulWidget {
 
 class _AddSellerViewState extends State<AddSellerView> {
   final SellerStore _store = serviceLocator<SellerStore>();
-  final SellerSheetStore _sellerSheetStore = serviceLocator<SellerSheetStore>();
   String? dropdownSelection;
   final formKey = GlobalKey<FormState>();
   TextEditingController _cpnjImportController = TextEditingController();
@@ -264,52 +265,81 @@ class _AddSellerViewState extends State<AddSellerView> {
 
   _importSheetDialog() {
     return appDialog(
-        context: context,
-        title: Text(
-          "Importar seller da planilha pelo cnpj",
-          style: AppTextStyles.bold(),
-        ),
-        content: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: AppDimens.margin),
-              TextFormField(
-                controller: _cpnjImportController,
-                inputFormatters: [
-                  CpfCnpjInputMask(isCNPJ: true),
-                ],
-                decoration: const InputDecoration(
-                    labelText: "CNPJ do seller", hintText: "Digite o cnpj"),
+      context: context,
+      title: Text(
+        "Importar seller da planilha pelo cnpj",
+        style: AppTextStyles.bold(),
+      ),
+      content: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: AppDimens.margin),
+            TextFormField(
+              controller: _cpnjImportController,
+              inputFormatters: [
+                CpfCnpjInputMask(isCNPJ: true),
+              ],
+              decoration: const InputDecoration(
+                  labelText: "CNPJ do seller", hintText: "Digite o cnpj"),
+            ),
+            SizedBox(height: AppDimens.margin),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  await SellerSheetsApi.init();
+                  final sellerFromSheet = await SellerSheetsApi.getSellerByCNPJ(
+                      _cpnjImportController.text);
+
+                  final sellerModel =
+                      SellerModel.fromJsonSheet(sellerFromSheet!.toJson());
+
+                  _store.setSellerModel(sellerModel);
+                  _store.fillAddSeller();
+                  setState(() {
+                    dropdownSelection = sellerModel.uf;
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "importar",
+                ),
               ),
-              SizedBox(height: AppDimens.margin),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    onPressed: () async {
-                      print("apertado");
-                      await _sellerSheetStore.init();
-                      final sellerFromSheet = await _sellerSheetStore
-                          .getSellerByCNPJ(_cpnjImportController.text);
+            ),
+            Divider(),
+            SizedBox(height: AppDimens.margin),
+            const Text(
+                "Vai importar todos os dados da planilha, não salvara repetidos."),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  await SellerSheetsApi.init();
 
-                      final sellerModel =
-                          SellerModel.fromJsonSheet(sellerFromSheet!.toJson());
+                  final sheetSellerList = await SellerSheetsApi.getAllSeller();
 
-                      _store.setSellerModel(sellerModel);
-                      _store.fillAddSeller();
-                      setState(() {
-                        dropdownSelection = sellerModel.uf;
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      "importar",
-                    )),
-              )
-            ],
-          ),
-        ));
+                  final sellerModelList = sheetSellerList!
+                      .map((e) => SellerModel.fromJsonSheet(e.toJson()))
+                      .toList();
+
+                  sellerModelList.forEach((sellerModel) async {
+                    print("ta indo?");
+                    await _store.addSeller(sellerModelFromSheet: sellerModel);
+                  });
+
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "importar todos",
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   _addSellerColumn({

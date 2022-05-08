@@ -58,7 +58,6 @@ abstract class _SellerStoreBase with Store {
   ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
   @action
   _setSellerList(List<SellerModel> data) {
-    // sellerList.clear();
     sellerList.addAll(data);
   }
 
@@ -80,11 +79,26 @@ abstract class _SellerStoreBase with Store {
 
       pageListTotalElements = pageList.totalElements;
 
+      print(pageListTotalElements);
+
       _setSellerList(pageList.content.cast<SellerModel>().toList());
 
       return true;
     } catch (err) {
       return false;
+    }
+  }
+
+  Future<List<SellerModel>?> getAllSellers() async {
+    try {
+      PageListModel pageList = await _datasource.getSellerList();
+
+      List<SellerModel>? seller = pageList.content.cast<SellerModel>().toList();
+
+      return seller;
+    } catch (err) {
+      print(err);
+      // return false;
     }
   }
 
@@ -99,6 +113,7 @@ abstract class _SellerStoreBase with Store {
         );
 
         _setSellerList(pageList.content.cast<SellerModel>().toList());
+        print(pageListTotalElements);
       }
 
       return true;
@@ -140,9 +155,13 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
-  Future<bool> addSeller() async {
+  Future<bool> addSeller({
+    SellerModel? sellerModelFromSheet,
+  }) async {
     try {
-      await _datasource.addSeller(sellerModel: sellerModel);
+      sellerModelFromSheet != null
+          ? await _datasource.addSeller(sellerModel: sellerModelFromSheet)
+          : await _datasource.addSeller(sellerModel: sellerModel);
 
       return true;
     } catch (err) {

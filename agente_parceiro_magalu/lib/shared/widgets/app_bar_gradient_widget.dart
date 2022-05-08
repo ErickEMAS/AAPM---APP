@@ -7,12 +7,14 @@ class AppBarGradient extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final bool automaticallyImplyLeading;
   final Widget? leading;
+  final List<Widget>? actions;
 
   const AppBarGradient({
     Key? key,
     this.title,
     this.automaticallyImplyLeading = true,
     this.leading,
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class AppBarGradient extends StatelessWidget with PreferredSizeWidget {
                   ),
                 )
               : null,
+          actions: actions,
         ),
         const AppGradientLine(),
       ],

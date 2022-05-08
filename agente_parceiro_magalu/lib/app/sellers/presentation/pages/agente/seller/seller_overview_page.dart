@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/shared/sheets/sheets_field.dart';
-import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/checklist_store.dart';
-import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_sheet_store.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/core/api/sheets/seller_sheets_api.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
@@ -29,7 +28,6 @@ class SellerOverviewPage extends StatefulWidget {
 
 class _SellerOverviewPageState extends State<SellerOverviewPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
-  final SellerSheetStore _sellerSheetStore = serviceLocator<SellerSheetStore>();
 
   @override
   void initState() {
@@ -120,12 +118,10 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    await _sellerSheetStore.init();
-
                     final seller = SheetsFieldModel.fromJsonSellerModel(
                         jsonDecode(jsonEncode(_store.sellerEditModel!)));
 
-                    _sellerSheetStore.insert(seller.toJson());
+                    SellerSheetsApi.insert(seller.toJson());
                   },
                   child: Text("Exportar planilha"),
                 ),

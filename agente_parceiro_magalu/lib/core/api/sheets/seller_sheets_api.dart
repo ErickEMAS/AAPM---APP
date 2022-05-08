@@ -1,4 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/shared/sheets/sheets_field.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:gsheets/gsheets.dart';
 
 class SellerSheetsApi {
@@ -18,7 +22,67 @@ class SellerSheetsApi {
 ''';
 
   //id da planilha no google sheets
+
   static const spreadSheetId = '13LlWnOlR8o-SbQ7wvqeSyXatpVK4nECq7lTV5wf2dwI';
 
   static final gsheets = GSheets(_credentials);
+
+  static Worksheet? _sellerSheet;
+
+  static Future init() async {
+    try {
+      String? sheetId =
+          await SecureStorageHelper.read(key: StorageKeys.idSheets);
+
+      if (sheetId == null) return;
+
+      final spreadsheet = await SellerSheetsApi.gsheets.spreadsheet(sheetId);
+      _sellerSheet = await _getWorkSheet(spreadsheet, title: 'Seller');
+
+      final firstRow = SellerField.getFields();
+      _sellerSheet!.values.insertRow(1, firstRow);
+    } catch (e) {
+      print('init error $e');
+    }
+  }
+
+  static Future<Worksheet> _getWorkSheet(Spreadsheet spreadsheet,
+      {required String title}) async {
+    try {
+      return await spreadsheet.addWorksheet(title);
+    } catch (e) {
+      return spreadsheet.worksheetByTitle(title)!;
+    }
+  }
+
+  static Future insert(Map<String, dynamic> rowList) async {
+    if (_sellerSheet == null) return;
+    _sellerSheet!.values.map.appendRow(rowList);
+  }
+
+  static Future insertList(List<Map<String, dynamic>> rowList) async {
+    if (_sellerSheet == null) return;
+    _sellerSheet!.values.map.appendRows(rowList);
+  }
+
+  static Future<SheetsFieldModel?> getSellerByCNPJ(String cnpj) async {
+    if (_sellerSheet == null) return null;
+
+    final json = await _sellerSheet!.values.map.rowByKey(cnpj, fromColumn: 1);
+
+    return json == null ? null : SheetsFieldModel.fromJsonSheet(json);
+  }
+
+  static Future<List<SheetsFieldModel>?> getAllSeller() async {
+    if (_sellerSheet == null) return null;
+
+    final json = await _sellerSheet!.values.map.allRows(
+      fromRow: 2,
+    );
+
+    var teste =
+        SheetsFieldModel.fromJsonSheetList(jsonDecode(jsonEncode(json)));
+
+    return teste;
+  }
 }

@@ -97,6 +97,9 @@ class SheetsFieldModel {
     return sm;
   }
 
+  static List<SheetsFieldModel> fromJsonSellerModelList(List<dynamic> json) =>
+      json.map((i) => fromJsonSellerModel(i)).toList();
+
   static SheetsFieldModel fromJsonSheet(Map<String, dynamic> json) {
     SheetsFieldModel sm = SheetsFieldModel(
       cnpj: json[SellerField.cnpj],
@@ -116,4 +119,7 @@ class SheetsFieldModel {
 
     return sm;
   }
+
+  static List<SheetsFieldModel> fromJsonSheetList(List<dynamic> json) =>
+      json.map((i) => fromJsonSheet(i)).toList();
 }

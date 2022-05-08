@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>105198987577-ov4u2bhalnsn8tgabnpor51pa1614bic.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.105198987577-ov4u2bhalnsn8tgabnpor51pa1614bic</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC_nW7E8d_5356eTZ02pLyzrV_xFZV-9Lc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>105198987577</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.agente.parceiro.magalu</string>
+	<key>PROJECT_ID</key>
+	<string>app-agente-magalu</string>
+	<key>STORAGE_BUCKET</key>
+	<string>app-agente-magalu.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:105198987577:ios:4428f79348970be66ae0e8</string>
+</dict>
+</plist>
