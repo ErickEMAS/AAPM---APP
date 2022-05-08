@@ -75,12 +75,12 @@ class _UserAccountPageState extends State<UserAccountPage> {
                           AppUserAccountItemList(
                             tittle: "Minhas Tags",
                             iconData: Icons.bookmarks,
-                            onClick: () => print("Minhas Tags"),
+                            onClick: () => _store.navigateToMyTags(context),
                           ),
                           AppUserAccountItemList(
                             tittle: "FAQ",
                             iconData: Icons.quiz,
-                            onClick: () => print("Faq"),
+                            onClick: () => _store.navigateToFAQ(context),
                           ),
                           const AppLogout(),
                         ],

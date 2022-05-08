@@ -1,6 +1,6 @@
-import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/add_or_update_questions_checklist_view.dart';
-import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/questions_checklist_list_view.dart';
-import 'package:agente_parceiro_magalu/app/account/presentation/stores/questions_checklist_store.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/faq/add_or_update_faq_view.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/faq/faq_list_view.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/stores/faq_store.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
@@ -12,29 +12,23 @@ import '../../../../../core/constants/app_dimens.dart';
 import '../../../../../core/loading_overlay.dart';
 import '../../../../../core/locators/service_locators.dart';
 
-class QuestionsChecklistPage extends StatefulWidget {
-  const QuestionsChecklistPage({Key? key}) : super(key: key);
+class FAQPage extends StatefulWidget {
+  const FAQPage({Key? key}) : super(key: key);
 
   @override
-  State<QuestionsChecklistPage> createState() => _FAQPageState();
+  State<FAQPage> createState() => _FAQPageState();
 }
 
-class _FAQPageState extends State<QuestionsChecklistPage> {
-final QuestionChecklistStore _store = serviceLocator<QuestionChecklistStore>();
+class _FAQPageState extends State<FAQPage> {
+final FAQStore _store = serviceLocator<FAQStore>();
 
   @override
   void initState() {
     super.initState();
     _store.reset();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      LoadingOverlay.of(context).during(_store.onQuestionsInit());
+      LoadingOverlay.of(context).during(_store.onFAQInit());
     });
-  }
-
-  @override
-  void dispose() {
-    _store.reset();
-    super.dispose();
   }
 
   @override
@@ -48,31 +42,32 @@ final QuestionChecklistStore _store = serviceLocator<QuestionChecklistStore>();
                     onPressed: () => _store.previousPage(),
                   )
                 : null,
-            title: "Questão",
+            title: "FAQ",
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: _store.currentPage == 0
+          floatingActionButton: _store.userRole == "ROLE_ADMIN" ? (_store.currentPage == 0
               ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        _store.update =  false;
                         _store.nextPage();
                       },
-                      child: const Text("Adicionar nova Questão"),
+                      child: const Text("Adicionar nova FAQ"),
                     ),
                   ),
                 )
-              : null,
+              : null) : Container(),
           body: PageView.builder(
             clipBehavior: Clip.none,
             itemCount: 2,
             physics: const NeverScrollableScrollPhysics(),
             controller: _store.pageController,
             itemBuilder: (context, index) {
-              return index == 0 ? const QuestionsChecklistListView() : AddOrUpdateQuestionsChecklistView(update: _store.update);
+              return index == 0 ? const FAQListView() : AddOrUpdateFAQView(update: _store.update);
             },
           ),
           bottomNavigationBar: AppBottomBar(),

@@ -9,7 +9,7 @@ part 'add_agente_store.g.dart';
 class AddAgenteStore = _AddAgenteStoreBase with _$AddAgenteStore;
 
 abstract class _AddAgenteStoreBase with Store {
-  final IAccountDatasource _authUseCase = serviceLocator<IAccountDatasource>();
+  final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
 
   final formKey = GlobalKey<FormState>();
   final PageController pageController = PageController();
@@ -32,7 +32,7 @@ abstract class _AddAgenteStoreBase with Store {
 
   Future<bool> signUpAgente() async {
     try {
-      await _authUseCase.signUpAgente(
+      await _datasource.signUpAgente(
         signUpModel: SignUpModel(
             email: emailController.text == "" ? null : emailController.text,
             cpf: cpfController.text.replaceAll(".", "").replaceAll("-", ""),

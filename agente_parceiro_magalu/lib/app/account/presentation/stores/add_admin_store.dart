@@ -10,7 +10,7 @@ part 'add_admin_store.g.dart';
 class AddAdminStore = _AddAdminStoreBase with _$AddAdminStore;
 
 abstract class _AddAdminStoreBase with Store {
-  final IAccountDatasource _authUseCase = serviceLocator<IAccountDatasource>();
+  final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
 
   final formKey = GlobalKey<FormState>();
   final PageController pageController = PageController();
@@ -33,7 +33,7 @@ abstract class _AddAdminStoreBase with Store {
 
   Future<bool> signUpAdmin() async {
     try {
-      await _authUseCase.signUpAdmin(
+      await _datasource.signUpAdmin(
         signUpModel: SignUpModel(
             email: emailController.text == "" ? null : emailController.text,
             cpf: cpfController.text.replaceAll(".", "").replaceAll("-", ""),

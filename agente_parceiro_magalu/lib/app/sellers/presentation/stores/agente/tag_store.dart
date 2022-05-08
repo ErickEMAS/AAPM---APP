@@ -24,6 +24,7 @@ abstract class _TagStoreBase with Store {
 
   @observable
   Color? selectedColor;
+  
   @action
   setSelectedColor(Color newData) {
     selectedColor = newData;

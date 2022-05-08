@@ -212,22 +212,6 @@ class _AddSellerViewState extends State<AddSellerView> {
                   _store.sellerModel.complemento = value;
                 },
               ),
-              ..._addSellerColumn(
-                title: "Cadastro",
-                inputHint: "Digite o cadastro",
-                controller: _store.cadastroController,
-                onChanged: (value) {
-                  _store.sellerModel.cadastro = value;
-                },
-              ),
-              ..._addSellerColumn(
-                title: "Data de pedido",
-                inputHint: "Digite a data de pedido",
-                controller: _store.dataPedidoController,
-                onChanged: (value) {
-                  _store.sellerModel.dataPedidoTeste = value;
-                },
-              ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

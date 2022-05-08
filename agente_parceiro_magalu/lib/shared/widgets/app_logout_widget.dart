@@ -4,8 +4,10 @@ import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 
-class AppLogout extends StatelessWidget {
+import '../../app/home/presentation/stores/home_store.dart';
+import '../../core/locators/service_locators.dart';
 
+class AppLogout extends StatelessWidget {
   const AppLogout({Key? key}) : super(key: key);
 
   @override
@@ -41,12 +43,16 @@ class AppLogout extends StatelessWidget {
 }
 
 Future<void> logout({required BuildContext context}) async {
-    await SecureStorageHelper.write(key: StorageKeys.token, value: "");
-    await SecureStorageHelper.write(key: StorageKeys.userRole, value: "");
-    await SecureStorageHelper.write(key: StorageKeys.loggedUser, value: "");
-    Navigator.pushNamedAndRemoveUntil(
-        context,
-        AppRoutes.dashboard,
-        ModalRoute.withName(AppRoutes.dashboard),
-      ).then((value) => false);
-  }
+  final HomeStore _store = serviceLocator<HomeStore>();
+
+  await SecureStorageHelper.write(key: StorageKeys.token, value: "");
+  await SecureStorageHelper.write(key: StorageKeys.userRole, value: "");
+  await SecureStorageHelper.write(key: StorageKeys.loggedUser, value: "");
+
+  _store.currentPage = AppRoutes.home;
+  Navigator.pushNamedAndRemoveUntil(
+    context,
+    AppRoutes.dashboard,
+    ModalRoute.withName(AppRoutes.dashboard),
+  ).then((value) => false);
+}

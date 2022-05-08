@@ -65,4 +65,16 @@ abstract class _UserAccountStoreBase with Store {
         .pushNamed(AppRoutes.questionsChecklist)
         .then((value) => true);
   }
+
+  Future<bool> navigateToMyTags(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.myTags)
+        .then((value) => true);
+  }
+
+  Future<bool> navigateToFAQ(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.faq)
+        .then((value) => true);
+  }
 }

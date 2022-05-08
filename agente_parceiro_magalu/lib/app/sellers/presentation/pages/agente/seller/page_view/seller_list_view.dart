@@ -71,7 +71,7 @@ class _SellerListViewState extends State<SellerListView> {
                         _sellerStore
                             .setSearchClicked(!_sellerStore.searchClicked);
                       },
-                      icon: const Icon(Icons.search),
+                      icon: Icon(_sellerStore.searchClicked ? Icons.close : Icons.search),
                     )
                   ],
                 ),

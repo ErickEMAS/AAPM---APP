@@ -65,4 +65,10 @@ abstract class _AdminAccountStoreBase with Store {
         .pushNamed(AppRoutes.questionsChecklist)
         .then((value) => true);
   }
+
+  Future<bool> navigateToFAQ(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.faq)
+        .then((value) => true);
+  }
 }

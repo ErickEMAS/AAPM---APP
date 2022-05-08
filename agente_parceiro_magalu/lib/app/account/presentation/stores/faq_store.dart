@@ -1,35 +1,30 @@
-import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../../core/constants/storage_keys.dart';
+import '../../../../core/helpers/storage_helper.dart';
 import '../../../../core/locators/service_locators.dart';
 import '../../../../core/models/page_list_model.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../data/datasources/account_datasource.dart';
-import '../../data/models/dynamic_field_model.dart';
-import '../../data/models/dynamic_question_checkList_model.dart';
-part 'seller_fields_store.g.dart';
+import '../../data/models/faq_model.dart';
+part 'faq_store.g.dart';
 
-class SellerFieldsStore = _SellerFieldsStoreBase with _$SellerFieldsStore;
+class FAQStore = _FAQStoreBase with _$FAQStore;
 
-abstract class _SellerFieldsStoreBase with Store {
+abstract class _FAQStoreBase with Store {
   final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
 
   bool update = false;
-  
+
   @observable
-  DynamicFieldModel dynamicFieldModel = DynamicFieldModel(
-    name: "",
-    type: TypeField.TEXT,
+  String userRole = "";
+
+  @observable
+  FAQModel faqModel = FAQModel(
+    question: "",
+    answer: "",
   );
-
-  @observable
-  bool searchClicked = false;
-
-  @action
-  setSearchClicked(bool newData) {
-    searchClicked = newData;
-  }
 
   @observable
   int pageablePage = 0;
@@ -40,45 +35,61 @@ abstract class _SellerFieldsStoreBase with Store {
   int pageableSize = 10;
 
   @observable
-  DynamicFieldModel dynamicFieldEditModel= DynamicFieldModel(
-    name: "",
-    type: TypeField.TEXT,
+  FAQModel faqEditModel = FAQModel(
+    question: "",
+    answer: "",
   );
 
   @action
-  _setDynamicFieldEditModel(DynamicFieldModel newData) {
-    dynamicFieldEditModel = newData;
+  _setFAQEditModel(FAQModel newData) {
+    faqEditModel = newData;
   }
 
   @observable
-  String status = "";
-
-  @action
-  setStatus(String newData) {
-    status = newData;
-  }
-
-  ObservableList<DynamicFieldModel> dynamicFieldModelList = ObservableList<DynamicFieldModel>();
-  
-  @action
-  _setDynamicFieldModelList(List<DynamicFieldModel> data) {
-    dynamicFieldModelList.addAll(data);
-  }
+  String? searchFAQ;
 
   @action
   reset() {
-    dynamicFieldModelList.clear();
+    faqList.clear();
+    searchFAQ = null;
+    update = false;
+
+    faqEditModel = FAQModel(
+      question: "",
+      answer: "",
+    );
+
+    faqModel = FAQModel(
+      question: "",
+      answer: "",
+    );
   }
 
-  Future<bool> onQuestionsInit() async {
+  @action
+  setSearchFAQ(String? newData) {
+    searchFAQ = newData;
+  }
+
+  ObservableList<FAQModel> faqList = ObservableList<FAQModel>();
+  @action
+  _setFAQList(List<FAQModel> data) {
+    faqList.addAll(data);
+  }
+
+  Future<bool> onFAQInit() async {
+    userRole = (await SecureStorageHelper.read(key: StorageKeys.userRole))!;
+
+    print(userRole);
+
     try {
-      PageListModel pageList = await _datasource.getDynamicFields(
+      PageListModel pageList = await _datasource.getFAQs(
         size: pageableSize,
         page: pageablePage,
+        search: searchFAQ ?? "",
       );
 
-      dynamicFieldModelList.clear();
-      _setDynamicFieldModelList(pageList.content.cast<DynamicFieldModel>().toList());
+      faqList.clear();
+      _setFAQList(pageList.content.cast<FAQModel>().toList());
 
       return true;
     } catch (err) {
@@ -90,12 +101,13 @@ abstract class _SellerFieldsStoreBase with Store {
     try {
       _setPage(pageablePage + 1);
 
-      PageListModel pageList = await _datasource.getDynamicFields(
+      PageListModel pageList = await _datasource.getFAQs(
         size: pageableSize,
         page: pageablePage,
+        search: searchFAQ ?? "",
       );
 
-      _setDynamicFieldModelList(pageList.content.cast<DynamicFieldModel>().toList());
+      _setFAQList(pageList.content.cast<FAQModel>().toList());
 
       return true;
     } catch (e) {
@@ -105,19 +117,19 @@ abstract class _SellerFieldsStoreBase with Store {
     }
   }
 
-  Future<bool> addDynamicQuestion() async {
+  Future<bool> addFAQ() async {
     try {
-      await _datasource.addDynamicField(dynamicFieldModel: dynamicFieldModel);
-      
+      await _datasource.addFAQ(faqModel: faqModel);
+
       return true;
     } catch (err) {
       return false;
     }
   }
 
-  Future<bool> updateDynamicQuestion() async {
+  Future<bool> updateFAQ() async {
     try {
-      await _datasource.updateDynamicField(dynamicFieldModel: dynamicFieldEditModel);
+      await _datasource.updateFAQ(faqModel: faqEditModel);
 
       return true;
     } catch (err) {
@@ -130,10 +142,10 @@ abstract class _SellerFieldsStoreBase with Store {
 
   @observable
   PageController pageController = PageController();
-  
+
   @observable
   int currentPage = 0;
-  
+
   @action
   nextPage() {
     pageController.nextPage(
@@ -173,4 +185,3 @@ abstract class _SellerFieldsStoreBase with Store {
         );
   }
 }
-

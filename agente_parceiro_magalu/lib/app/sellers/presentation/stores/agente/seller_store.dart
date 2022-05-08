@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:agente_parceiro_magalu/app/sellers/data/datasources/seller_datasource.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
+import 'package:excel/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'seller_store.g.dart';
@@ -25,8 +29,6 @@ abstract class _SellerStoreBase with Store {
     endereco: "",
     numero: "",
     complemento: "",
-    cadastro: "",
-    dataPedidoTeste: "",
   );
   @action
   setSellerModel(SellerModel newData) {
@@ -69,6 +71,44 @@ abstract class _SellerStoreBase with Store {
   }
 
   int pageListTotalElements = 0;
+
+  Future<String?> readSheets({required BuildContext context}) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    PlatformFile file = result!.files.first;
+
+    var bytes = File(file.path!).readAsBytesSync();
+    var excel = Excel.decodeBytes(bytes);
+
+    List<Map<String, dynamic>> mapList = [];
+
+    for (var table in excel.tables.keys) {
+      for (int i = 0; i < excel.tables[table]!.rows.length; i++) {
+        var row = excel.tables[table]!.rows[i];
+        Map<String, dynamic> map = {};
+        for (int j = 0; j < row.length; j++) {
+          var value = row[j]?.value;
+          if (i > 0) {
+            map["${excel.tables[table]!.rows[0][j]!.value}"] = "${value}";
+          }
+        }
+        if (i > 0) {
+          mapList.add(map);
+        }
+      }
+    }
+
+    List<SellerModel> sellers =
+        mapList.map((e) => SellerModel.fromJson(e)).toList();
+
+    var ret = await _datasource.addSellerList(sellerModelList: sellers);
+
+    if (ret != null) return ret;
+  }
+
+  Future forceGetSellers() async {
+    pageableSize = 500;
+    await onSellerInit();
+  }
 
   Future<bool> onSellerInit() async {
     try {
@@ -204,8 +244,6 @@ abstract class _SellerStoreBase with Store {
     enderecoController.text = sellerModel.endereco;
     numeroController.text = sellerModel.numero;
     complementoController.text = sellerModel.complemento;
-    cadastroController.text = sellerModel.cadastro;
-    dataPedidoController.text = sellerModel.dataPedidoTeste;
   }
 
   void cleanAddSeller() {
@@ -218,8 +256,6 @@ abstract class _SellerStoreBase with Store {
     enderecoController = TextEditingController();
     numeroController = TextEditingController();
     complementoController = TextEditingController();
-    cadastroController = TextEditingController();
-    dataPedidoController = TextEditingController();
     cnpjController = TextEditingController();
   }
 
