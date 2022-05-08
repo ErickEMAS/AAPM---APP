@@ -18,6 +18,14 @@ abstract class _ChecklistStoreBase with Store {
     checklistModel = newData;
   }
 
+  ObservableList<ChecklistModel> checklistList =
+      ObservableList<ChecklistModel>();
+  @action
+  _setChecklistList(List<ChecklistModel> data) {
+    checklistList.clear();
+    checklistList.addAll(data);
+  }
+
   Future<bool> startChecklist(String sellerId) async {
     try {
       ChecklistModel startCheck =
@@ -48,11 +56,27 @@ abstract class _ChecklistStoreBase with Store {
 
   Future<bool> getChecklistHistorico(String sellerId) async {
     try {
-      await _datasource.getChecklistHistorico(sellerId: sellerId);
+      final ret = await _datasource.getChecklistHistorico(sellerId: sellerId);
+
+      _setChecklistList(ret);
 
       return true;
     } catch (err) {
       return false;
     }
+  }
+
+  String formattDateTime(DateTime time) {
+    String convertedDateTime =
+        "${time.day.toString()}/${time.month.toString().padLeft(2, '0')}/${time.year.toString().padLeft(2, '0')} às ${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+
+    return convertedDateTime;
+  }
+
+  Future<bool> navigateToChecklistOverview(
+      BuildContext context, ChecklistModel checklistModel) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.checklistOverview, arguments: checklistModel)
+        .then((value) => true);
   }
 }

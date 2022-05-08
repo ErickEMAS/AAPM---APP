@@ -13,7 +13,8 @@ class AppRoutes {
   static const editSeller = sellers + "/edit";
   static const checklistVisitaSeller = sellers + "/checklistVisitaSeller";
   static const checklistHistorico = sellers + "/historicoVisita";
-
+  static const checklistOverview =
+      sellers + checklistHistorico + "checklistOverview";
   static const calendar = '/calendar';
   static const agent = '/agent';
 

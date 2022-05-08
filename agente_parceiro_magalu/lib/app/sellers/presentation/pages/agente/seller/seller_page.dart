@@ -82,66 +82,64 @@ class _SellerPageState extends State<SellerPage> {
   @override
   Widget build(BuildContext context) {
     return AppSafeArea(
-      child: Observer(builder: (_) {
-        return Scaffold(
-          appBar: AppBarGradient(
-            leading: currentPage == 1
-                ? BackButton(
-                    onPressed: () => _previousPage(),
-                  )
-                : null,
-            title: "Carteira",
-            actions: [
-              _exportAllSellersFromList(),
-            ],
-          ),
-          floatingActionButton: currentPage == 0
-              ? SpeedDial(
-                  animatedIcon: AnimatedIcons.menu_close,
-                  children: [
-                    SpeedDialChild(
-                      child: Icon(Icons.add),
-                      label: "Adicionar novo Seller",
-                      onTap: () async {
-                        _nextPage();
-                      },
-                    ),
-                    SpeedDialChild(
-                      child: Icon(Icons.file_download),
-                      label: "Exportar Sellers",
-                      onTap: () async {
-                        await _store.forceGetSellers();
-                        creatSheet();
-                      },
-                    ),
-                    SpeedDialChild(
-                      child: Icon(Icons.file_upload),
-                      label: "Importar Sellers",
-                      onTap: () async {
-                        String? ret = await _store.readSheets(context: context);
-
-                        if (ret != null) _returnMsg(string: ret);
-                      },
-                    ),
-                  ],
+      child: Scaffold(
+        appBar: AppBarGradient(
+          leading: currentPage == 1
+              ? BackButton(
+                  onPressed: () => _previousPage(),
                 )
               : null,
-          body: PageView.builder(
-            clipBehavior: Clip.none,
-            itemCount: 2,
-            physics: const NeverScrollableScrollPhysics(),
-            controller: pageController,
-            itemBuilder: (context, index) {
-              return index == 0
-                  ? const SellerListView()
-                  : AddSellerView(
-                      previousPage: _previousPage,
-                    );
-            },
-          ),
-          bottomNavigationBar: AppBottomBar(),
-        );
-      }),
+          title: "Carteira",
+          actions: [
+            _exportAllSellersFromList(),
+          ],
+        ),
+        floatingActionButton: currentPage == 0
+            ? SpeedDial(
+                animatedIcon: AnimatedIcons.menu_close,
+                children: [
+                  SpeedDialChild(
+                    child: Icon(Icons.add),
+                    label: "Adicionar novo Seller",
+                    onTap: () async {
+                      _nextPage();
+                    },
+                  ),
+                  SpeedDialChild(
+                    child: Icon(Icons.file_download),
+                    label: "Exportar Sellers",
+                    onTap: () async {
+                      await _store.forceGetSellers();
+                      creatSheet();
+                    },
+                  ),
+                  SpeedDialChild(
+                    child: Icon(Icons.file_upload),
+                    label: "Importar Sellers",
+                    onTap: () async {
+                      String? ret = await _store.readSheets(context: context);
+
+                      if (ret != null) _returnMsg(string: ret);
+                    },
+                  ),
+                ],
+              )
+            : null,
+        body: PageView.builder(
+          clipBehavior: Clip.none,
+          itemCount: 2,
+          physics: const NeverScrollableScrollPhysics(),
+          controller: pageController,
+          itemBuilder: (context, index) {
+            return index == 0
+                ? const SellerListView()
+                : AddSellerView(
+                    previousPage: _previousPage,
+                  );
+          },
+        ),
+        bottomNavigationBar: AppBottomBar(),
+      ),
     );
   }
 

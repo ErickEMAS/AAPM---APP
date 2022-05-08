@@ -42,40 +42,40 @@ class TagListBuilder extends StatelessWidget {
     List<TagModel> tagList = isSeller ? sellerModel!.tags! : _tagStore.tagList;
 
     list.addAll(tagList.map((tag) {
-      return Observer(builder: (_) {
-        return GestureDetector(
-          onTap: () {
-            _tagStore.setTagNameSelected(tag.id!);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: SwitchTagEnum.switchEnumColor(tag.color),
-              border: isSeller
-                  ? null
-                  : Border.all(
-                      color: _tagStore.tagSelectedId == tag.id!
-                          ? AppColors.white
-                          : AppColors.black.withOpacity(0.4),
-                      width: 2,
-                    ),
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+      // return Observer(builder: (_) {
+      return GestureDetector(
+        onTap: () {
+          _tagStore.setTagNameSelected(tag.id!);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: SwitchTagEnum.switchEnumColor(tag.color),
+            border: isSeller
+                ? null
+                : Border.all(
+                    color: _tagStore.tagSelectedId == tag.id!
+                        ? AppColors.white
+                        : AppColors.black.withOpacity(0.4),
+                    width: 2,
+                  ),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppDimens.space,
+              vertical: 3,
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppDimens.space,
-                vertical: 3,
-              ),
-              child: Text(
-                tag.name,
-                style: AppTextStyles.bold(
-                  color: AppColors.white,
-                  size: 12,
-                ),
+            child: Text(
+              tag.name,
+              style: AppTextStyles.bold(
+                color: AppColors.white,
+                size: 12,
               ),
             ),
           ),
-        );
-      });
+        ),
+      );
+      // });
     }));
 
     return list;

@@ -29,7 +29,8 @@ abstract class ISellerDatasource {
   Future answerChecklist({
     required ChecklistModel checklistModel,
   });
-  Future getChecklistHistorico({required String sellerId});
+  Future<List<ChecklistModel>> getChecklistHistorico(
+      {required String sellerId});
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -157,7 +158,8 @@ class SellerDatasource implements ISellerDatasource {
   }
 
   @override
-  Future getChecklistHistorico({required String sellerId}) async {
+  Future<List<ChecklistModel>> getChecklistHistorico(
+      {required String sellerId}) async {
     try {
       Map<String, dynamic> params = {
         "sellerId": sellerId,
@@ -168,9 +170,9 @@ class SellerDatasource implements ISellerDatasource {
         queryParameters: params,
       );
 
-      // SellerModel sellerModel = SellerModel.fromJson(response);
-      print(response);
-      return;
+      List<ChecklistModel> checks =
+          (response as List).map((e) => ChecklistModel.fromJson(e)).toList();
+      return checks;
     } catch (err) {
       print(err);
       rethrow;

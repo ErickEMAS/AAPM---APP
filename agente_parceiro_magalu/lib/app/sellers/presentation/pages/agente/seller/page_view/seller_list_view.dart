@@ -94,21 +94,19 @@ class _SellerListViewState extends State<SellerListView> {
         SizedBox(height: AppDimens.margin * 2.8),
         Observer(builder: (_) {
           return Flexible(
-            child: SizedBox(
-              child: ListView.builder(
-                clipBehavior: Clip.none,
-                // shrinkWrap: true,
-                itemCount: _sellerStore.sellerList.length,
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  return SellerCardWidget(
-                      sellerModel: _sellerStore.sellerList[index],
-                      onAddButtonPressed: () {
-                        _tagStore.getTags();
-                        _addTags(sellerId: _sellerStore.sellerList[index].id!);
-                      });
-                },
-              ),
+            child: ListView.builder(
+              clipBehavior: Clip.none,
+              // shrinkWrap: true,
+              itemCount: _sellerStore.sellerList.length,
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                return SellerCardWidget(
+                    sellerModel: _sellerStore.sellerList[index],
+                    onAddButtonPressed: () {
+                      _tagStore.getTags();
+                      _addTags(sellerId: _sellerStore.sellerList[index].id!);
+                    });
+              },
             ),
           );
         }),
