@@ -7,9 +7,10 @@ import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class TagListBuilder extends StatelessWidget {
-  SellerModel? sellerModel;
+  final SellerModel? sellerModel;
 
   TagListBuilder({
     Key? key,
@@ -41,6 +42,7 @@ class TagListBuilder extends StatelessWidget {
     List<TagModel> tagList = isSeller ? sellerModel!.tags! : _tagStore.tagList;
 
     list.addAll(tagList.map((tag) {
+      // return Observer(builder: (_) {
       return GestureDetector(
         onTap: () {
           _tagStore.setTagNameSelected(tag.id!);
@@ -73,7 +75,8 @@ class TagListBuilder extends StatelessWidget {
           ),
         ),
       );
-    }).toList());
+      // });
+    }));
 
     return list;
   }

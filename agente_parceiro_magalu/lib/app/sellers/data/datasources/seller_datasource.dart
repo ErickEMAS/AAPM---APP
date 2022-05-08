@@ -28,8 +28,9 @@ abstract class ISellerDatasource {
 
   Future answerChecklist({
     required ChecklistModel checklistModel,
-    required List<QuestionsModel> listChecklist,
   });
+  Future<List<ChecklistModel>> getChecklistHistorico(
+      {required String sellerId});
 }
 
 class SellerDatasource implements ISellerDatasource {
@@ -102,7 +103,8 @@ class SellerDatasource implements ISellerDatasource {
   }
 
   @override
-  Future<String> addSellerList({required List<SellerModel> sellerModelList}) async {
+  Future<String> addSellerList(
+      {required List<SellerModel> sellerModelList}) async {
     try {
       final response = await _httpWithAuth.post(
         Endpoints.addSellerList,
@@ -110,7 +112,7 @@ class SellerDatasource implements ISellerDatasource {
       );
 
       print(response);
-      return(response);
+      return (response);
     } catch (err) {
       print(err);
       rethrow;
@@ -149,6 +151,28 @@ class SellerDatasource implements ISellerDatasource {
           (response as List).map((e) => TagModel.fromJson(e)).toList();
 
       return tags;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ChecklistModel>> getChecklistHistorico(
+      {required String sellerId}) async {
+    try {
+      Map<String, dynamic> params = {
+        "sellerId": sellerId,
+      };
+
+      final response = await _httpWithAuth.get(
+        Endpoints.getChecklists,
+        queryParameters: params,
+      );
+
+      List<ChecklistModel> checks =
+          (response as List).map((e) => ChecklistModel.fromJson(e)).toList();
+      return checks;
     } catch (err) {
       print(err);
       rethrow;
@@ -221,29 +245,18 @@ class SellerDatasource implements ISellerDatasource {
   @override
   Future answerChecklist({
     required ChecklistModel checklistModel,
-    required List<QuestionsModel> listChecklist,
   }) async {
     try {
-      // ChecklistModel check = ChecklistModel(
-      //   id: checklistId,
-      //   dataVisita: checklistDataVisita,
-      // );
-
       var json = checklistModel.toJson();
 
-      // json["questions"] = jsonEncode(listChecklist[0]);
-      json["questions"] = listChecklist;
-
-      print(jsonEncode(json));
-
       final response = await _httpWithAuth.post(
-        Endpoints.startChecklist,
-        data: jsonEncode(json),
+        Endpoints.answerChecklist,
+        data: json,
       );
 
       print(response);
     } on DioError catch (err) {
-      err.message;
+      print(err);
       rethrow;
     } catch (err) {
       print(err);

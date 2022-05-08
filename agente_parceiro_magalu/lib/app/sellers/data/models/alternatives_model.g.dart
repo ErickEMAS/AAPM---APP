@@ -6,14 +6,16 @@ part of 'alternatives_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AlternativesModel _$AlternativesModelFromJson(Map<String, dynamic> json) =>
-    AlternativesModel(
+AlternativeModel _$AlternativeModelFromJson(Map<String, dynamic> json) =>
+    AlternativeModel(
       id: json['id'] as String?,
-      title: json['name'] as String?,
+      name: json['name'] as String?,
+      checked: json['checked'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$AlternativesModelToJson(AlternativesModel instance) =>
+Map<String, dynamic> _$AlternativeModelToJson(AlternativeModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.title,
+      'name': instance.name,
+      'checked': instance.checked,
     };

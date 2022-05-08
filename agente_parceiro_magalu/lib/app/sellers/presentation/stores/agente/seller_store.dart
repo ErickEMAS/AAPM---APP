@@ -285,4 +285,11 @@ abstract class _SellerStoreBase with Store {
           (value) => false,
         );
   }
+
+  Future<bool> navigateToHistoricoChecklist(
+      BuildContext context, String sellerId) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.checklistHistorico, arguments: sellerId)
+        .then((value) => true);
+  }
 }

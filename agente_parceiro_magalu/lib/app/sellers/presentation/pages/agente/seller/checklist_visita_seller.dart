@@ -8,14 +8,15 @@ import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
+import 'package:agente_parceiro_magalu/shared/widgets/app_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ChecklistVisitaSeller extends StatefulWidget {
-  String sellerId;
+  final String sellerId;
 
-  ChecklistVisitaSeller({
+  const ChecklistVisitaSeller({
     Key? key,
     required this.sellerId,
   }) : super(key: key);
@@ -27,7 +28,6 @@ class ChecklistVisitaSeller extends StatefulWidget {
 class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
   final ChecklistStore _checklistStore = serviceLocator<ChecklistStore>();
 
-  List<QuestionsModel> isQuestionChecked = [];
   @override
   void initState() {
     SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -60,6 +60,7 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
                         itemBuilder: (context, index) {
                           return _questionCard(
                             _checklistStore.checklistModel!.questions![index],
+                            index,
                           );
                         },
                       )
@@ -67,17 +68,24 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // if (isQuestionCheckedQuestionLenght <
-                      //     _checklistStore.checklistModel!.questions!.length) {
-                      //   SnackBarHelper.snackBar(
-                      //     context,
-                      //     isError: true,
-                      //     message: "Você deve marcar todos os campos",
-                      //   );
-                      // } else {
-                      _checklistStore.answerChecklist(isQuestionChecked);
-                      // }
+                    onPressed: () async {
+                      bool ret = await LoadingOverlay.of(context).during(
+                        _checklistStore.answerChecklist(),
+                      );
+
+                      if (ret) {
+                        Navigator.pop(context);
+                        SnackBarHelper.snackBar(
+                          context,
+                          message: "Checklist salva com sucesso!",
+                        );
+                      } else {
+                        SnackBarHelper.snackBar(
+                          context,
+                          isError: true,
+                          message: "Falha ao salvar o checklist!",
+                        );
+                      }
                     },
                     child: const Text("Enviar checklist"),
                   ),
@@ -91,23 +99,25 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
     );
   }
 
-  _questionCard(QuestionsModel questionsModel) {
+  _questionCard(QuestionModel questionModel, int questionIndex) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          questionsModel.question!,
+          questionModel.question!,
           style: AppTextStyles.bold(size: 14),
         ),
         SizedBox(height: AppDimens.space),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: questionsModel.alternatives!.length,
+          itemCount: questionModel.alternatives!.length,
           itemBuilder: (context, index) {
             return _checkboxTile(
-              alternativesModel: questionsModel.alternatives![index],
-              questionsModel: questionsModel,
+              alternativeModel: questionModel.alternatives![index],
+              indexAlternative: index,
+              indexQuestion: questionIndex,
+              questionModel: questionModel,
             );
           },
         ),
@@ -116,47 +126,32 @@ class _ChecklistVisitaSellerState extends State<ChecklistVisitaSeller> {
   }
 
   _checkboxTile({
-    required AlternativesModel alternativesModel,
-    required QuestionsModel questionsModel,
+    required AlternativeModel alternativeModel,
+    required QuestionModel questionModel,
+    required int indexAlternative,
+    required int indexQuestion,
   }) {
-    bool checklistValue = isQuestionChecked
-        .map((quest) => quest.answer)
-        .contains(alternativesModel.title);
-
     return Column(
       children: [
         SizedBox(
           height: 40,
           child: CheckboxListTile(
-              title: Text(
-                alternativesModel.title ?? "",
-                style: AppTextStyles.regular(size: 15),
-              ),
-              // dense: true,
-              value: checklistValue,
-              controlAffinity: ListTileControlAffinity.leading,
-              onChanged: (bool? value) {
-                if (value! == true) {
-                  QuestionsModel questionsModelMock = QuestionsModel();
-                  questionsModelMock.answer = alternativesModel.title;
-                  questionsModelMock.id = questionsModel.id;
-                  questionsModelMock.fieldUpdateId =
-                      questionsModel.fieldUpdateId;
-                  questionsModelMock.active = true;
-
-                  setState(() {
-                    isQuestionChecked.add(questionsModelMock);
-                  });
-                } else {
-                  setState(() {
-                    isQuestionChecked.removeWhere(
-                      (item) => item.answer == alternativesModel.title,
-                    );
-                  });
-                }
-              }),
+            title: Text(
+              alternativeModel.name ?? "",
+              style: AppTextStyles.regular(size: 15),
+            ),
+            value: alternativeModel.checked,
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (bool? value) {
+              _checklistStore.checklistModel!.questions![indexQuestion]
+                      .alternatives![indexAlternative].checked =
+                  !_checklistStore.checklistModel!.questions![indexQuestion]
+                      .alternatives![indexAlternative].checked;
+              setState(() {});
+            },
+          ),
         ),
-        alternativesModel.title == "Outro"
+        alternativeModel.name == "Outro"
             ? SizedBox(
                 width: MediaQuery.of(context).size.width * 0.77,
                 child: TextFormField(

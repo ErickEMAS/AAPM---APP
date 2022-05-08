@@ -30,17 +30,9 @@ class SellerCardWidget extends StatelessWidget {
           Container(
             clipBehavior: Clip.none,
             padding: EdgeInsets.all(AppDimens.space * 2),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: AppColors.inputHint.withOpacity(0.5),
-              //     spreadRadius: 1,
-              //     blurRadius: 7,
-              //     offset: const Offset(0, 3), // changes position of shadow
-              //   ),
-              // ],
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
