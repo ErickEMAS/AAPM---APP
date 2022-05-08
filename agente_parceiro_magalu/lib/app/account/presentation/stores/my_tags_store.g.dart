@@ -50,6 +50,17 @@ mixin _$MyTagsStore on _MyTagsStoreBase, Store {
       ActionController(name: '_MyTagsStoreBase');
 
   @override
+  dynamic reset() {
+    final _$actionInfo = _$_MyTagsStoreBaseActionController.startAction(
+        name: '_MyTagsStoreBase.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$_MyTagsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setSelectedColor(Color newData) {
     final _$actionInfo = _$_MyTagsStoreBaseActionController.startAction(
         name: '_MyTagsStoreBase.setSelectedColor');
@@ -66,17 +77,6 @@ mixin _$MyTagsStore on _MyTagsStoreBase, Store {
         name: '_MyTagsStoreBase._setTagList');
     try {
       return super._setTagList(data);
-    } finally {
-      _$_MyTagsStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic reset() {
-    final _$actionInfo = _$_MyTagsStoreBaseActionController.startAction(
-        name: '_MyTagsStoreBase.reset');
-    try {
-      return super.reset();
     } finally {
       _$_MyTagsStoreBaseActionController.endAction(_$actionInfo);
     }
