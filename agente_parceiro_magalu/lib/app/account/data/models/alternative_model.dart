@@ -1,4 +1,3 @@
-import 'package:agente_parceiro_magalu/core/constants/enums.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'alternative_model.g.dart';

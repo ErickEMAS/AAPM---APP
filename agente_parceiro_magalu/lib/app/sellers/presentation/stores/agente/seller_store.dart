@@ -9,17 +9,13 @@ import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_xlsio/xlsio.dart';
-
-import '../../../../../core/snackbar_helper.dart';
 part 'seller_store.g.dart';
 
 class SellerStore = _SellerStoreBase with _$SellerStore;
 
 abstract class _SellerStoreBase with Store {
   final ISellerDatasource _datasource = serviceLocator<ISellerDatasource>();
+
   @observable
   SellerModel sellerModel = SellerModel(
     cnpj: "",
@@ -34,6 +30,10 @@ abstract class _SellerStoreBase with Store {
     numero: "",
     complemento: "",
   );
+  @action
+  setSellerModel(SellerModel newData) {
+    sellerModel = newData;
+  }
 
   @observable
   int pageablePage = 0;
@@ -65,8 +65,12 @@ abstract class _SellerStoreBase with Store {
 
   @action
   reset() {
-    sellerList.clear();
+    // sellerList.clear();
+    setSearchClicked(false);
+    _setPage(0);
   }
+
+  int pageListTotalElements = 0;
 
   Future<String?> readSheets({required BuildContext context}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -113,6 +117,10 @@ abstract class _SellerStoreBase with Store {
         page: pageablePage,
       );
 
+      pageListTotalElements = pageList.totalElements;
+
+      print(pageListTotalElements);
+
       _setSellerList(pageList.content.cast<SellerModel>().toList());
 
       return true;
@@ -121,16 +129,32 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
+  Future<List<SellerModel>?> getAllSellers() async {
+    try {
+      PageListModel pageList = await _datasource.getSellerList();
+
+      List<SellerModel>? seller = pageList.content.cast<SellerModel>().toList();
+
+      return seller;
+    } catch (err) {
+      print(err);
+      // return false;
+    }
+  }
+
   Future<bool> fetchNextPage() async {
     try {
-      _setPage(pageablePage + 1);
+      if (pageListTotalElements > sellerList.length) {
+        _setPage(pageablePage + 1);
 
-      PageListModel pageList = await _datasource.getSellerList(
-        size: pageableSize,
-        page: pageablePage,
-      );
+        PageListModel pageList = await _datasource.getSellerList(
+          size: pageableSize,
+          page: pageablePage,
+        );
 
-      _setSellerList(pageList.content.cast<SellerModel>().toList());
+        _setSellerList(pageList.content.cast<SellerModel>().toList());
+        print(pageListTotalElements);
+      }
 
       return true;
     } catch (e) {
@@ -171,9 +195,13 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
-  Future<bool> addSeller() async {
+  Future<bool> addSeller({
+    SellerModel? sellerModelFromSheet,
+  }) async {
     try {
-      await _datasource.addSeller(sellerModel: sellerModel);
+      sellerModelFromSheet != null
+          ? await _datasource.addSeller(sellerModel: sellerModelFromSheet)
+          : await _datasource.addSeller(sellerModel: sellerModel);
 
       return true;
     } catch (err) {
@@ -192,25 +220,46 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
-  //Page view navigation
-  final formKey = GlobalKey<FormState>();
-  @observable
-  PageController pageController = PageController();
-  @observable
-  int currentPage = 0;
-  @action
-  nextPage() {
-    pageController.nextPage(
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
-    currentPage = 1;
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController helenaController = TextEditingController();
+  TextEditingController telefoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController cidadeController = TextEditingController();
+  TextEditingController cepController = TextEditingController();
+  TextEditingController enderecoController = TextEditingController();
+  TextEditingController numeroController = TextEditingController();
+  TextEditingController complementoController = TextEditingController();
+  TextEditingController cadastroController = TextEditingController();
+  TextEditingController dataPedidoController = TextEditingController();
+  TextEditingController cnpjController = TextEditingController();
+
+  void fillAddSeller() {
+    cnpjController.text = sellerModel.cnpj;
+    nomeController.text = sellerModel.nome;
+    helenaController.text = sellerModel.helenaSellerCode;
+    telefoneController.text = sellerModel.telefone;
+    emailController.text = sellerModel.email;
+    cidadeController.text = sellerModel.cidade;
+    cepController.text = sellerModel.cep;
+    enderecoController.text = sellerModel.endereco;
+    numeroController.text = sellerModel.numero;
+    complementoController.text = sellerModel.complemento;
   }
 
-  @action
-  previousPage() {
-    pageController.previousPage(
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
-    currentPage = 0;
+  void cleanAddSeller() {
+    nomeController = TextEditingController();
+    helenaController = TextEditingController();
+    telefoneController = TextEditingController();
+    emailController = TextEditingController();
+    cidadeController = TextEditingController();
+    cepController = TextEditingController();
+    enderecoController = TextEditingController();
+    numeroController = TextEditingController();
+    complementoController = TextEditingController();
+    cnpjController = TextEditingController();
   }
+
+  //Page view navigation
 
   Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
     return Navigator.of(context)

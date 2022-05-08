@@ -12,8 +12,8 @@ import 'package:dio/dio.dart';
 
 abstract class ISellerDatasource {
   Future<PageListModel> getSellerList({
-    required int size,
-    required int page,
+    int? size,
+    int? page,
     String? tagId,
     String? nome,
   });
@@ -45,8 +45,8 @@ class SellerDatasource implements ISellerDatasource {
 
   @override
   Future<PageListModel> getSellerList({
-    required int size,
-    required int page,
+    int? size,
+    int? page,
     String? tagId,
     String? nome,
   }) async {
@@ -64,7 +64,7 @@ class SellerDatasource implements ISellerDatasource {
 
       final response = await _httpWithAuth.get(
         Endpoints.getSellerListByAgentId,
-        queryParameters: params,
+        queryParameters: size != null ? params : null,
       );
       PageListModel pageList = PageListModel.fromJson(response);
 

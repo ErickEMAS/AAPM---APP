@@ -63,12 +63,14 @@ class _AdminAccountPageState extends State<AdminAccountPage> {
                           AppUserAccountItemList(
                             tittle: "Trocar senha",
                             iconData: Icons.lock,
-                            onClick: () => _store.navigateToChangepassword(context),
+                            onClick: () =>
+                                _store.navigateToChangepassword(context),
                           ),
                           AppUserAccountItemList(
                             tittle: "Alterar E-mail",
                             iconData: Icons.mail,
-                            onClick: () => _store.navigateToChangeEmail(context),
+                            onClick: () =>
+                                _store.navigateToChangeEmail(context),
                           ),
                           AppUserAccountItemList(
                             tittle: "Adicionar Agente",
@@ -83,19 +85,21 @@ class _AdminAccountPageState extends State<AdminAccountPage> {
                           AppUserAccountItemList(
                             tittle: "Campos do Seller",
                             iconData: Icons.dashboard_customize,
-                            onClick: () => _store.navigateToSellerFields(context),
+                            onClick: () =>
+                                _store.navigateToSellerFields(context),
                           ),
                           AppUserAccountItemList(
                             tittle: "Questões do Checklist",
                             iconData: Icons.checklist,
-                            onClick: () => _store.navigateToQuestionsChecklist(context),
+                            onClick: () =>
+                                _store.navigateToQuestionsChecklist(context),
                           ),
                           AppUserAccountItemList(
                             tittle: "FAQ",
                             iconData: Icons.quiz,
                             onClick: () => _store.navigateToFAQ(context),
                           ),
-                          AppLogout(),
+                          const AppLogout(),
                         ],
                       ),
                       const AppUserAccountFooter(),

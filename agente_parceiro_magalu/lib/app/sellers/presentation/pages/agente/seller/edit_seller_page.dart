@@ -29,6 +29,7 @@ class _EditSellerPageState extends State<EditSellerPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
 
   double phoneWidth = 0;
+  final formKey = GlobalKey<FormState>();
 
   late SellerModel sellerModel;
 
@@ -53,7 +54,7 @@ class _EditSellerPageState extends State<EditSellerPage> {
         child: Padding(
           padding: EdgeInsets.all(AppDimens.margin),
           child: Form(
-            key: _store.formKey,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

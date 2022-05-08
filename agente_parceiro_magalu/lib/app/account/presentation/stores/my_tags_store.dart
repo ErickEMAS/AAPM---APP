@@ -4,7 +4,6 @@ import 'package:mobx/mobx.dart';
 
 import '../../../../core/constants/enums.dart';
 import '../../../../core/locators/service_locators.dart';
-import '../../../../core/models/page_list_model.dart';
 import '../../data/datasources/account_datasource.dart';
 part 'my_tags_store.g.dart';
 
@@ -12,9 +11,9 @@ class MyTagsStore = _MyTagsStoreBase with _$MyTagsStore;
 
 abstract class _MyTagsStoreBase with Store {
   final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
-  
+
   final formKey = GlobalKey<FormState>();
-  
+
   @observable
   PageController pageController = PageController();
 
@@ -46,10 +45,10 @@ abstract class _MyTagsStoreBase with Store {
     tagModel = TagModel(name: "", color: TagColors.amarelo);
 
     tagNameController.clear();
-    
+
     tagList.clear();
   }
-  
+
   @action
   setSelectedColor(Color newData) {
     selectedColor = newData;
@@ -65,7 +64,7 @@ abstract class _MyTagsStoreBase with Store {
     try {
       tagModel.name = tagNameController.text;
       await _datasource.addTag(tagModel: tagModel);
-        onTagInit();
+      onTagInit();
       return true;
     } catch (err) {
       return false;
@@ -76,7 +75,7 @@ abstract class _MyTagsStoreBase with Store {
     try {
       tagModel.name = tagNameController.text;
       await _datasource.updateTag(tagModel: tagModel);
-        onTagInit();
+      onTagInit();
       return true;
     } catch (err) {
       return false;
@@ -86,5 +85,4 @@ abstract class _MyTagsStoreBase with Store {
   void navigateback(BuildContext context) {
     return Navigator.pop(context);
   }
-
 }

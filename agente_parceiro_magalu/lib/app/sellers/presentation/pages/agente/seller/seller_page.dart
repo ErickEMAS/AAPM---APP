@@ -1,11 +1,19 @@
+import 'dart:convert';
+
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'dart:io';
 
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/add_seller_view.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/seller_list_view.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/shared/sheets/sheets_field.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
+import 'package:agente_parceiro_magalu/core/api/google_api.dart';
+import 'package:agente_parceiro_magalu/core/api/sheets/seller_sheets_api.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
+import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bottom_bar_widget.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_safe_area_widget.dart';
@@ -33,13 +41,42 @@ class SellerPage extends StatefulWidget {
 class _SellerPageState extends State<SellerPage> {
   final SellerStore _store = serviceLocator<SellerStore>();
 
+  PageController pageController = PageController();
+
+  int currentPage = 0;
+
+  _nextPage() {
+    pageController.nextPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
+    _store.sellerList.clear();
+    setState(() {
+      currentPage = 1;
+    });
+    _store.reset();
+  }
+
+  _previousPage() {
+    pageController.previousPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
+    LoadingOverlay.of(context).during(_store.onSellerInit());
+    setState(() {
+      currentPage = 0;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _store.reset();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       LoadingOverlay.of(context).during(_store.onSellerInit());
     });
+  }
+
+  @override
+  void dispose() {
+    _store.sellerList.clear();
+    _store.reset();
+    super.dispose();
   }
 
   @override
@@ -48,14 +85,17 @@ class _SellerPageState extends State<SellerPage> {
       child: Observer(builder: (_) {
         return Scaffold(
           appBar: AppBarGradient(
-            leading: _store.currentPage == 1
+            leading: currentPage == 1
                 ? BackButton(
-                    onPressed: () => _store.previousPage(),
+                    onPressed: () => _previousPage(),
                   )
                 : null,
             title: "Carteira",
+            actions: [
+              _exportAllSellersFromList(),
+            ],
           ),
-          floatingActionButton: _store.currentPage == 0
+          floatingActionButton: currentPage == 0
               ? SpeedDial(
                   animatedIcon: AnimatedIcons.menu_close,
                   children: [
@@ -63,7 +103,7 @@ class _SellerPageState extends State<SellerPage> {
                       child: Icon(Icons.add),
                       label: "Adicionar novo Seller",
                       onTap: () async {
-                        _store.nextPage();
+                        _nextPage();
                       },
                     ),
                     SpeedDialChild(
@@ -90,9 +130,13 @@ class _SellerPageState extends State<SellerPage> {
             clipBehavior: Clip.none,
             itemCount: 2,
             physics: const NeverScrollableScrollPhysics(),
-            controller: _store.pageController,
+            controller: pageController,
             itemBuilder: (context, index) {
-              return index == 0 ? const SellerListView() : AddSellerView();
+              return index == 0
+                  ? const SellerListView()
+                  : AddSellerView(
+                      previousPage: _previousPage,
+                    );
             },
           ),
           bottomNavigationBar: AppBottomBar(),
@@ -200,5 +244,35 @@ class _SellerPageState extends State<SellerPage> {
         );
       }),
     );
+  }
+
+  _exportAllSellersFromList() {
+    return ElevatedButton(
+        onPressed: () async {
+          // List<SellerModel>? seller = await _store.getAllSellers();
+
+          // await SellerSheetsApi.init();
+
+          // if (seller != null) {
+          //   final sellerDecode = SheetsFieldModel.fromJsonSellerModelList(
+          //       jsonDecode(jsonEncode(seller)));
+
+          //   final jsonList =
+          //       sellerDecode.map((seller) => seller.toJson()).toList();
+
+          //   SellerSheetsApi.insertList(jsonList);
+          // }
+
+          GoogleApi.signIn();
+        },
+        style: ElevatedButton.styleFrom(
+          primary: AppColors.white,
+        ),
+        child: Text(
+          "exportar",
+          style: AppTextStyles.bold(
+            color: AppColors.primary,
+          ),
+        ));
   }
 }

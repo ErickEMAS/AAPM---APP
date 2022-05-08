@@ -99,38 +99,19 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
-  final _$pageControllerAtom = Atom(name: '_SellerStoreBase.pageController');
-
-  @override
-  PageController get pageController {
-    _$pageControllerAtom.reportRead();
-    return super.pageController;
-  }
-
-  @override
-  set pageController(PageController value) {
-    _$pageControllerAtom.reportWrite(value, super.pageController, () {
-      super.pageController = value;
-    });
-  }
-
-  final _$currentPageAtom = Atom(name: '_SellerStoreBase.currentPage');
-
-  @override
-  int get currentPage {
-    _$currentPageAtom.reportRead();
-    return super.currentPage;
-  }
-
-  @override
-  set currentPage(int value) {
-    _$currentPageAtom.reportWrite(value, super.currentPage, () {
-      super.currentPage = value;
-    });
-  }
-
   final _$_SellerStoreBaseActionController =
       ActionController(name: '_SellerStoreBase');
+
+  @override
+  dynamic setSellerModel(SellerModel newData) {
+    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
+        name: '_SellerStoreBase.setSellerModel');
+    try {
+      return super.setSellerModel(newData);
+    } finally {
+      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic _setPage(int value) {
@@ -210,28 +191,6 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
-  dynamic nextPage() {
-    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
-        name: '_SellerStoreBase.nextPage');
-    try {
-      return super.nextPage();
-    } finally {
-      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic previousPage() {
-    final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
-        name: '_SellerStoreBase.previousPage');
-    try {
-      return super.previousPage();
-    } finally {
-      _$_SellerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 sellerModel: ${sellerModel},
@@ -239,9 +198,7 @@ pageablePage: ${pageablePage},
 sellerEditModel: ${sellerEditModel},
 searchClicked: ${searchClicked},
 tagId: ${tagId},
-nomeSeller: ${nomeSeller},
-pageController: ${pageController},
-currentPage: ${currentPage}
+nomeSeller: ${nomeSeller}
     ''';
   }
 }

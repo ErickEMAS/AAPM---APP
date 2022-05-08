@@ -1,5 +1,4 @@
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/search_filter_widget.dart';
-import 'package:agente_parceiro_magalu/shared/widgets/app_dropdown.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/swtich_tag_enum_to_color.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/tag_list_builder.dart';
@@ -45,6 +44,7 @@ class _SellerListViewState extends State<SellerListView> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _sellerStore.reset();
     super.dispose();
   }
 
@@ -70,7 +70,9 @@ class _SellerListViewState extends State<SellerListView> {
                         _sellerStore
                             .setSearchClicked(!_sellerStore.searchClicked);
                       },
-                      icon: Icon(_sellerStore.searchClicked ? Icons.close : Icons.search),
+                      icon: Icon(_sellerStore.searchClicked
+                          ? Icons.close
+                          : Icons.search),
                     )
                   ],
                 ),
@@ -79,19 +81,24 @@ class _SellerListViewState extends State<SellerListView> {
             );
           }),
         ),
+        SizedBox(height: AppDimens.margin * 2.8),
         Observer(builder: (_) {
-          return Expanded(
-            child: ListView.builder(
-              itemCount: _sellerStore.sellerList.length,
-              controller: _scrollController,
-              itemBuilder: (context, index) {
-                return SellerCardWidget(
-                    sellerModel: _sellerStore.sellerList[index],
-                    onAddButtonPressed: () {
-                      _tagStore.getTags();
-                      _addTags(sellerId: _sellerStore.sellerList[index].id!);
-                    });
-              },
+          return Flexible(
+            child: SizedBox(
+              child: ListView.builder(
+                clipBehavior: Clip.none,
+                // shrinkWrap: true,
+                itemCount: _sellerStore.sellerList.length,
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  return SellerCardWidget(
+                      sellerModel: _sellerStore.sellerList[index],
+                      onAddButtonPressed: () {
+                        _tagStore.getTags();
+                        _addTags(sellerId: _sellerStore.sellerList[index].id!);
+                      });
+                },
+              ),
             ),
           );
         }),

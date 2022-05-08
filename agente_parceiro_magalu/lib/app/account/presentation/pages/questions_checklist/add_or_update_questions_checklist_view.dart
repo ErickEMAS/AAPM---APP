@@ -5,7 +5,6 @@ import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -16,8 +15,8 @@ import '../../../data/models/alternative_model.dart';
 import '../../stores/questions_checklist_store.dart';
 
 class AddOrUpdateQuestionsChecklistView extends StatefulWidget {
-  bool update;
-  AddOrUpdateQuestionsChecklistView({Key? key, required this.update})
+  final bool update;
+  const AddOrUpdateQuestionsChecklistView({Key? key, required this.update})
       : super(key: key);
 
   @override
@@ -107,83 +106,83 @@ class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
 
   Column updateField(double phoneWidth) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Novo campo do Seller: ",
-            style: AppTextStyles.bold(size: 14, color: AppColors.primary),
-          ),
-          ..._addFAQColumn(
-            title: "Nome do campo",
-            initialValue: widget.update
-                ? _store.dynamicQuestionCheckListEditModel.question
-                : "",
-            inputHint: "Digite o nome do campo",
-            onChanged: (value) {
-              _store.dynamicQuestionCheckListEditModel.fieldUpdate.name =
-                  widget.update ? value : "";
-              _store.dynamicQuestionCheckListModel.fieldUpdate.name = value;
-            },
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Text(
-                "Tipo",
-                style: AppTextStyles.bold(size: 12, color: AppColors.primary),
-              ),
-              AppDropdown(
-                textHint: _store.dynamicQuestionCheckListEditModel.fieldUpdate
-                            .type !=
-                        null
-                    ? (_store.dynamicQuestionCheckListEditModel.fieldUpdate
-                                .type ==
-                            TypeField.TEXT
-                        ? "Texto"
-                        : "Número")
-                    : "Tipo",
-                width: phoneWidth,
-                value: dropdownSelection,
-                customItems: [
-                  DropdownMenuItem(
-                    child: Text(
-                      "Texto",
-                      style: AppTextStyles.regular(
-                        size: 16,
-                        color: AppColors.black,
-                      ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Novo campo do Seller: ",
+          style: AppTextStyles.bold(size: 14, color: AppColors.primary),
+        ),
+        ..._addFAQColumn(
+          title: "Nome do campo",
+          initialValue: widget.update
+              ? _store.dynamicQuestionCheckListEditModel.question
+              : "",
+          inputHint: "Digite o nome do campo",
+          onChanged: (value) {
+            _store.dynamicQuestionCheckListEditModel.fieldUpdate.name =
+                widget.update ? value : "";
+            _store.dynamicQuestionCheckListModel.fieldUpdate.name = value;
+          },
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              "Tipo",
+              style: AppTextStyles.bold(size: 12, color: AppColors.primary),
+            ),
+            AppDropdown(
+              textHint:
+                  _store.dynamicQuestionCheckListEditModel.fieldUpdate.type !=
+                          null
+                      ? (_store.dynamicQuestionCheckListEditModel.fieldUpdate
+                                  .type ==
+                              TypeField.TEXT
+                          ? "Texto"
+                          : "Número")
+                      : "Tipo",
+              width: phoneWidth,
+              value: dropdownSelection,
+              customItems: [
+                DropdownMenuItem(
+                  child: Text(
+                    "Texto",
+                    style: AppTextStyles.regular(
+                      size: 16,
+                      color: AppColors.black,
                     ),
-                    onTap: () {
-                      _store.dynamicQuestionCheckListEditModel.fieldUpdate
-                          .type = TypeField.TEXT;
-                    },
-                    value: "Texto",
                   ),
-                  DropdownMenuItem(
-                    child: Text(
-                      "Número",
-                      style: AppTextStyles.regular(
-                        size: 16,
-                        color: AppColors.black,
-                      ),
+                  onTap: () {
+                    _store.dynamicQuestionCheckListEditModel.fieldUpdate.type =
+                        TypeField.TEXT;
+                  },
+                  value: "Texto",
+                ),
+                DropdownMenuItem(
+                  child: Text(
+                    "Número",
+                    style: AppTextStyles.regular(
+                      size: 16,
+                      color: AppColors.black,
                     ),
-                    onTap: () {
-                      _store.dynamicQuestionCheckListEditModel.fieldUpdate
-                          .type = TypeField.INT;
-                    },
-                    value: "Número",
                   ),
-                ],
-                onChange: (value) {
-                  setState(() {});
-                },
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ],
-      );
+                  onTap: () {
+                    _store.dynamicQuestionCheckListEditModel.fieldUpdate.type =
+                        TypeField.INT;
+                  },
+                  value: "Número",
+                ),
+              ],
+              onChange: (value) {
+                setState(() {});
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ],
+    );
   }
 
   Column bollFields() {
@@ -245,7 +244,7 @@ class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
             _store.dynamicQuestionCheckListModel.question = value;
           },
         ),
-        SizedBox(height: 16),
+        SizedBox(height: AppDimens.space * 2),
         Text(
           "Alternativas: ",
           style: AppTextStyles.bold(size: 14, color: AppColors.primary),
@@ -253,7 +252,7 @@ class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               width: phoneWidth * .60,
               child: TextFormField(
                 controller: _store.newAlternativeController,
@@ -274,7 +273,7 @@ class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
                   _store.addNewAlternative();
                 });
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
           ],
         ),
@@ -284,7 +283,8 @@ class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
             Observer(
               builder: (_) {
                 return Column(
-                  children: _store.dynamicQuestionCheckListEditModel .alternatives.isNotEmpty
+                  children: _store.dynamicQuestionCheckListEditModel
+                          .alternatives.isNotEmpty
                       ? _store.dynamicQuestionCheckListEditModel.alternatives
                           .map<Container>(
                           (AlternativeModel _alternativeModel) {
@@ -302,7 +302,9 @@ class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
                                   IconButton(
                                       onPressed: () => {
                                             setState(() {
-                                              _store.removeAlternative(alternativeModel: _alternativeModel);
+                                              _store.removeAlternative(
+                                                  alternativeModel:
+                                                      _alternativeModel);
                                             })
                                           },
                                       icon: Icon(Icons.delete))

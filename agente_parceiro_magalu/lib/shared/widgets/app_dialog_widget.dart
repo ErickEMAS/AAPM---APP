@@ -27,7 +27,9 @@ appDialog({
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title,
+                  Flexible(
+                    child: FittedBox(fit: BoxFit.scaleDown, child: title),
+                  ),
                   IconButton(
                     onPressed: () {
                       Navigator.pop(context);
