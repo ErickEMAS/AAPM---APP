@@ -61,8 +61,6 @@ abstract class _QuestionChecklistStoreBase with Store {
 
   @action
   Future<bool> onQuestionsInit() async {
-    reset();
-
     try {
       PageListModel pageList = await _datasource.getDynamicQuestionCheckLists(
         size: pageableSize,
