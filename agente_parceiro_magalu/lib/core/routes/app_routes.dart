@@ -12,6 +12,7 @@ class AppRoutes {
   static const sellerOverview = sellers + "/overview";
   static const editSeller = sellers + "/edit";
   static const checklistVisitaSeller = sellers + "/checklistVisitaSeller";
+  static const checklistHistorico = sellers + "/historicoVisita";
 
   static const calendar = '/calendar';
   static const agent = '/agent';

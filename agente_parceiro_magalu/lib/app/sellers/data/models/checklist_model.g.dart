@@ -12,8 +12,9 @@ ChecklistModel _$ChecklistModelFromJson(Map<String, dynamic> json) =>
       dataVisita: json['dataVisita'] == null
           ? null
           : DateTime.parse(json['dataVisita'] as String),
+      nomeAgente: json['nomeAgente'] as String?,
       questions: (json['questions'] as List<dynamic>?)
-          ?.map((e) => QuestionsModel.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => QuestionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$ChecklistModelToJson(ChecklistModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'dataVisita': instance.dataVisita?.toIso8601String(),
+      'nomeAgente': instance.nomeAgente,
       'questions': instance.questions,
     };

@@ -18,6 +18,7 @@ import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_pag
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/checklist_visita_seller.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/edit_seller_page.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/historico_checklist.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/seller_overview_page.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/seller_page.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
@@ -75,6 +76,13 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ChecklistVisitaSeller(
+            sellerId: settings.arguments.toString(),
+          ),
+        );
+      case AppRoutes.checklistHistorico:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => HistoricoChecklistPage(
             sellerId: settings.arguments.toString(),
           ),
         );

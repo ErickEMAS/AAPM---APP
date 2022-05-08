@@ -1,7 +1,8 @@
 import 'package:agente_parceiro_magalu/app/sellers/data/datasources/seller_datasource.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
-import 'package:agente_parceiro_magalu/app/sellers/data/models/question_model.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'checklist_store.g.dart';
 
@@ -19,29 +20,35 @@ abstract class _ChecklistStoreBase with Store {
 
   Future<bool> startChecklist(String sellerId) async {
     try {
-      var ret = await _datasource.startChecklistBySellerId(sellerId: sellerId);
+      ChecklistModel startCheck =
+          await _datasource.startChecklistBySellerId(sellerId: sellerId);
 
-      print(ret);
+      print(startCheck);
 
-      _setChecklistModel(ret);
+      _setChecklistModel(startCheck);
       return true;
     } catch (err) {
       return false;
     }
   }
 
-  Future<bool> answerChecklist(List<QuestionsModel> listChecklist) async {
+  Future<bool> answerChecklist() async {
     try {
-      ChecklistModel checklist = ChecklistModel(
-        id: checklistModel!.id,
-        dataVisita: DateTime.now(),
-        // questions: listChecklist,
+      checklistModel!.dataVisita = DateTime.now();
+
+      await _datasource.answerChecklist(
+        checklistModel: checklistModel!,
       );
 
-      _datasource.answerChecklist(
-        checklistModel: checklist,
-        listChecklist: listChecklist,
-      );
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> getChecklistHistorico(String sellerId) async {
+    try {
+      await _datasource.getChecklistHistorico(sellerId: sellerId);
 
       return true;
     } catch (err) {

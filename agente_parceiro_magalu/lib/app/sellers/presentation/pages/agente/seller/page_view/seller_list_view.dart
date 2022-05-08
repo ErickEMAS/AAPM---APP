@@ -36,7 +36,17 @@ class _SellerListViewState extends State<SellerListView> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        LoadingOverlay.of(context).during(_sellerStore.fetchNextPage());
+        LoadingOverlay.of(context)
+            .during(
+          _sellerStore.fetchNextPage(),
+        )
+            .whenComplete(() {
+          if (_sellerStore.pageListTotalElements <=
+              _sellerStore.sellerList.length) {
+            SnackBarHelper.snackBar(context,
+                message: "Não há mais sellers a serem listados!");
+          }
+        });
       }
     });
   }

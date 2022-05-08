@@ -3,18 +3,19 @@ import 'package:json_annotation/json_annotation.dart';
 part 'alternatives_model.g.dart';
 
 @JsonSerializable()
-class AlternativesModel {
+class AlternativeModel {
   String? id;
-  @JsonKey(name: 'name')
-  String? title;
+  String? name;
+  bool checked;
 
-  AlternativesModel({
+  AlternativeModel({
     this.id,
-    required this.title,
+    required this.name,
+    this.checked = false,
   });
 
-  factory AlternativesModel.fromJson(Map<String, dynamic> json) =>
-      _$AlternativesModelFromJson(json);
+  factory AlternativeModel.fromJson(Map<String, dynamic> json) =>
+      _$AlternativeModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AlternativesModelToJson(this);
+  Map<String, dynamic> toJson() => _$AlternativeModelToJson(this);
 }

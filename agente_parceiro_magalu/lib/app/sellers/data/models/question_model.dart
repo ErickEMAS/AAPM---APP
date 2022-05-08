@@ -4,27 +4,26 @@ import 'package:json_annotation/json_annotation.dart';
 part 'question_model.g.dart';
 
 @JsonSerializable()
-class QuestionsModel {
+class QuestionModel {
   String? id;
-  String? question;
-  List<AlternativesModel>? alternatives;
-  bool? answerRequired;
-  bool? active;
   @JsonKey(name: "fieldUpdateID")
   String? fieldUpdateId;
-  String? answer;
+  String? question;
+  bool? answerRequired;
+  bool? multipleAlternative;
+  List<AlternativeModel>? alternatives;
 
-  QuestionsModel(
-      {this.id,
-      this.question,
-      this.alternatives,
-      this.answerRequired,
-      this.active,
-      this.fieldUpdateId,
-      this.answer});
+  QuestionModel({
+    this.id,
+    this.question,
+    this.alternatives,
+    this.answerRequired,
+    this.fieldUpdateId,
+    this.multipleAlternative,
+  });
 
-  factory QuestionsModel.fromJson(Map<String, dynamic> json) =>
-      _$QuestionsModelFromJson(json);
+  factory QuestionModel.fromJson(Map<String, dynamic> json) =>
+      _$QuestionModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$QuestionsModelToJson(this);
+  Map<String, dynamic> toJson() => _$QuestionModelToJson(this);
 }
