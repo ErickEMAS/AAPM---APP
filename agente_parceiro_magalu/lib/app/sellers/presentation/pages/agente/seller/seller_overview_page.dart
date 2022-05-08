@@ -106,9 +106,6 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
                   title: "Complemento",
                   content: _store.sellerEditModel!.complemento),
               _infoRow(title: "CNPJ", content: _store.sellerEditModel!.cnpj),
-              _infoRow(
-                  title: "Data de pedido",
-                  content: _store.sellerEditModel!.dataPedidoTeste),
               _infoRow(title: "Email", content: _store.sellerEditModel!.email),
               _infoRow(
                   title: "Telefone", content: _store.sellerEditModel!.telefone),

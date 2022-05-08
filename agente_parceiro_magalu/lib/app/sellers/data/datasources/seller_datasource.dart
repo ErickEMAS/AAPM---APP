@@ -18,6 +18,7 @@ abstract class ISellerDatasource {
     String? nome,
   });
   Future addSeller({SellerModel? sellerModel});
+  Future<String> addSellerList({required List<SellerModel> sellerModelList});
   Future<SellerModel> getSellerById({String? sellerId});
   Future<List<TagModel>> getTags();
   Future addTag({required TagModel tagModel});
@@ -94,6 +95,22 @@ class SellerDatasource implements ISellerDatasource {
       );
 
       print(response);
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> addSellerList({required List<SellerModel> sellerModelList}) async {
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.addSellerList,
+        data: sellerModelList.map((seller) => seller.toJson()).toList(),
+      );
+
+      print(response);
+      return(response);
     } catch (err) {
       print(err);
       rethrow;

@@ -177,22 +177,6 @@ class _EditSellerPageState extends State<EditSellerPage> {
                     _store.sellerEditModel!.complemento = value;
                   },
                 ),
-                ..._addSellerColumn(
-                  title: "Cadastro",
-                  initialValue: _store.sellerEditModel!.cadastro,
-                  inputHint: "Digite o cadastro",
-                  onChanged: (value) {
-                    _store.sellerEditModel!.cadastro = value;
-                  },
-                ),
-                ..._addSellerColumn(
-                  title: "Data de pedido",
-                  initialValue: _store.sellerEditModel!.dataPedidoTeste,
-                  inputHint: "Digite a data de pedido",
-                  onChanged: (value) {
-                    _store.sellerEditModel!.dataPedidoTeste = value;
-                  },
-                ),
                 SizedBox(height: AppDimens.space * 3),
                 SizedBox(
                   width: double.infinity,

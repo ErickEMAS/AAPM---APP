@@ -17,8 +17,6 @@ class SellerModel {
   String endereco;
   String numero;
   String complemento;
-  String cadastro;
-  String dataPedidoTeste;
   List? sellerFields;
   List? checkListVisitas;
   List<TagModel>? tags;
@@ -36,8 +34,6 @@ class SellerModel {
     required this.endereco,
     required this.numero,
     required this.complemento,
-    required this.cadastro,
-    required this.dataPedidoTeste,
     this.sellerFields,
     this.checkListVisitas,
     this.tags,

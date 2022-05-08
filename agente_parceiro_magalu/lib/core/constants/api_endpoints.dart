@@ -35,7 +35,6 @@ class Endpoints {
   static const String deleteTag = '/seller/delete-tag';
   static const String updateTag = '/seller/update-tag';
   static const String addField = '/seller/add-field';
-  static const String addSeller = '/seller/add-seller';
   static const String addQuestion = '/seller/add-question-checklist';
   static const String updateQuestion = '/seller/update-question-checklist';
   static const String addTagInSeller = '/seller/add-tag-seller';
@@ -43,6 +42,8 @@ class Endpoints {
   static const String getSellerListByAgentId = '/seller/get-sellers';
   static const String postSeller = '/seller/add-seller';
   static const String getSellerById = '/seller/get-seller';
+  static const String addSeller = '/seller/add-seller';
+  static const String addSellerList = '/seller/add-seller-list';
 
   static const String getTags = '/seller/get-tags';
   static const String addTag = '/seller/add-tag';
