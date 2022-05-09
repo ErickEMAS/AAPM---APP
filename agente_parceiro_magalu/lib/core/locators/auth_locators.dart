@@ -37,37 +37,5 @@ Future<void> setupAuthLocators() async {
   serviceLocator.registerLazySingleton<SignUpStore>(
     () => SignUpStore(),
   );
-  serviceLocator.registerLazySingleton<IAccountDatasource>(
-    () => AccountDatasource(),
-  );
-  serviceLocator.registerLazySingleton<UserDatailStore>(
-    () => UserDatailStore(),
-  );
-  serviceLocator.registerLazySingleton<ConfirmEmailStore>(
-    () => ConfirmEmailStore(),
-  );
-  serviceLocator.registerLazySingleton<ChangePasswordStore>(
-    () => ChangePasswordStore(),
-  );
-  serviceLocator.registerLazySingleton<ChangeEmailStore>(
-    () => ChangeEmailStore(),
-  );
-  serviceLocator.registerLazySingleton<AddAgenteStore>(
-    () => AddAgenteStore(),
-  );
-  serviceLocator.registerLazySingleton<AddAdminStore>(
-    () => AddAdminStore(),
-  );
-  serviceLocator.registerLazySingleton<SellerFieldsStore>(
-    () => SellerFieldsStore(),
-  );
-  serviceLocator.registerLazySingleton<QuestionChecklistStore>(
-    () => QuestionChecklistStore(),
-  );
-  serviceLocator.registerLazySingleton<MyTagsStore>(
-    () => MyTagsStore(),
-  );
-  serviceLocator.registerLazySingleton<FAQStore>(
-    () => FAQStore(),
-  );
+  
 }

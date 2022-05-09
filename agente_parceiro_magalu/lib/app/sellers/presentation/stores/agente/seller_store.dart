@@ -36,12 +36,12 @@ abstract class _SellerStoreBase with Store {
   }
 
   @observable
-  int pageablePage = 0;
+  int pageablePage = -1;
 
   @action
   _setPage(int value) => pageablePage = value;
 
-  int pageableSize = 5;
+  int pageableSize = 20;
 
   @observable
   SellerModel? sellerEditModel;

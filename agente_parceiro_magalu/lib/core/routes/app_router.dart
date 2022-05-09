@@ -12,7 +12,6 @@ import 'package:agente_parceiro_magalu/app/account/presentation/pages/seller_fie
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/agente_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/calendar_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
@@ -24,6 +23,7 @@ import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/account/presentation/pages/user_detail/user_detail_page.dart';
+import '../../app/agent/presentation/pages/agent_page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {

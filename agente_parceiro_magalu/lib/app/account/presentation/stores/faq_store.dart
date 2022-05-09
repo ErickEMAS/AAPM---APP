@@ -84,7 +84,7 @@ abstract class _FAQStoreBase with Store {
     try {
       PageListModel pageList = await _datasource.getFAQs(
         size: pageableSize,
-        page: pageablePage,
+        page: 0,
         search: searchFAQ ?? "",
       );
 

@@ -64,7 +64,7 @@ abstract class _QuestionChecklistStoreBase with Store {
     try {
       PageListModel pageList = await _datasource.getDynamicQuestionCheckLists(
         size: pageableSize,
-        page: pageablePage,
+        page: 0,
         status: status,
       );
 

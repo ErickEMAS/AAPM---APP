@@ -74,7 +74,7 @@ abstract class _SellerFieldsStoreBase with Store {
     try {
       PageListModel pageList = await _datasource.getDynamicFields(
         size: pageableSize,
-        page: pageablePage,
+        page: 0,
       );
 
       dynamicFieldModelList.clear();

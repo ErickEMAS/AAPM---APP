@@ -16,10 +16,10 @@ class QuestionsChecklistPage extends StatefulWidget {
   const QuestionsChecklistPage({Key? key}) : super(key: key);
 
   @override
-  State<QuestionsChecklistPage> createState() => _FAQPageState();
+  State<QuestionsChecklistPage> createState() => _QuestionsChecklistPageState();
 }
 
-class _FAQPageState extends State<QuestionsChecklistPage> {
+class _QuestionsChecklistPageState extends State<QuestionsChecklistPage> {
 final QuestionChecklistStore _store = serviceLocator<QuestionChecklistStore>();
 
   @override
