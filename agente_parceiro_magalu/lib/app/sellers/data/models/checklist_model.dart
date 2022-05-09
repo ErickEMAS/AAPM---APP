@@ -7,11 +7,13 @@ part 'checklist_model.g.dart';
 class ChecklistModel {
   String? id;
   DateTime? dataVisita;
-  List<QuestionsModel>? questions;
+  String? nomeAgente;
+  List<QuestionModel>? questions;
 
   ChecklistModel({
     this.id,
     this.dataVisita,
+    this.nomeAgente,
     this.questions,
   });
 
