@@ -24,18 +24,18 @@ mixin _$UserAgentStore on _UserAgentStoreBase, Store {
     });
   }
 
-  final _$roleAtom = Atom(name: '_UserAgentStoreBase.role');
+  final _$searchAtom = Atom(name: '_UserAgentStoreBase.search');
 
   @override
-  String? get role {
-    _$roleAtom.reportRead();
-    return super.role;
+  String get search {
+    _$searchAtom.reportRead();
+    return super.search;
   }
 
   @override
-  set role(String? value) {
-    _$roleAtom.reportWrite(value, super.role, () {
-      super.role = value;
+  set search(String value) {
+    _$searchAtom.reportWrite(value, super.search, () {
+      super.search = value;
     });
   }
 
@@ -51,6 +51,37 @@ mixin _$UserAgentStore on _UserAgentStoreBase, Store {
   set searchClicked(bool value) {
     _$searchClickedAtom.reportWrite(value, super.searchClicked, () {
       super.searchClicked = value;
+    });
+  }
+
+  final _$roleAtom = Atom(name: '_UserAgentStoreBase.role');
+
+  @override
+  String? get role {
+    _$roleAtom.reportRead();
+    return super.role;
+  }
+
+  @override
+  set role(String? value) {
+    _$roleAtom.reportWrite(value, super.role, () {
+      super.role = value;
+    });
+  }
+
+  final _$filterUserActiveAtom =
+      Atom(name: '_UserAgentStoreBase.filterUserActive');
+
+  @override
+  bool get filterUserActive {
+    _$filterUserActiveAtom.reportRead();
+    return super.filterUserActive;
+  }
+
+  @override
+  set filterUserActive(bool value) {
+    _$filterUserActiveAtom.reportWrite(value, super.filterUserActive, () {
+      super.filterUserActive = value;
     });
   }
 
@@ -176,6 +207,28 @@ mixin _$UserAgentStore on _UserAgentStoreBase, Store {
   }
 
   @override
+  dynamic setFilterUserActive(bool newData) {
+    final _$actionInfo = _$_UserAgentStoreBaseActionController.startAction(
+        name: '_UserAgentStoreBase.setFilterUserActive');
+    try {
+      return super.setFilterUserActive(newData);
+    } finally {
+      _$_UserAgentStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setSearch(String newData) {
+    final _$actionInfo = _$_UserAgentStoreBaseActionController.startAction(
+        name: '_UserAgentStoreBase.setSearch');
+    try {
+      return super.setSearch(newData);
+    } finally {
+      _$_UserAgentStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic _setPage(int value) {
     final _$actionInfo = _$_UserAgentStoreBaseActionController.startAction(
         name: '_UserAgentStoreBase._setPage');
@@ -234,8 +287,10 @@ mixin _$UserAgentStore on _UserAgentStoreBase, Store {
   String toString() {
     return '''
 carteiraModel: ${carteiraModel},
-role: ${role},
+search: ${search},
 searchClicked: ${searchClicked},
+role: ${role},
+filterUserActive: ${filterUserActive},
 pageablePage: ${pageablePage},
 pageablePageAgent: ${pageablePageAgent},
 pageController: ${pageController},

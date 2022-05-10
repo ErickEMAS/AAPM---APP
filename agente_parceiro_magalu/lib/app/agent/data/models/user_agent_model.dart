@@ -11,7 +11,7 @@ class UserAgentModel {
   String cpf;
   String? fullName;
   bool? emailConfirmed;
-  bool? accountNonLocked;
+  bool? active;
   bool? enabled;
   List<String> roles;
   int totalSeller;
@@ -21,7 +21,7 @@ class UserAgentModel {
     this.fullName,
     this.enabled = false,
     this.emailConfirmed = false,
-    this.accountNonLocked = false,
+    this.active = false,
     required this.id,
     required this.cpf,
     required this.roles,

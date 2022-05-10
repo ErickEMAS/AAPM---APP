@@ -115,12 +115,15 @@ abstract class _SellerStoreBase with Store {
       PageListModel pageList = await _datasource.getSellerList(
         size: pageableSize,
         page: pageablePage,
+        search: searchSeller,
+        tagId: tagId,
       );
 
       pageListTotalElements = pageList.totalElements;
 
       print(pageListTotalElements);
 
+      sellerList.clear();
       _setSellerList(pageList.content.cast<SellerModel>().toList());
 
       return true;
@@ -131,7 +134,7 @@ abstract class _SellerStoreBase with Store {
 
   Future<List<SellerModel>?> getAllSellers() async {
     try {
-      PageListModel pageList = await _datasource.getSellerList();
+      PageListModel pageList = await _datasource.getSellerList(search: "");
 
       List<SellerModel>? seller = pageList.content.cast<SellerModel>().toList();
 
@@ -150,6 +153,8 @@ abstract class _SellerStoreBase with Store {
         PageListModel pageList = await _datasource.getSellerList(
           size: pageableSize,
           page: pageablePage,
+          search: searchSeller,
+          tagId: tagId,
         );
 
         _setSellerList(pageList.content.cast<SellerModel>().toList());
@@ -165,35 +170,35 @@ abstract class _SellerStoreBase with Store {
   }
 
   @observable
-  String? tagId;
+  String tagId = "";
   @action
-  setTagId(String? newData) {
+  setTagId(String newData) {
     tagId = newData;
   }
 
   @observable
-  String? nomeSeller;
+  String searchSeller = "";
   @action
-  setNomeSeller(String? newData) {
-    nomeSeller = newData;
+  setSearchSeller(String newData) {
+    searchSeller = newData;
   }
 
-  Future<bool> getSellersWithFilter() async {
-    try {
-      PageListModel pageList = await _datasource.getSellerList(
-        size: pageableSize,
-        page: pageablePage,
-        tagId: tagId,
-        nome: nomeSeller,
-      );
+  // Future<bool> getSellersWithFilter() async {
+  //   try {
+  //     PageListModel pageList = await _datasource.getSellerList(
+  //       size: pageableSize,
+  //       page: pageablePage,
+  //       tagId: tagId,
+  //       search: nomeSeller,
+  //     );
 
-      _setSellerList(pageList.content.cast<SellerModel>().toList());
+  //     _setSellerList(pageList.content.cast<SellerModel>().toList());
 
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
+  //     return true;
+  //   } catch (err) {
+  //     return false;
+  //   }
+  // }
 
   Future<bool> addSeller({
     SellerModel? sellerModelFromSheet,

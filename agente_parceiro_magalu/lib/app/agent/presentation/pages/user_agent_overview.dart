@@ -71,34 +71,34 @@ class _UserAgenteOverviewState extends State<UserAgenteOverview> {
         children: [
           _rowUser(
             atributo: "Nome",
-            active: _store.userAgentselected.accountNonLocked!,
+            active: _store.userAgentselected.active!,
             value: "${_store.userAgentselected.fullName}",
           ),
           _rowUser(
             atributo: "Email",
-            active: _store.userAgentselected.accountNonLocked!,
+            active: _store.userAgentselected.active!,
             value: "${_store.userAgentselected.email}",
           ),
           _rowUser(
             atributo: "CPF",
-            active: _store.userAgentselected.accountNonLocked!,
+            active: _store.userAgentselected.active!,
             value: maskCPF(cpf: _store.userAgentselected.cpf),
           ),
           _rowUser(
             atributo: "Usuário ativo",
-            active: _store.userAgentselected.accountNonLocked!,
-            value: _store.userAgentselected.accountNonLocked!
+            active: _store.userAgentselected.active!,
+            value: _store.userAgentselected.active!
                 ? "Sim"
                 : "Não",
           ),
           _rowUser(
             atributo: "Primeiro acesso realizado",
-            active: _store.userAgentselected.accountNonLocked!,
+            active: _store.userAgentselected.active!,
             value: _store.userAgentselected.enabled! ? "Sim" : "Não",
           ),
           _rowUser(
             atributo: "Função",
-            active: _store.userAgentselected.accountNonLocked!,
+            active: _store.userAgentselected.active!,
             value: _store.userAgentselected.roles[0] == "ROLE_ADMIN"
                 ? "Administrador"
                 : "Agente",
@@ -106,7 +106,7 @@ class _UserAgenteOverviewState extends State<UserAgenteOverview> {
           SizedBox(height: 16),
           _rowUser(
             atributo: "Sellers",
-            active: _store.userAgentselected.accountNonLocked!,
+            active: _store.userAgentselected.active!,
             value: "",
           ),
         ],

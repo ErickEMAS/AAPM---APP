@@ -26,10 +26,16 @@ abstract class _UserAgentStoreBase with Store {
   CarteiraModel carteiraModel = CarteiraModel(id: "");
 
   @observable
-  String? role = "null";
+  String search = "";
 
   @observable
   bool searchClicked = true;
+
+  @observable
+  String? role = "null";
+
+  @observable
+  bool filterUserActive = true;
 
   @observable
   int pageablePage = 0;
@@ -49,7 +55,7 @@ abstract class _UserAgentStoreBase with Store {
     cpf: "",
     roles: [],
     emailConfirmed: false,
-    accountNonLocked: false,
+    active: false,
     enabled: false,
     totalSeller: 0,
   );
@@ -61,6 +67,8 @@ abstract class _UserAgentStoreBase with Store {
         size: pageableSize,
         page: 0,
         role: role,
+        active: filterUserActive,
+        search: search,
       );
 
       userAgenteModelList.clear();
@@ -81,7 +89,7 @@ abstract class _UserAgentStoreBase with Store {
       cpf: "",
       roles: [],
       emailConfirmed: false,
-      accountNonLocked: false,
+      active: false,
       enabled: false,
       totalSeller: 0,
     );
@@ -93,6 +101,8 @@ abstract class _UserAgentStoreBase with Store {
     pageablePage = 0;
     pageableSize = 10;
     searchClicked = false;
+    filterUserActive = false;
+    search = "";
 
     userAgenteModelList.clear();
   }
@@ -106,7 +116,7 @@ abstract class _UserAgentStoreBase with Store {
       cpf: "",
       roles: [],
       emailConfirmed: false,
-      accountNonLocked: false,
+      active: false,
       enabled: false,
       totalSeller: 0,
     );
@@ -115,6 +125,16 @@ abstract class _UserAgentStoreBase with Store {
   @action
   setSearchClicked(bool newData) {
     searchClicked = newData;
+  }
+
+  @action
+  setFilterUserActive(bool newData) {
+    filterUserActive = newData;
+  }
+
+  @action
+  setSearch(String newData) {
+    search = newData;
   }
 
   @action
@@ -152,6 +172,8 @@ abstract class _UserAgentStoreBase with Store {
         size: pageableSize,
         page: pageablePage,
         role: role,
+        active: filterUserActive,
+        search: search,
       );
 
       _setUserAgenteModelList(pageList.content.cast<UserAgentModel>().toList());
@@ -190,7 +212,8 @@ abstract class _UserAgentStoreBase with Store {
 
   Future<bool> getUserCarteira() async {
     try {
-      carteiraModel = await _datasource.getCarteira(userId: userAgentselected.id);
+      carteiraModel =
+          await _datasource.getCarteira(userId: userAgentselected.id);
       return true;
     } catch (err) {
       return false;
@@ -198,9 +221,7 @@ abstract class _UserAgentStoreBase with Store {
   }
 
   Future<bool> navigateToUserOverview(BuildContext context) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.userAgenteOverview)
-        .then(
+    return Navigator.of(context).pushNamed(AppRoutes.userAgenteOverview).then(
           (value) => false,
         );
   }

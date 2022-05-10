@@ -102,21 +102,21 @@ class _AgentListViewState extends State<AgentListView> {
                                 _rowUser(
                                   atributo: "Nome",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value:
                                       "${_store.userAgenteModelList[index].fullName}",
                                 ),
                                 _rowUser(
                                   atributo: "Email",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value:
                                       "${_store.userAgenteModelList[index].email}",
                                 ),
                                 _rowUser(
                                   atributo: "CPF",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value: maskCPF(
                                       cpf: _store
                                           .userAgenteModelList[index].cpf),
@@ -124,16 +124,16 @@ class _AgentListViewState extends State<AgentListView> {
                                 _rowUser(
                                   atributo: "Usuário ativo",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value: _store.userAgenteModelList[index]
-                                          .accountNonLocked!
+                                          .active!
                                       ? "Sim"
                                       : "Não",
                                 ),
                                 _rowUser(
                                   atributo: "Primeiro acesso realizado",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value:
                                       _store.userAgenteModelList[index].enabled!
                                           ? "Sim"
@@ -142,7 +142,7 @@ class _AgentListViewState extends State<AgentListView> {
                                 _rowUser(
                                   atributo: "Função",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value: _store.userAgenteModelList[index]
                                               .roles[0] ==
                                           "ROLE_ADMIN"
@@ -152,7 +152,7 @@ class _AgentListViewState extends State<AgentListView> {
                                 _rowUser(
                                   atributo: "Sellers",
                                   active: _store.userAgenteModelList[index]
-                                      .accountNonLocked!,
+                                      .active!,
                                   value:
                                       "${_store.userAgenteModelList[index].totalSeller}",
                                 ),
@@ -173,12 +173,12 @@ class _AgentListViewState extends State<AgentListView> {
                             },
                             icon: Icon(
                               _store.userAgenteModelList[index]
-                                      .accountNonLocked!
+                                      .active!
                                   ? Icons.person_remove
                                   : Icons.person_add,
                               size: 32,
                               color: _store.userAgenteModelList[index]
-                                      .accountNonLocked!
+                                      .active!
                                   ? AppColors.black
                                   : AppColors.grey,
                             ),
@@ -219,7 +219,7 @@ class _AgentListViewState extends State<AgentListView> {
     return appDialog(
       context: context,
       title: Text(
-        user.accountNonLocked! ? "Desativar usuário" : "Reativar Usuário",
+        user.active! ? "Desativar usuário" : "Reativar Usuário",
         style: AppTextStyles.bold(
           size: 18,
           color: AppColors.primary,
@@ -258,13 +258,13 @@ class _AgentListViewState extends State<AgentListView> {
                             MaterialStateProperty.all(AppColors.primary),
                       ),
                       onPressed: () => {
-                        user.accountNonLocked!
+                        user.active!
                             ? _store.desactiveUser(index: index)
                             : _store.reactiveUser(index: index),
                         _store.navigateback(context),
                       },
                       child: Text(
-                        user.accountNonLocked! ? "Desativar" : "Reativar",
+                        user.active! ? "Desativar" : "Reativar",
                         style: AppTextStyles.bold(
                           size: 15,
                           color: AppColors.white,

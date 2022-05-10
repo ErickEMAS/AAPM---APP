@@ -151,7 +151,7 @@ class _AgentListForCarteiraViewState extends State<AgentListForCarteiraView> {
                                 _row(
                                   atributo: "Usuário ativo",
                                   value: _store.userAgenteModelList[index]
-                                          .accountNonLocked!
+                                          .active!
                                       ? "Sim"
                                       : "Não",
                                 ),

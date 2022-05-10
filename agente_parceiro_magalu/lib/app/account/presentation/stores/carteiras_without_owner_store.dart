@@ -74,6 +74,8 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
         size: 10,
         page: 0,
         role: "ROLE_USER",
+        active: true,
+        search: "",
       );
 
       userAgenteModelList.clear();
@@ -93,6 +95,8 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
         size: 10,
         page: pageablePage,
         role: "ROLE_USER",
+        active: true,
+        search: "",
       );
 
       _setUserAgenteModelList(pageList.content.cast<UserAgentModel>().toList());
@@ -134,7 +138,7 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
     cpf: "",
     roles: [],
     emailConfirmed: false,
-    accountNonLocked: false,
+    active: false,
     enabled: false,
     totalSeller: 0,
   );

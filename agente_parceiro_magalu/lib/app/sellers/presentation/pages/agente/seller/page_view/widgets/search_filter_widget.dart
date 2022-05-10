@@ -31,12 +31,12 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
           TextFormField(
             controller: nomeSearchController,
             decoration: const InputDecoration(
-              labelText: "Nome",
-              hintText: "Nome do seller",
+              labelText: "Pesquisar",
+              hintText: "Pesquisar do seller",
             ),
             onChanged: (value) {
-              _sellerStore.setNomeSeller(value);
-              _sellerStore.getSellersWithFilter();
+              _sellerStore.setSearchSeller(value);
+              _sellerStore.onSellerInit();
             },
           ),
           SizedBox(height: AppDimens.space),
@@ -66,7 +66,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                         ),
                       ),
                       onTap: () {
-                        _sellerStore.setTagId(tag.id);
+                        _sellerStore.setTagId(tag.id == null ? "" : tag.id!);
                       },
                       value: tag.name,
                     );
@@ -74,8 +74,8 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                   onChange: (value) {
                     setState(() {
                       dropdownSelection = value;
+                      _sellerStore.onSellerInit();
                     });
-                    _sellerStore.getSellersWithFilter();
                   },
                   value: dropdownSelection,
                 ),
@@ -86,9 +86,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                   onPressed: () {
                     dropdownSelection = null;
                     nomeSearchController.text = ("");
-                    _sellerStore.setTagId(null);
-                    _sellerStore.setNomeSeller(null);
-                    _sellerStore.getSellersWithFilter();
+                    _sellerStore.setTagId("");
+                    _sellerStore.setSearchSeller("");
+                    _sellerStore.onSellerInit();
                   },
                   child: const FittedBox(
                     child: Text(

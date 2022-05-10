@@ -10,7 +10,7 @@ import '../../../../core/models/page_list_model.dart';
 import '../models/user_agent_model.dart';
 
 abstract class IAgentDatasource {
-  Future<PageListModel> getUsers({required int size, required int page, String? role});
+  Future<PageListModel> getUsers({required int size, required int page, required bool active, String? role, required String search});
   Future<UserAgentModel> reactiveUser({required String cpf});
   Future<UserAgentModel> desactiveUser({required String id});
   Future<CarteiraModel> getCarteira({required String userId});
@@ -28,13 +28,17 @@ class AgentDatasource implements IAgentDatasource {
   }
 
   @override
-  Future<PageListModel> getUsers({required int size, required int page, String? role}) async {
+  Future<PageListModel> getUsers({required int size, required int page, required bool active, String? role, required String search}) async {
     Map<String, dynamic> params = {
       "size": size,
       "page": page,
     };
 
     if (role != null) params["roleName"] = role;
+
+    if (active) params["active"] = active;
+
+    if (search != "") params["search"] = search;
 
     try {
       final response = await _httpWithAuth.get(
@@ -106,14 +110,14 @@ class AgentDatasource implements IAgentDatasource {
   @override
   Future<CarteiraModel> getCarteira({required String userId}) async {
     Map<String, dynamic> params = {
-      "agentId": userId,
+      "sellerId": userId,
     };
     try {
       final response = await _httpWithAuth.get(
         Endpoints.getCarteira,
         queryParameters: params,
       );
-      
+
       CarteiraModel carteiraModel = CarteiraModel.fromJson(response);
 
       return carteiraModel;
