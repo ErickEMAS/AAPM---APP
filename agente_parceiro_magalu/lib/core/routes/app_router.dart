@@ -13,6 +13,7 @@ import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_account
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_tags/my_tags_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/questions_checklist_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/seller_fields/seller_fields_page.dart';
+import 'package:agente_parceiro_magalu/app/agent/presentation/pages/user_agent_overview.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_password.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
@@ -189,6 +190,11 @@ class AppRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (context, __, ___) => const AgentListForCarteiraView(),
+        );
+      case AppRoutes.userAgenteOverview:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const UserAgenteOverview(),
         );
 
       default:

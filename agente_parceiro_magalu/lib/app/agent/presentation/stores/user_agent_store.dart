@@ -1,4 +1,6 @@
 import 'package:agente_parceiro_magalu/app/agent/data/datasources/agent_datasource.dart';
+import 'package:agente_parceiro_magalu/app/agent/data/models/carteira_model.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
@@ -21,15 +23,7 @@ abstract class _UserAgentStoreBase with Store {
       ObservableList<UserAgentModel>();
 
   @observable
-  UserAgentModel userAgentModel = UserAgentModel(
-    id: "",
-    cpf: "",
-    roles: [],
-    emailConfirmed: false,
-    accountNonLocked: false,
-    enabled: false,
-    totalSeller: 0,
-  );
+  CarteiraModel carteiraModel = CarteiraModel(id: "");
 
   @observable
   String? role = "null";
@@ -80,15 +74,7 @@ abstract class _UserAgentStoreBase with Store {
 
   @action
   reset() {
-    userAgentModel = UserAgentModel(
-      id: "",
-      cpf: "",
-      roles: [],
-      emailConfirmed: false,
-      accountNonLocked: false,
-      enabled: false,
-      totalSeller: 0,
-    );
+    carteiraModel = CarteiraModel(id: "");
 
     userAgentselected = UserAgentModel(
       id: "",
@@ -113,15 +99,7 @@ abstract class _UserAgentStoreBase with Store {
 
   @action
   resetmodels() {
-    userAgentModel = UserAgentModel(
-      id: "",
-      cpf: "",
-      roles: [],
-      emailConfirmed: false,
-      accountNonLocked: false,
-      enabled: false,
-      totalSeller: 0,
-    );
+    carteiraModel = CarteiraModel(id: "");
 
     userAgentselected = UserAgentModel(
       id: "",
@@ -208,6 +186,23 @@ abstract class _UserAgentStoreBase with Store {
     } catch (err) {
       return false;
     }
+  }
+
+  Future<bool> getUserCarteira() async {
+    try {
+      carteiraModel = await _datasource.getCarteira(userId: userAgentselected.id);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> navigateToUserOverview(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.userAgenteOverview)
+        .then(
+          (value) => false,
+        );
   }
 
   void navigateback(BuildContext context) {

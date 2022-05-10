@@ -1,3 +1,4 @@
+import 'package:agente_parceiro_magalu/app/agent/data/models/carteira_model.dart';
 import 'package:agente_parceiro_magalu/core/http/http_service.dart';
 import 'package:dio/dio.dart';
 
@@ -12,6 +13,7 @@ abstract class IAgentDatasource {
   Future<PageListModel> getUsers({required int size, required int page, String? role});
   Future<UserAgentModel> reactiveUser({required String cpf});
   Future<UserAgentModel> desactiveUser({required String id});
+  Future<CarteiraModel> getCarteira({required String userId});
 }
 
 class AgentDatasource implements IAgentDatasource {
@@ -101,6 +103,25 @@ class AgentDatasource implements IAgentDatasource {
   }
 
 
+  @override
+  Future<CarteiraModel> getCarteira({required String userId}) async {
+    Map<String, dynamic> params = {
+      "agentId": userId,
+    };
+    try {
+      final response = await _httpWithAuth.get(
+        Endpoints.getCarteira,
+        queryParameters: params,
+      );
+      
+      CarteiraModel carteiraModel = CarteiraModel.fromJson(response);
 
+      return carteiraModel;
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
+      rethrow;
+    }
+  }
   
 }

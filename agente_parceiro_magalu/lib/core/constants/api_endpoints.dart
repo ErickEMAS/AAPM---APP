@@ -20,16 +20,13 @@ class Endpoints {
   static const String answerChecklist = '/seller/answer-checklist';
   static const String getChecklists = '/seller/get-activity';
   
-  static const String addHunting = '/seller/add-hunting'; //não integrada
-  static const String getHuntings = '/seller/get-huntings'; //não integrada
-  static const String updateHunting = '/seller/update-hunting'; //não integrada
+  static const String addHunting = '/seller/add-hunting'; 
+  static const String getHuntings = '/seller/get-huntings'; 
+  static const String updateHunting = '/seller/update-hunting'; 
 
-  static const String setVisitItinerary = '/seller/set-visit-itinerary'; //não integrada
-  static const String visiting = '/seller/visiting'; //não integrada
-  static const String resetVisitItinerary = '/seller/reset-visit-itinerary'; //não integrada
-
-  static const String getCarteiraWithoutOwner = '/seller/get-carteira-without_owner'; //não integrada
-  static const String tranferCarteira = '/seller/tranfer-carteira'; //não integrada
+  static const String getCarteiraWithoutOwner = '/seller/get-carteira-without_owner'; 
+  static const String tranferCarteira = '/seller/tranfer-carteira';
+  static const String getCarteira = '/seller/get-carteira';
 
 
   static const String getFields = '/seller/get-fields'; 

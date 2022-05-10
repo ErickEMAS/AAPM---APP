@@ -81,102 +81,111 @@ class _AgentListViewState extends State<AgentListView> {
               itemCount: _store.userAgenteModelList.length,
               controller: _scrollController,
               itemBuilder: (context, index) {
-                return Container(
-                  color: AppColors.white,
-                  padding: const EdgeInsets.all(16),
-                  margin: const EdgeInsets.only(bottom: 16, top: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _rowUser(
-                                atributo: "Nome",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value:
-                                    "${_store.userAgenteModelList[index].fullName}",
+                return GestureDetector(
+                  onTap: () {
+                    _store.userAgentselected = _store.userAgenteModelList[index];
+                    _store.navigateToUserOverview(context);
+                  },
+                  child: Container(
+                    color: AppColors.white,
+                    padding: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.only(bottom: 16, top: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _rowUser(
+                                  atributo: "Nome",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value:
+                                      "${_store.userAgenteModelList[index].fullName}",
+                                ),
+                                _rowUser(
+                                  atributo: "Email",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value:
+                                      "${_store.userAgenteModelList[index].email}",
+                                ),
+                                _rowUser(
+                                  atributo: "CPF",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value: maskCPF(
+                                      cpf: _store
+                                          .userAgenteModelList[index].cpf),
+                                ),
+                                _rowUser(
+                                  atributo: "Usuário ativo",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value: _store.userAgenteModelList[index]
+                                          .accountNonLocked!
+                                      ? "Sim"
+                                      : "Não",
+                                ),
+                                _rowUser(
+                                  atributo: "Primeiro acesso realizado",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value:
+                                      _store.userAgenteModelList[index].enabled!
+                                          ? "Sim"
+                                          : "Não",
+                                ),
+                                _rowUser(
+                                  atributo: "Função",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value: _store.userAgenteModelList[index]
+                                              .roles[0] ==
+                                          "ROLE_ADMIN"
+                                      ? "Administrador"
+                                      : "Agente",
+                                ),
+                                _rowUser(
+                                  atributo: "Sellers",
+                                  active: _store.userAgenteModelList[index]
+                                      .accountNonLocked!,
+                                  value:
+                                      "${_store.userAgenteModelList[index].totalSeller}",
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 16),
+                          child: IconButton(
+                            onPressed: () => {
+                              _store.userAgentselected =
+                                  _store.userAgenteModelList[index],
+                              _modalUser(
+                                user: _store.userAgentselected,
+                                index: index,
                               ),
-                              _rowUser(
-                                atributo: "Email",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value:
-                                    "${_store.userAgenteModelList[index].email}",
-                              ),
-                              _rowUser(
-                                atributo: "CPF",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value: maskCPF(cpf: _store.userAgenteModelList[index].cpf),
-                              ),
-                              _rowUser(
-                                atributo: "Usuário ativo",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value: _store.userAgenteModelList[index]
-                                        .accountNonLocked!
-                                    ? "Sim"
-                                    : "Não",
-                              ),
-                              _rowUser(
-                                atributo: "Primeiro acesso realizado",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value:
-                                    _store.userAgenteModelList[index].enabled!
-                                        ? "Sim"
-                                        : "Não",
-                              ),
-                              _rowUser(
-                                atributo: "Função",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value: _store.userAgenteModelList[index]
-                                            .roles[0] ==
-                                        "ROLE_ADMIN"
-                                    ? "Administrador"
-                                    : "Agente",
-                              ),
-                              _rowUser(
-                                atributo: "Sellers",
-                                active: _store.userAgenteModelList[index]
-                                    .accountNonLocked!,
-                                value:
-                                    "${_store.userAgenteModelList[index].totalSeller}",
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(right: 16),
-                        child: IconButton(
-                          onPressed: () => {
-                            _store.userAgentselected =
-                                _store.userAgenteModelList[index],
-                            _modalUser(
-                              user: _store.userAgentselected,
-                              index: index,
+                            },
+                            icon: Icon(
+                              _store.userAgenteModelList[index]
+                                      .accountNonLocked!
+                                  ? Icons.person_remove
+                                  : Icons.person_add,
+                              size: 32,
+                              color: _store.userAgenteModelList[index]
+                                      .accountNonLocked!
+                                  ? AppColors.black
+                                  : AppColors.grey,
                             ),
-                          },
-                          icon: Icon(
-                            _store.userAgenteModelList[index].accountNonLocked!
-                                ? Icons.person_remove
-                                : Icons.person_add,
-                            size: 32,
-                            color: _store.userAgenteModelList[index]
-                                    .accountNonLocked!
-                                ? AppColors.black
-                                : AppColors.grey,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -272,8 +281,21 @@ class _AgentListViewState extends State<AgentListView> {
     );
   }
 
-  String maskCPF({required String cpf}){
+  String maskCPF({required String cpf}) {
     cpf.split("");
-    return cpf[0] + cpf[1] + cpf[2] + "." + cpf[3] + cpf[4] + cpf[5] + "." + cpf[6] + cpf[7] + cpf[8] + "-" + cpf[9] + cpf[10];
+    return cpf[0] +
+        cpf[1] +
+        cpf[2] +
+        "." +
+        cpf[3] +
+        cpf[4] +
+        cpf[5] +
+        "." +
+        cpf[6] +
+        cpf[7] +
+        cpf[8] +
+        "-" +
+        cpf[9] +
+        cpf[10];
   }
 }

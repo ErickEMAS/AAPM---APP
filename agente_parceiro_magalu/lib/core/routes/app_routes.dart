@@ -16,7 +16,9 @@ class AppRoutes {
   static const checklistOverview =
       sellers + checklistHistorico + "checklistOverview";
   static const calendar = '/calendar';
+
   static const agent = '/agent';
+  static const userAgenteOverview = agent + '/userAgenteOverview';
 
   static const userAccount = '/userAccount';
   static const userDetail = userAccount + '/userDetail';

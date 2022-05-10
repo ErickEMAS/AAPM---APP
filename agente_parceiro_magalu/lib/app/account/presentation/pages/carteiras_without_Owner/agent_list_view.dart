@@ -65,7 +65,7 @@ class _AgentListForCarteiraViewState extends State<AgentListForCarteiraView> {
                     onPressed: () => _store.previousPage(),
                   )
                 : null,
-            title: "Usuários",
+            title: "Selecione um usuário",
           ),
           body: Content(),
           bottomNavigationBar: AppBottomBar(),

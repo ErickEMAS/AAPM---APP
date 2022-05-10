@@ -9,18 +9,18 @@ part of 'user_agent_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserAgentStore on _UserAgentStoreBase, Store {
-  final _$userAgentModelAtom = Atom(name: '_UserAgentStoreBase.userAgentModel');
+  final _$carteiraModelAtom = Atom(name: '_UserAgentStoreBase.carteiraModel');
 
   @override
-  UserAgentModel get userAgentModel {
-    _$userAgentModelAtom.reportRead();
-    return super.userAgentModel;
+  CarteiraModel get carteiraModel {
+    _$carteiraModelAtom.reportRead();
+    return super.carteiraModel;
   }
 
   @override
-  set userAgentModel(UserAgentModel value) {
-    _$userAgentModelAtom.reportWrite(value, super.userAgentModel, () {
-      super.userAgentModel = value;
+  set carteiraModel(CarteiraModel value) {
+    _$carteiraModelAtom.reportWrite(value, super.carteiraModel, () {
+      super.carteiraModel = value;
     });
   }
 
@@ -66,6 +66,22 @@ mixin _$UserAgentStore on _UserAgentStoreBase, Store {
   set pageablePage(int value) {
     _$pageablePageAtom.reportWrite(value, super.pageablePage, () {
       super.pageablePage = value;
+    });
+  }
+
+  final _$pageablePageAgentAtom =
+      Atom(name: '_UserAgentStoreBase.pageablePageAgent');
+
+  @override
+  int get pageablePageAgent {
+    _$pageablePageAgentAtom.reportRead();
+    return super.pageablePageAgent;
+  }
+
+  @override
+  set pageablePageAgent(int value) {
+    _$pageablePageAgentAtom.reportWrite(value, super.pageablePageAgent, () {
+      super.pageablePageAgent = value;
     });
   }
 
@@ -217,10 +233,11 @@ mixin _$UserAgentStore on _UserAgentStoreBase, Store {
   @override
   String toString() {
     return '''
-userAgentModel: ${userAgentModel},
+carteiraModel: ${carteiraModel},
 role: ${role},
 searchClicked: ${searchClicked},
 pageablePage: ${pageablePage},
+pageablePageAgent: ${pageablePageAgent},
 pageController: ${pageController},
 currentPage: ${currentPage},
 userAgentselected: ${userAgentselected}
