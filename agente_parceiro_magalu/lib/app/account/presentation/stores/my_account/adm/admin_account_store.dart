@@ -71,4 +71,10 @@ abstract class _AdminAccountStoreBase with Store {
         .pushNamed(AppRoutes.faq)
         .then((value) => true);
   }
+
+  Future<bool> navigateTocarteirasWithoutOwner(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.carteitaWithoutOwner)
+        .then((value) => true);
+  }
 }

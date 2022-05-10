@@ -1,9 +1,13 @@
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/add_admin/add_admin_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/add_agente/add_agente_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/carteiras_without_Owner/carteiras_with_owner_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_email/change_email_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_password/change_password_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/confirm_email/confirm_email_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/faq/faq_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/huntings/add_or_update_hunting_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/huntings/hunting_overview_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/huntings/hunting_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_account/adm/admin_account_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_account/agente/user_account_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_tags/my_tags_page.dart';
@@ -51,7 +55,6 @@ class AppRouter {
           settings: settings,
           builder: (_) => const SignUpPage(),
         );
-
       case AppRoutes.home:
         return PageRouteBuilder(
           settings: settings,
@@ -111,6 +114,21 @@ class AppRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (context, __, ___) => const UserAccountPage(),
+        );
+      case AppRoutes.hunting:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const HuntingPage(),
+        );
+      case AppRoutes.huntingOverview:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const HuntingOverviewPage(),
+        );
+      case AppRoutes.carteitaWithoutOwner:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const CarteirasWithOwnerPage(),
         );
       case AppRoutes.myTags:
         return PageRouteBuilder(

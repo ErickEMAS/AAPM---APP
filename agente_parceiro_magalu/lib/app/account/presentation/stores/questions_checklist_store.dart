@@ -6,7 +6,6 @@ import 'package:mobx/mobx.dart';
 
 import '../../../../core/locators/service_locators.dart';
 import '../../../../core/models/page_list_model.dart';
-import '../../../../core/routes/app_routes.dart';
 import '../../data/datasources/account_datasource.dart';
 import '../../data/models/dynamic_question_checkList_model.dart';
 part 'questions_checklist_store.g.dart';
@@ -217,30 +216,5 @@ abstract class _QuestionChecklistStoreBase with Store {
     } catch (err) {
       return false;
     }
-  }
-
-  Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.editSeller, arguments: sellerId)
-        .then(
-          (value) => false,
-        );
-  }
-
-  Future<bool> navigateToChecklistVisita(
-      BuildContext context, String sellerId) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.checklistVisitaSeller, arguments: sellerId)
-        .then(
-          (value) => false,
-        );
-  }
-
-  Future<bool> navigateToSellerOverview(BuildContext context, String sellerId) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.sellerOverview, arguments: sellerId)
-        .then(
-          (value) => false,
-        );
   }
 }

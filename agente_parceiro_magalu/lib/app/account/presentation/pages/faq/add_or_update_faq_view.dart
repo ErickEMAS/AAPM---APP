@@ -15,10 +15,10 @@ class AddOrUpdateFAQView extends StatefulWidget {
   const AddOrUpdateFAQView({Key? key, required this.update}) : super(key: key);
 
   @override
-  State<AddOrUpdateFAQView> createState() => _AddFAQViewState();
+  State<AddOrUpdateFAQView> createState() => _AddOrUpdateFAQViewState();
 }
 
-class _AddFAQViewState extends State<AddOrUpdateFAQView> {
+class _AddOrUpdateFAQViewState extends State<AddOrUpdateFAQView> {
   final FAQStore _store = serviceLocator<FAQStore>();
   String? dropdownSelection;
 
@@ -69,7 +69,7 @@ class _AddFAQViewState extends State<AddOrUpdateFAQView> {
                     if (ret) {
                       SnackBarHelper.snackBar(context,
                           message: widget.update
-                              ? "Campo editar com sucesso!"
+                              ? "Campo editado com sucesso!"
                               : "Campo cadastrado com sucesso!");
                       await _store.onFAQInit();
                       _store.previousPage();

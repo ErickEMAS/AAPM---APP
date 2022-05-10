@@ -25,6 +25,9 @@ class AppRoutes {
   static const changepassword = userAccount + '/changepassword';
   static const myTags = userAccount + '/myTags';
   static const faq = userAccount + '/faq';
+  static const carteitaWithoutOwner = userAccount + '/carteitaWithoutOwner';
+  static const hunting = userAccount + '/hunting';
+  static const huntingOverview = userAccount + hunting + '/huntingOverview';
 
   static const adminAccount = '/adminAccount';
   static const addagente = adminAccount + '/addagente';

@@ -10,9 +10,10 @@ class Endpoints {
   static const String changeEmail = '/user/change-email';
   static const String signUpAgente = '/user/sign-up';
   static const String signUpAdmin = '/user/sign-up-admin';
-  static const String deleteUser = '/user/delete-user'; //não integrada
-  static const String reactivateUser = '/user/reactivate-user'; //não integrada
-  static const String getUsers = '/user/get-users'; //não integrada
+  static const String deleteUser = '/user/delete-user';
+  
+  static const String reactivateUser = '/user/reactivate-user';
+  static const String getUsers = '/user/get-users';
 
   //seller
   static const String updateSeller = '/seller/update-seller';

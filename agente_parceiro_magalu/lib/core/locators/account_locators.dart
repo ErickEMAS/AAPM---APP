@@ -12,6 +12,9 @@ import 'package:agente_parceiro_magalu/app/account/presentation/stores/user_deta
 import 'package:agente_parceiro_magalu/app/agent/data/datasources/agent_datasource.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 
+import '../../app/account/presentation/stores/carteiras_without_owner_store.dart';
+import '../../app/account/presentation/stores/hunting_store.dart';
+
 Future<void> setupAccountLocators() async {
   serviceLocator.registerLazySingleton<IAccountDatasource>(
     () => AccountDatasource(),
@@ -45,5 +48,11 @@ Future<void> setupAccountLocators() async {
   );
   serviceLocator.registerLazySingleton<FAQStore>(
     () => FAQStore(),
+  );
+  serviceLocator.registerLazySingleton<HuntingStore>(
+    () => HuntingStore(),
+  );
+  serviceLocator.registerLazySingleton<CarteirasWithOwnerStore>(
+    () => CarteirasWithOwnerStore(),
   );
 }

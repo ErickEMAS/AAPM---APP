@@ -18,10 +18,10 @@ class AddOrUpdateSellerFieldslistView extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<AddOrUpdateSellerFieldslistView> createState() => _AddFAQViewState();
+  State<AddOrUpdateSellerFieldslistView> createState() => _AddOrUpdateSellerFieldslistViewState();
 }
 
-class _AddFAQViewState extends State<AddOrUpdateSellerFieldslistView> {
+class _AddOrUpdateSellerFieldslistViewState extends State<AddOrUpdateSellerFieldslistView> {
   final SellerFieldsStore _store = serviceLocator<SellerFieldsStore>();
   String? dropdownSelection;
 

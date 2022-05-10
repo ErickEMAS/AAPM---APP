@@ -20,10 +20,10 @@ class AddOrUpdateQuestionsChecklistView extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<AddOrUpdateQuestionsChecklistView> createState() => _AddFAQViewState();
+  State<AddOrUpdateQuestionsChecklistView> createState() => _AddOrUpdateQuestionsChecklistViewState();
 }
 
-class _AddFAQViewState extends State<AddOrUpdateQuestionsChecklistView> {
+class _AddOrUpdateQuestionsChecklistViewState extends State<AddOrUpdateQuestionsChecklistView> {
   final QuestionChecklistStore _store =
       serviceLocator<QuestionChecklistStore>();
   String? dropdownSelection;

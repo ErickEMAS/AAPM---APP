@@ -77,4 +77,10 @@ abstract class _UserAccountStoreBase with Store {
         .pushNamed(AppRoutes.faq)
         .then((value) => true);
   }
+
+  Future<bool> navigateToHunting(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.hunting)
+        .then((value) => true);
+  }
 }
