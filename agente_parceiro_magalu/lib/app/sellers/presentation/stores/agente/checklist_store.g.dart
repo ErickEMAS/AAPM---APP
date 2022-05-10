@@ -39,6 +39,17 @@ mixin _$ChecklistStore on _ChecklistStoreBase, Store {
   }
 
   @override
+  dynamic _setChecklistList(List<ChecklistModel> data) {
+    final _$actionInfo = _$_ChecklistStoreBaseActionController.startAction(
+        name: '_ChecklistStoreBase._setChecklistList');
+    try {
+      return super._setChecklistList(data);
+    } finally {
+      _$_ChecklistStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 checklistModel: ${checklistModel}

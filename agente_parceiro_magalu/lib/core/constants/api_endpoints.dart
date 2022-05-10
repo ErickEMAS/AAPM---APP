@@ -15,23 +15,25 @@ class Endpoints {
 
   //seller
   static const String updateSeller = '/seller/update-seller'; //não integrada
-  static const String answerChecklist = '/seller/answer-checklist'; //não integrada
-  static const String tranferCarteira = '/seller/tranfer-carteira'; //não integrada
+
+  static const String tranferCarteira =
+      '/seller/tranfer-carteira'; //não integrada
   static const String addHunting = '/seller/add-hunting'; //não integrada
   static const String updateHunting = '/seller/update-hunting'; //não integrada
-  static const String setVisitItinerary = '/seller/set-visit-itinerary'; //não integrada
+  static const String setVisitItinerary =
+      '/seller/set-visit-itinerary'; //não integrada
   static const String visiting = '/seller/visiting'; //não integrada
-  static const String resetVisitItinerary = '/seller/reset-visit-itinerary'; //não integrada
-  static const String getChecklists = '/seller/get-activity'; //não integrada
-  static const String getCarteiraWithoutOwner = '/seller/get-carteira-without_owner'; //não integrada
+  static const String resetVisitItinerary =
+      '/seller/reset-visit-itinerary'; //não integrada
+  static const String getCarteiraWithoutOwner =
+      '/seller/get-carteira-without_owner'; //não integrada
   static const String getHuntings = '/seller/get-huntings'; //não integrada
 
-
-  static const String getFields = '/seller/get-fields'; 
-  static const String getQuestions = '/seller/get-questions'; 
+  static const String getFields = '/seller/get-fields';
+  static const String getQuestions = '/seller/get-questions';
   static const String getFAQs = '/seller/get-faqs';
-  static const String addFAQ = '/seller/add-faq'; 
-  static const String updateFAQ = '/seller/update-faq'; 
+  static const String addFAQ = '/seller/add-faq';
+  static const String updateFAQ = '/seller/update-faq';
   static const String deleteTag = '/seller/delete-tag';
   static const String updateTag = '/seller/update-tag';
   static const String addField = '/seller/add-field';
@@ -44,10 +46,12 @@ class Endpoints {
   static const String getSellerById = '/seller/get-seller';
   static const String addSeller = '/seller/add-seller';
   static const String addSellerList = '/seller/add-seller-list';
+  static const String getChecklists = '/seller/get-activity';
+  static const String answerChecklist = '/seller/answer-checklist';
 
   static const String getTags = '/seller/get-tags';
   static const String addTag = '/seller/add-tag';
   static const String addTagInSelelr = '/seller/add-tag-seller';
 
-  static const String startChecklist = '/seller/start-checklist-by-selerid'; 
+  static const String startChecklist = '/seller/start-checklist-by-selerid';
 }

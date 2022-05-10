@@ -13,7 +13,7 @@ import 'package:agente_parceiro_magalu/app/auth/presentation/pages/forgot_passwo
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/sign_up_page.dart';
 import 'package:agente_parceiro_magalu/app/auth/presentation/pages/login_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/agente_page.dart';
-import 'package:agente_parceiro_magalu/app/home/presentation/pages/agente/calendar_page.dart';
+import 'package:agente_parceiro_magalu/app/calendar/presentation/pages/agente/calendar/calendar_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/dashboard_page.dart';
 import 'package:agente_parceiro_magalu/app/home/presentation/pages/home_page.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
