@@ -22,11 +22,12 @@ class AgenteSearchFilterWidgetState extends State<AgenteSearchFilterWidget> {
   String? dropdownSelection;
   TextEditingController searchController = TextEditingController();
 
-  List<bool> isSelected = [true, false];
+  List<bool> isSelected = [false, false];
 
   @override
   Widget build(BuildContext context) {
     double phoneWidth = MediaQuery.of(context).size.width;
+    isSelected = [_store.filterUserActive, !_store.filterUserActive];
 
     return Observer(builder: (_) {
       return Column(
@@ -62,12 +63,12 @@ class AgenteSearchFilterWidgetState extends State<AgenteSearchFilterWidget> {
         ToggleButtons(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("Ativos"),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Text("Ativos"),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("Inativos"),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Text("Inativos"),
             ),
           ],
           onPressed: (int index) {

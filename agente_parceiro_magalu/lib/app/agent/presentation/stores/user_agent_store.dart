@@ -101,7 +101,7 @@ abstract class _UserAgentStoreBase with Store {
     pageablePage = 0;
     pageableSize = 10;
     searchClicked = false;
-    filterUserActive = false;
+    filterUserActive = true;
     search = "";
 
     userAgenteModelList.clear();
