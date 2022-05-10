@@ -95,6 +95,12 @@ class _AdminAccountPageState extends State<AdminAccountPage> {
                                 _store.navigateToQuestionsChecklist(context),
                           ),
                           AppUserAccountItemList(
+                            tittle: "Carteiras sem Agente",
+                            iconData: Icons.account_balance_wallet,
+                            onClick: () =>
+                                _store.navigateTocarteirasWithoutOwner(context),
+                          ),
+                          AppUserAccountItemList(
                             tittle: "FAQ",
                             iconData: Icons.quiz,
                             onClick: () => _store.navigateToFAQ(context),

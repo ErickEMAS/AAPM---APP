@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:agente_parceiro_magalu/app/account/data/models/faq_model.dart';
+import 'package:agente_parceiro_magalu/app/account/data/models/hunting_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/change_password_model.dart';
 import 'package:agente_parceiro_magalu/app/auth/data/models/sign_up_model.dart';
 import 'package:agente_parceiro_magalu/core/constants/api_endpoints.dart';
@@ -13,6 +14,7 @@ import '../../../../core/helpers/storage_helper.dart';
 import '../../../../core/http/exceptions/exceptions.dart';
 import '../../../../core/http/interceptor/auth_interceptor.dart';
 import '../../../../core/locators/service_locators.dart';
+import '../../../agent/data/models/carteira_model.dart';
 import '../../../auth/data/models/send_code_model.dart';
 import '../../../sellers/data/models/tag_model.dart';
 import '../models/dynamic_field_model.dart';
@@ -39,6 +41,11 @@ abstract class IAccountDatasource {
   Future<PageListModel> getDynamicFields({required int size, required int page});
   Future addDynamicField({required DynamicFieldModel dynamicFieldModel});
   Future updateDynamicField({required DynamicFieldModel dynamicFieldModel});
+  Future<PageListModel> getCarteiras({required int size, required int page});
+  Future transferCarteira({required String userId, required String carteiraId});
+  Future addHunting({required HuntingModel huntingModel});
+  Future updateHunting({required HuntingModel huntingModel});
+  Future<PageListModel> getHuntings({required int size, required int page});
 }
 
 class AccountDatasource implements IAccountDatasource {
@@ -368,9 +375,9 @@ class AccountDatasource implements IAccountDatasource {
       
       PageListModel pageList = PageListModel.fromJson(response);
 
-      var faqs = response["content"];
+      var dynamicQuestionCheckList = response["content"];
 
-      List<DynamicQuestionCheckListModel> dynamicQuestionCheckListModel = (faqs as List).map((e) => DynamicQuestionCheckListModel.fromJson(e)).toList();
+      List<DynamicQuestionCheckListModel> dynamicQuestionCheckListModel = (dynamicQuestionCheckList as List).map((e) => DynamicQuestionCheckListModel.fromJson(e)).toList();
 
       pageList.content = dynamicQuestionCheckListModel;
 
@@ -431,9 +438,9 @@ class AccountDatasource implements IAccountDatasource {
       
       PageListModel pageList = PageListModel.fromJson(response);
 
-      var faqs = response["content"];
+      var dynamicFields = response["content"];
 
-      List<DynamicFieldModel> dynamicFieldModel = (faqs as List).map((e) => DynamicFieldModel.fromJson(e)).toList();
+      List<DynamicFieldModel> dynamicFieldModel = (dynamicFields as List).map((e) => DynamicFieldModel.fromJson(e)).toList();
 
       pageList.content = dynamicFieldModel;
 
@@ -441,6 +448,120 @@ class AccountDatasource implements IAccountDatasource {
     } catch (err) {
       // ignore: avoid_print
       print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future addHunting({required HuntingModel huntingModel}) async {
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.addHunting,
+        data: huntingModel.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future updateHunting({required HuntingModel huntingModel}) async {
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.updateHunting,
+        data: huntingModel.toJson(),
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PageListModel> getHuntings({required int size, required int page}) async {
+    Map<String, dynamic> params = {
+      "size": size,
+      "page": page,
+    };
+
+    try {
+      final response = await _httpWithAuth.get(
+        Endpoints.getHuntings,
+        queryParameters: params,
+      );
+      
+      PageListModel pageList = PageListModel.fromJson(response);
+
+      var hunting = response["content"];
+
+      List<HuntingModel> dynamicFieldModel = (hunting as List).map((e) => HuntingModel.fromJson(e)).toList();
+
+      pageList.content = dynamicFieldModel;
+
+      return pageList;
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PageListModel> getCarteiras({required int size, required int page}) async {
+    Map<String, dynamic> params = {
+      "size": size,
+      "page": page,
+    };
+
+    try {
+      final response = await _httpWithAuth.get(
+        Endpoints.getCarteiraWithoutOwner,
+        queryParameters: params,
+      );
+      
+      PageListModel pageList = PageListModel.fromJson(response);
+
+      var carteira = response["content"];
+
+      List<CarteiraModel> dynamicQuestionCheckListModel = (carteira as List).map((e) => CarteiraModel.fromJson(e)).toList();
+
+      pageList.content = dynamicQuestionCheckListModel;
+
+      return pageList;
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
+      rethrow;
+    }
+  }
+
+  @override
+  Future transferCarteira({required String userId, required String carteiraId}) async {
+    Map<String, dynamic> data = {
+      "userId": userId,
+      "carteiraId": carteiraId,
+    };
+
+    try {
+      final response = await _httpWithAuth.post(
+        Endpoints.tranferCarteira,
+        data: data,
+      );
+
+      print(response);
+    } on DioError catch (err) {
+      if (err.response!.statusCode == 400) throw Unauthorized();
+      rethrow;
+    } catch (err) {
       rethrow;
     }
   }

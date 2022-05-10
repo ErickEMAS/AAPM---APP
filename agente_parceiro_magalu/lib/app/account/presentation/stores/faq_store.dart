@@ -84,7 +84,7 @@ abstract class _FAQStoreBase with Store {
     try {
       PageListModel pageList = await _datasource.getFAQs(
         size: pageableSize,
-        page: pageablePage,
+        page: 0,
         search: searchFAQ ?? "",
       );
 
@@ -158,30 +158,5 @@ abstract class _FAQStoreBase with Store {
     pageController.previousPage(
         duration: const Duration(milliseconds: 400), curve: Curves.easeOutQuad);
     currentPage = 0;
-  }
-
-  Future<bool> navigateToEditSeller(BuildContext context, String sellerId) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.editSeller, arguments: sellerId)
-        .then(
-          (value) => false,
-        );
-  }
-
-  Future<bool> navigateToChecklistVisita(
-      BuildContext context, String sellerId) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.checklistVisitaSeller, arguments: sellerId)
-        .then(
-          (value) => false,
-        );
-  }
-
-  Future<bool> navigateToSellerOverview(BuildContext context, String sellerId) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.sellerOverview, arguments: sellerId)
-        .then(
-          (value) => false,
-        );
   }
 }

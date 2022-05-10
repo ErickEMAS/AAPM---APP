@@ -10,8 +10,10 @@ class Endpoints {
   static const String changeEmail = '/user/change-email';
   static const String signUpAgente = '/user/sign-up';
   static const String signUpAdmin = '/user/sign-up-admin';
-  static const String deleteUser = '/user/delete-user'; //não integrada
-  static const String getUsers = '/user/get-users'; //não integrada
+  static const String deleteUser = '/user/delete-user';
+
+  static const String reactivateUser = '/user/reactivate-user';
+  static const String getUsers = '/user/get-users';
 
   //seller
   static const String updateSeller = '/seller/update-seller'; //não integrada
@@ -28,6 +30,9 @@ class Endpoints {
   static const String getCarteiraWithoutOwner =
       '/seller/get-carteira-without_owner'; //não integrada
   static const String getHuntings = '/seller/get-huntings'; //não integrada
+  static const String answerChecklist = '/seller/answer-checklist';
+  static const String getChecklists = '/seller/get-activity';
+  static const String getCarteira = '/seller/get-carteira';
 
   static const String getFields = '/seller/get-fields';
   static const String getQuestions = '/seller/get-questions';
@@ -46,8 +51,6 @@ class Endpoints {
   static const String getSellerById = '/seller/get-seller';
   static const String addSeller = '/seller/add-seller';
   static const String addSellerList = '/seller/add-seller-list';
-  static const String getChecklists = '/seller/get-activity';
-  static const String answerChecklist = '/seller/answer-checklist';
 
   static const String getTags = '/seller/get-tags';
   static const String addTag = '/seller/add-tag';

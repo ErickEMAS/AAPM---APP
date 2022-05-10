@@ -49,7 +49,7 @@ class _AppBottomBarState extends State<AppBottomBar> {
                 ),
                 _store.userRole == "ROLE_ADMIN"
                     ? bottomIcon(
-                        tittle: "Agentes",
+                        tittle: "Usuários",
                         iconData: Icons.people,
                         active: _store.currentPage == AppRoutes.agent,
                         onPressed: () {

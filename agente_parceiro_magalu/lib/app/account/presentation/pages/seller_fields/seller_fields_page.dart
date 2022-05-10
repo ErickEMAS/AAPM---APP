@@ -16,10 +16,10 @@ class SellerFieldsPage extends StatefulWidget {
   const SellerFieldsPage({Key? key}) : super(key: key);
 
   @override
-  State<SellerFieldsPage> createState() => _FAQPageState();
+  State<SellerFieldsPage> createState() => _SellerFieldsPageState();
 }
 
-class _FAQPageState extends State<SellerFieldsPage> {
+class _SellerFieldsPageState extends State<SellerFieldsPage> {
 final SellerFieldsStore _store = serviceLocator<SellerFieldsStore>();
 
   @override

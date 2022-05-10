@@ -15,7 +15,7 @@ abstract class ISellerDatasource {
     int? size,
     int? page,
     String? tagId,
-    String? nome,
+    required String search,
   });
   Future addSeller({SellerModel? sellerModel});
   Future<String> addSellerList({required List<SellerModel> sellerModelList});
@@ -49,19 +49,16 @@ class SellerDatasource implements ISellerDatasource {
     int? size,
     int? page,
     String? tagId,
-    String? nome,
+    required String search,
   }) async {
     try {
       Map<String, dynamic> params = {
         "size": size,
         "page": page,
+        "search": search,
       };
 
-      final tagIdParam = <String, dynamic>{"tagId": tagId};
-      tagId != null ? params.addEntries(tagIdParam.entries) : null;
-
-      final nomeParam = <String, dynamic>{"nome": nome};
-      nome != null ? params.addEntries(nomeParam.entries) : null;
+      if (tagId != "") params["tagId"] = tagId;
 
       final response = await _httpWithAuth.get(
         Endpoints.getSellerListByAgentId,

@@ -78,6 +78,11 @@ class _UserAccountPageState extends State<UserAccountPage> {
                             onClick: () => _store.navigateToMyTags(context),
                           ),
                           AppUserAccountItemList(
+                            tittle: "Meus Huntings",
+                            iconData: Icons.store,
+                            onClick: () => _store.navigateToHunting(context),
+                          ),
+                          AppUserAccountItemList(
                             tittle: "FAQ",
                             iconData: Icons.quiz,
                             onClick: () => _store.navigateToFAQ(context),

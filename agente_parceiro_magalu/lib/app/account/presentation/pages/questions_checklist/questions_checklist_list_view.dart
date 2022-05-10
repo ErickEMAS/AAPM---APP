@@ -63,7 +63,7 @@ class _FAQListViewState extends State<QuestionsChecklistListView> {
                         _store.setSearchClicked(!_store.searchClicked);
                       },
                       icon: Icon(
-                          _store.searchClicked ? Icons.close : Icons.search),
+                          _store.searchClicked ? Icons.close : Icons.filter_list),
                     )
                   ],
                 ),

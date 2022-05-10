@@ -16,7 +16,9 @@ class AppRoutes {
   static const checklistOverview =
       sellers + checklistHistorico + "checklistOverview";
   static const calendar = '/calendar';
+
   static const agent = '/agent';
+  static const userAgenteOverview = agent + '/userAgenteOverview';
 
   static const userAccount = '/userAccount';
   static const userDetail = userAccount + '/userDetail';
@@ -25,6 +27,10 @@ class AppRoutes {
   static const changepassword = userAccount + '/changepassword';
   static const myTags = userAccount + '/myTags';
   static const faq = userAccount + '/faq';
+  static const carteitaWithoutOwner = userAccount + '/carteitaWithoutOwner';
+  static const agentListForCarteira = userAccount + '/agentListForCarteira';
+  static const hunting = userAccount + '/hunting';
+  static const huntingOverview = hunting + '/huntingOverview';
 
   static const adminAccount = '/adminAccount';
   static const addagente = adminAccount + '/addagente';

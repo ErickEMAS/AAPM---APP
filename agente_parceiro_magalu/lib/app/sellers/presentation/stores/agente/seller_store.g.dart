@@ -72,30 +72,30 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   final _$tagIdAtom = Atom(name: '_SellerStoreBase.tagId');
 
   @override
-  String? get tagId {
+  String get tagId {
     _$tagIdAtom.reportRead();
     return super.tagId;
   }
 
   @override
-  set tagId(String? value) {
+  set tagId(String value) {
     _$tagIdAtom.reportWrite(value, super.tagId, () {
       super.tagId = value;
     });
   }
 
-  final _$nomeSellerAtom = Atom(name: '_SellerStoreBase.nomeSeller');
+  final _$searchSellerAtom = Atom(name: '_SellerStoreBase.searchSeller');
 
   @override
-  String? get nomeSeller {
-    _$nomeSellerAtom.reportRead();
-    return super.nomeSeller;
+  String get searchSeller {
+    _$searchSellerAtom.reportRead();
+    return super.searchSeller;
   }
 
   @override
-  set nomeSeller(String? value) {
-    _$nomeSellerAtom.reportWrite(value, super.nomeSeller, () {
-      super.nomeSeller = value;
+  set searchSeller(String value) {
+    _$searchSellerAtom.reportWrite(value, super.searchSeller, () {
+      super.searchSeller = value;
     });
   }
 
@@ -169,7 +169,7 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
-  dynamic setTagId(String? newData) {
+  dynamic setTagId(String newData) {
     final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
         name: '_SellerStoreBase.setTagId');
     try {
@@ -180,11 +180,11 @@ mixin _$SellerStore on _SellerStoreBase, Store {
   }
 
   @override
-  dynamic setNomeSeller(String? newData) {
+  dynamic setSearchSeller(String newData) {
     final _$actionInfo = _$_SellerStoreBaseActionController.startAction(
-        name: '_SellerStoreBase.setNomeSeller');
+        name: '_SellerStoreBase.setSearchSeller');
     try {
-      return super.setNomeSeller(newData);
+      return super.setSearchSeller(newData);
     } finally {
       _$_SellerStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -198,7 +198,7 @@ pageablePage: ${pageablePage},
 sellerEditModel: ${sellerEditModel},
 searchClicked: ${searchClicked},
 tagId: ${tagId},
-nomeSeller: ${nomeSeller}
+searchSeller: ${searchSeller}
     ''';
   }
 }

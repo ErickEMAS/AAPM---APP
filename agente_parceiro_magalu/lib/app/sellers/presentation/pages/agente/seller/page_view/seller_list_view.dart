@@ -105,7 +105,7 @@ class _SellerListViewState extends State<SellerListView> {
                     onAddButtonPressed: () {
                       _tagStore.getTags();
                       _addTags(sellerId: _sellerStore.sellerList[index].id!);
-                    });
+                    },);
               },
             ),
           );
