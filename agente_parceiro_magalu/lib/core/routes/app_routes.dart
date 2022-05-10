@@ -26,8 +26,9 @@ class AppRoutes {
   static const myTags = userAccount + '/myTags';
   static const faq = userAccount + '/faq';
   static const carteitaWithoutOwner = userAccount + '/carteitaWithoutOwner';
+  static const agentListForCarteira = userAccount + '/agentListForCarteira';
   static const hunting = userAccount + '/hunting';
-  static const huntingOverview = userAccount + hunting + '/huntingOverview';
+  static const huntingOverview = hunting + '/huntingOverview';
 
   static const adminAccount = '/adminAccount';
   static const addagente = adminAccount + '/addagente';

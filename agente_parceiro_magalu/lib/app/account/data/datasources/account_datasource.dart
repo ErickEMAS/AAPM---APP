@@ -553,7 +553,7 @@ class AccountDatasource implements IAccountDatasource {
 
     try {
       final response = await _httpWithAuth.post(
-        Endpoints.addField,
+        Endpoints.tranferCarteira,
         data: data,
       );
 

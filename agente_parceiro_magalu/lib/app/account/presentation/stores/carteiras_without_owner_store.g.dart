@@ -123,28 +123,6 @@ mixin _$CarteirasWithOwnerStore on _CarteirasWithOwnerStoreBase, Store {
   }
 
   @override
-  dynamic nextPage() {
-    final _$actionInfo = _$_CarteirasWithOwnerStoreBaseActionController
-        .startAction(name: '_CarteirasWithOwnerStoreBase.nextPage');
-    try {
-      return super.nextPage();
-    } finally {
-      _$_CarteirasWithOwnerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic previousPage() {
-    final _$actionInfo = _$_CarteirasWithOwnerStoreBaseActionController
-        .startAction(name: '_CarteirasWithOwnerStoreBase.previousPage');
-    try {
-      return super.previousPage();
-    } finally {
-      _$_CarteirasWithOwnerStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   dynamic _setcarteiraList(List<CarteiraModel> data) {
     final _$actionInfo = _$_CarteirasWithOwnerStoreBaseActionController
         .startAction(name: '_CarteirasWithOwnerStoreBase._setcarteiraList');

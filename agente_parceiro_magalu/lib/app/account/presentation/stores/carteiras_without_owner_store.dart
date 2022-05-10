@@ -1,4 +1,6 @@
+import 'package:agente_parceiro_magalu/app/agent/data/datasources/agent_datasource.dart';
 import 'package:flutter/material.dart';
+import 'package:googleapis/driveactivity/v2.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/locators/service_locators.dart';
@@ -9,10 +11,12 @@ import '../../../agent/data/models/user_agent_model.dart';
 import '../../data/datasources/account_datasource.dart';
 part 'carteiras_without_owner_store.g.dart';
 
-class CarteirasWithOwnerStore = _CarteirasWithOwnerStoreBase with _$CarteirasWithOwnerStore;
+class CarteirasWithOwnerStore = _CarteirasWithOwnerStoreBase
+    with _$CarteirasWithOwnerStore;
 
 abstract class _CarteirasWithOwnerStoreBase with Store {
   final IAccountDatasource _datasource = serviceLocator<IAccountDatasource>();
+  final IAgentDatasource _datasourceAgent = serviceLocator<IAgentDatasource>();
 
   final formKey = GlobalKey<FormState>();
 
@@ -28,10 +32,18 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
   CarteiraModel carteiraSelected = CarteiraModel(id: "");
 
   @observable
-  UserAgentModel agentModel = UserAgentModel(id: "", cpf: "", roles: []);
+  UserAgentModel agentModel = UserAgentModel(
+    id: "",
+    cpf: "",
+    roles: [],
+    totalSeller: 0,
+  );
 
   @observable
   int pageablePage = 0;
+  
+  @observable
+  int pageablePageAgent = 0;
 
   @observable
   PageController pageController = PageController();
@@ -55,6 +67,77 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
       return false;
     }
   }
+
+  Future<bool> getUsers() async {
+    try {
+      PageListModel pageList = await _datasourceAgent.getUsers(
+        size: 10,
+        page: 0,
+        role: "ROLE_USER",
+      );
+
+      userAgenteModelList.clear();
+      _setUserAgenteModelList(pageList.content.cast<UserAgentModel>().toList());
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<bool> fetchNextAgentPage() async {
+    try {
+      _setPage(pageablePage + 1);
+
+      PageListModel pageList = await _datasourceAgent.getUsers(
+        size: 10,
+        page: pageablePage,
+        role: "ROLE_USER",
+      );
+
+      _setUserAgenteModelList(pageList.content.cast<UserAgentModel>().toList());
+
+      return true;
+    } catch (e) {
+      print("Error:  $e");
+
+      return false;
+    }
+  }
+
+  ObservableList<UserAgentModel> userAgenteModelList = ObservableList<UserAgentModel>();
+
+  @observable
+  bool searchClicked = false;
+
+  @observable
+  String? search;
+
+  @action
+  setSearch(String? newData) {
+    search = newData;
+  }
+
+  @action
+  setSearchClicked(bool newData) {
+    searchClicked = newData;
+  }
+
+  @action
+  _setUserAgenteModelList(List<UserAgentModel> data) {
+    userAgenteModelList.addAll(data);
+  }
+
+  @observable
+  UserAgentModel userAgentselected = UserAgentModel(
+    id: "",
+    cpf: "",
+    roles: [],
+    emailConfirmed: false,
+    accountNonLocked: false,
+    enabled: false,
+    totalSeller: 0,
+  );
 
   @action
   reset() {
@@ -90,7 +173,7 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
   }
 
   @action
-  _setcarteiraList( List<CarteiraModel> data) {
+  _setcarteiraList(List<CarteiraModel> data) {
     carteiraList.addAll(data);
   }
 
@@ -115,7 +198,8 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
 
   Future<bool> transferCarteira() async {
     try {
-      await _datasource.transferCarteira(carteiraId: carteiraSelected.id, userId: "");
+      await _datasource.transferCarteira(
+          carteiraId: carteiraSelected.id, userId: userAgentselected.id);
 
       return true;
     } catch (err) {
@@ -146,5 +230,17 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
         .then(
           (value) => false,
         );
+  }
+  
+  Future<bool> navigateToAgentListForCarteiraView(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.agentListForCarteira)
+        .then(
+          (value) => false,
+        );
+  }
+
+  void navigateback(BuildContext context) {
+    return Navigator.pop(context);
   }
 }

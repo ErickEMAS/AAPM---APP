@@ -1,11 +1,11 @@
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/add_admin/add_admin_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/add_agente/add_agente_page.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/carteiras_without_Owner/agent_list_view.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/carteiras_without_Owner/carteiras_with_owner_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_email/change_email_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/change_password/change_password_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/confirm_email/confirm_email_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/faq/faq_page.dart';
-import 'package:agente_parceiro_magalu/app/account/presentation/pages/huntings/add_or_update_hunting_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/huntings/hunting_overview_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/huntings/hunting_page.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/my_account/adm/admin_account_page.dart';
@@ -184,6 +184,11 @@ class AppRouter {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (context, __, ___) => const QuestionsChecklistPage(),
+        );
+      case AppRoutes.agentListForCarteira:
+        return PageRouteBuilder(
+          settings: settings,
+          pageBuilder: (context, __, ___) => const AgentListForCarteiraView(),
         );
 
       default:

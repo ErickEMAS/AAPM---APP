@@ -8,8 +8,7 @@ import '../../data/models/user_agent_model.dart';
 
 part 'user_agent_store.g.dart';
 
-class UserAgentStore = _UserAgentStoreBase
-    with _$UserAgentStore;
+class UserAgentStore = _UserAgentStoreBase with _$UserAgentStore;
 
 abstract class _UserAgentStoreBase with Store {
   final IAgentDatasource _datasource = serviceLocator<IAgentDatasource>();
@@ -18,7 +17,8 @@ abstract class _UserAgentStoreBase with Store {
 
   int pageableSize = 10;
 
-  ObservableList<UserAgentModel> userAgenteModelList = ObservableList<UserAgentModel>();
+  ObservableList<UserAgentModel> userAgenteModelList =
+      ObservableList<UserAgentModel>();
 
   @observable
   UserAgentModel userAgentModel = UserAgentModel(
@@ -28,6 +28,7 @@ abstract class _UserAgentStoreBase with Store {
     emailConfirmed: false,
     accountNonLocked: false,
     enabled: false,
+    totalSeller: 0,
   );
 
   @observable
@@ -37,7 +38,10 @@ abstract class _UserAgentStoreBase with Store {
   bool searchClicked = true;
 
   @observable
-  int pageablePage = -1;
+  int pageablePage = 0;
+
+  @observable
+  int pageablePageAgent = 0;
 
   @observable
   PageController pageController = PageController();
@@ -47,13 +51,14 @@ abstract class _UserAgentStoreBase with Store {
 
   @observable
   UserAgentModel userAgentselected = UserAgentModel(
-      id: "",
-      cpf: "",
-      roles: [],
-      emailConfirmed: false,
-      accountNonLocked: false,
-      enabled: false,
-      );
+    id: "",
+    cpf: "",
+    roles: [],
+    emailConfirmed: false,
+    accountNonLocked: false,
+    enabled: false,
+    totalSeller: 0,
+  );
 
   @action
   Future<bool> onUsersInit() async {
@@ -76,22 +81,24 @@ abstract class _UserAgentStoreBase with Store {
   @action
   reset() {
     userAgentModel = UserAgentModel(
-    id: "",
-    cpf: "",
-    roles: [],
-    emailConfirmed: false,
-    accountNonLocked: false,
-    enabled: false,
-  );
+      id: "",
+      cpf: "",
+      roles: [],
+      emailConfirmed: false,
+      accountNonLocked: false,
+      enabled: false,
+      totalSeller: 0,
+    );
 
     userAgentselected = UserAgentModel(
-    id: "",
-    cpf: "",
-    roles: [],
-    emailConfirmed: false,
-    accountNonLocked: false,
-    enabled: false,
-  );
+      id: "",
+      cpf: "",
+      roles: [],
+      emailConfirmed: false,
+      accountNonLocked: false,
+      enabled: false,
+      totalSeller: 0,
+    );
 
     pageController = PageController();
 
@@ -107,22 +114,24 @@ abstract class _UserAgentStoreBase with Store {
   @action
   resetmodels() {
     userAgentModel = UserAgentModel(
-    id: "",
-    cpf: "",
-    roles: [],
-    emailConfirmed: false,
-    accountNonLocked: false,
-    enabled: false,
-  );
+      id: "",
+      cpf: "",
+      roles: [],
+      emailConfirmed: false,
+      accountNonLocked: false,
+      enabled: false,
+      totalSeller: 0,
+    );
 
     userAgentselected = UserAgentModel(
-    id: "",
-    cpf: "",
-    roles: [],
-    emailConfirmed: false,
-    accountNonLocked: false,
-    enabled: false,
-  );
+      id: "",
+      cpf: "",
+      roles: [],
+      emailConfirmed: false,
+      accountNonLocked: false,
+      enabled: false,
+      totalSeller: 0,
+    );
   }
 
   @action
@@ -153,8 +162,7 @@ abstract class _UserAgentStoreBase with Store {
   }
 
   @action
-  _setUserAgenteModelList(
-      List<UserAgentModel> data) {
+  _setUserAgenteModelList(List<UserAgentModel> data) {
     userAgenteModelList.addAll(data);
   }
 
@@ -180,7 +188,8 @@ abstract class _UserAgentStoreBase with Store {
 
   Future<bool> desactiveUser({required int index}) async {
     try {
-      userAgentselected = await _datasource.desactiveUser(id: userAgentselected.id);
+      userAgentselected =
+          await _datasource.desactiveUser(id: userAgentselected.id);
 
       userAgenteModelList[index] = userAgentselected;
       return true;
@@ -191,7 +200,8 @@ abstract class _UserAgentStoreBase with Store {
 
   Future<bool> reactiveUser({required int index}) async {
     try {
-      userAgentselected = await _datasource.reactiveUser(cpf: userAgentselected.cpf);
+      userAgentselected =
+          await _datasource.reactiveUser(cpf: userAgentselected.cpf);
 
       userAgenteModelList[index] = userAgentselected;
       return true;

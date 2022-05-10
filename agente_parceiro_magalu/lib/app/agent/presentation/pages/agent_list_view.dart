@@ -147,7 +147,7 @@ class _AgentListViewState extends State<AgentListView> {
                                 active: _store.userAgenteModelList[index]
                                     .accountNonLocked!,
                                 value:
-                                    "${_store.userAgenteModelList[index].carteira == null ? 0 : _store.userAgenteModelList[index].carteira!.sellers?.length}",
+                                    "${_store.userAgenteModelList[index].totalSeller}",
                               ),
                             ],
                           )

@@ -14,7 +14,7 @@ class SellerCardWidget extends StatelessWidget {
   SellerCardWidget({
     Key? key,
     required this.sellerModel,
-    required this.onAddButtonPressed,
+    this.onAddButtonPressed,
   }) : super(key: key);
 
   final SellerStore _store = serviceLocator<SellerStore>();
@@ -63,14 +63,14 @@ class SellerCardWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                ElevatedButton(
+                onAddButtonPressed != null ? ElevatedButton(
                   onPressed: onAddButtonPressed,
                   child: Icon(Icons.add),
                   style: ElevatedButton.styleFrom(
                     shape: CircleBorder(),
                     padding: EdgeInsets.all(AppDimens.space),
                   ),
-                ),
+                ) : Container(),
               ],
             ),
           ),

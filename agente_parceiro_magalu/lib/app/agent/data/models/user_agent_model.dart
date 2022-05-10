@@ -14,11 +14,10 @@ class UserAgentModel {
   bool? accountNonLocked;
   bool? enabled;
   List<String> roles;
-  CarteiraModel? carteira;
+  int totalSeller;
 
   UserAgentModel({
     this.email,
-    this.carteira,
     this.fullName,
     this.enabled = false,
     this.emailConfirmed = false,
@@ -26,6 +25,7 @@ class UserAgentModel {
     required this.id,
     required this.cpf,
     required this.roles,
+    required this.totalSeller,
   });
 
   factory UserAgentModel.fromJson(Map<String, dynamic> json) =>

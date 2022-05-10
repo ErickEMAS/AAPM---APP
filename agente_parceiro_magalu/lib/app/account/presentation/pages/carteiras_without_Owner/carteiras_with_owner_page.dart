@@ -1,5 +1,5 @@
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/carteiras_without_Owner/carteiras_with_owner_list_view.dart';
-import 'package:agente_parceiro_magalu/app/account/presentation/pages/carteiras_without_Owner/view_carteiras_with_owner_view.dart';
+import 'package:agente_parceiro_magalu/app/account/presentation/pages/carteiras_without_Owner/carteiras_overwith_owner_view.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/add_or_update_questions_checklist_view.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/pages/questions_checklist/questions_checklist_list_view.dart';
 import 'package:agente_parceiro_magalu/app/account/presentation/stores/carteiras_without_owner_store.dart';
@@ -52,13 +52,32 @@ final CarteirasWithOwnerStore _store = serviceLocator<CarteirasWithOwnerStore>()
                 : null,
             title: "Carteiras Sem Agente",
           ),
+          
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: _store.currentPage == 1
+              ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppDimens.margin),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _store.navigateToAgentListForCarteiraView(context);
+                        // _store.update =  false;
+                        // _store.nextPage();
+                      },
+                      child: const Text("Tranferir Seller"),
+                    ),
+                  ),
+                )
+              : null,
           body: PageView.builder(
             clipBehavior: Clip.none,
             itemCount: 2,
             physics: const NeverScrollableScrollPhysics(),
             controller: _store.pageController,
             itemBuilder: (context, index) {
-              return index == 0 ? const CarteirasWithOwnerListView() : const ViewCarteirasWithOwnerView();
+              return index == 0 ? const CarteirasWithOwnerListView() : const CarteirasOverwithwithOwnerView();
             },
           ),
           bottomNavigationBar: AppBottomBar(),
