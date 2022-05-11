@@ -42,97 +42,147 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: AppBottomBar(),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               height: 400,
-              width: phoneWidth * .87,
               padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.primary,
-              ),
+              color: AppColors.primary,
               child: Image.asset("assets/logo_splash.png"),
             ),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _homeButton(
-                        phoneWidth: phoneWidth,
-                        icon: Icons.home,
-                        title: "Meus Sellers"),
-                    const SizedBox(width: 32),
-                    _homeButton(
-                        phoneWidth: phoneWidth,
-                        icon: Icons.home,
-                        title: "Meus Sellers"),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _homeButton(
-                        phoneWidth: phoneWidth,
-                        icon: Icons.home,
-                        title: "Meus Sellers"),
-                    const SizedBox(width: 32),
-                    _homeButton(
-                        phoneWidth: phoneWidth,
-                        icon: Icons.home,
-                        title: "Meus Sellers"),
-                  ],
-                ),
-              ],
-            )
+            !_store.admin ? _userHome(phoneWidth) : _adminHome(phoneWidth),
           ],
         ),
       ),
     );
   }
 
-  Container _homeButton(
-      {required double phoneWidth,
-      required IconData icon,
-      required String title}) {
-    return Container(
-      height: 100,
-      width: phoneWidth * .4,
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.white,
-        boxShadow: const [
-          BoxShadow(color: AppColors.grey, spreadRadius: 1),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(
-                icon,
-                size: 32,
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: AppColors.black,
+  Column _adminHome(double phoneWidth) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _homeButton(
+                onTap: () => _store.navigateToSellerFields(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.dashboard_customize,
+                title: "Campos Seller"),
+            const SizedBox(width: 32),
+            _homeButton(
+                onTap: () => _store.navigateTocarteirasWithoutOwner(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.account_balance_wallet,
+                title: "Carteiras"),
+          ],
+        ),
+        const SizedBox(height: 32),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _homeButton(
+                onTap: () => _store.navigateToQuestionsChecklist(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.checklist,
+                title: "Questôes"),
+            const SizedBox(width: 32),
+            _homeButton(
+                onTap: () => _store.navigateToAddagente(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.person_add,
+                title: "Novo Agente"),
+          ],
+        ),
+        const SizedBox(height: 32),
+      ],
+    );
+  }
+
+  Column _userHome(double phoneWidth) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _homeButton(
+                onTap: () => _store.navigateToMyTags(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.bookmarks,
+                title: "Minhas Tags"),
+            const SizedBox(width: 32),
+            _homeButton(
+                onTap: () => _store.navigateToSellers(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.credit_card,
+                title: "Meus Sellers"),
+          ],
+        ),
+        const SizedBox(height: 32),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _homeButton(
+              onTap: () => _store.navigateToFAQ(context),
+              phoneWidth: phoneWidth,
+              icon: Icons.quiz,
+              title: "Faq",
+            ),
+            const SizedBox(width: 32),
+            _homeButton(
+                onTap: () => _store.navigateToHunting(context),
+                phoneWidth: phoneWidth,
+                icon: Icons.store,
+                title: "Meus Huntings"),
+          ],
+        ),
+        const SizedBox(height: 32),
+      ],
+    );
+  }
+
+  _homeButton({
+    required double phoneWidth,
+    required IconData icon,
+    required String title,
+    required void Function() onTap,
+  }) {
+    return GestureDetector(
+      onDoubleTap: onTap,
+      child: Container(
+        height: 100,
+        width: phoneWidth * .4,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(
+                  icon,
+                  size: 24,
+                  color: AppColors.primary,
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: AppColors.black,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
