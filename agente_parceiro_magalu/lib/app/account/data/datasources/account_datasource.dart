@@ -32,13 +32,18 @@ abstract class IAccountDatasource {
   Future<List<TagModel>> getTagList();
   Future addTag({required TagModel tagModel});
   Future updateTag({required TagModel tagModel});
-  Future<PageListModel> getFAQs({required int size, required int page, required String search});
+  Future<PageListModel> getFAQs(
+      {required int size, required int page, required String search});
   Future addFAQ({required FAQModel faqModel});
   Future updateFAQ({required FAQModel faqModel});
-  Future<PageListModel> getDynamicQuestionCheckLists({required int size, required int page, required String status});
-  Future addDynamicQuestionCheckList({required DynamicQuestionCheckListModel dynamicQuestionCheckListModel});
-  Future updateDynamicQuestionCheckList({required DynamicQuestionCheckListModel dynamicQuestionCheckListModel});
-  Future<PageListModel> getDynamicFields({required int size, required int page});
+  Future<PageListModel> getDynamicQuestionCheckLists(
+      {required int size, required int page, required String status});
+  Future addDynamicQuestionCheckList(
+      {required DynamicQuestionCheckListModel dynamicQuestionCheckListModel});
+  Future updateDynamicQuestionCheckList(
+      {required DynamicQuestionCheckListModel dynamicQuestionCheckListModel});
+  Future<PageListModel> getDynamicFields(
+      {required int size, required int page});
   Future addDynamicField({required DynamicFieldModel dynamicFieldModel});
   Future updateDynamicField({required DynamicFieldModel dynamicFieldModel});
   Future<PageListModel> getCarteiras({required int size, required int page});
@@ -299,12 +304,13 @@ class AccountDatasource implements IAccountDatasource {
         Endpoints.getFAQs,
         queryParameters: params,
       );
-      
+
       PageListModel pageList = PageListModel.fromJson(response);
 
       var faqs = response["content"];
 
-      List<FAQModel> listFAQModel = (faqs as List).map((e) => FAQModel.fromJson(e)).toList();
+      List<FAQModel> listFAQModel =
+          (faqs as List).map((e) => FAQModel.fromJson(e)).toList();
 
       pageList.content = listFAQModel;
 
@@ -317,7 +323,9 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future addDynamicQuestionCheckList({required DynamicQuestionCheckListModel dynamicQuestionCheckListModel}) async {
+  Future addDynamicQuestionCheckList(
+      {required DynamicQuestionCheckListModel
+          dynamicQuestionCheckListModel}) async {
     try {
       final response = await _httpWithAuth.post(
         Endpoints.addQuestion,
@@ -334,17 +342,16 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future updateDynamicQuestionCheckList({required DynamicQuestionCheckListModel dynamicQuestionCheckListModel}) async {
-    Map<String, dynamic> data = {
-    "id": dynamicQuestionCheckListModel.id,
-    "question": "Multiplas alternativas",
-    "alternatives": dynamicQuestionCheckListModel.alternatives.map((e) => e.toJson()).toList(),
-    "answerRequired": dynamicQuestionCheckListModel.answerRequired,
-    "multipleAlternative": dynamicQuestionCheckListModel.multipleAlternative,
-    "active": dynamicQuestionCheckListModel.active,
-    "fieldUpdate": dynamicQuestionCheckListModel.fieldUpdate.toJson()
-};
+  Future updateDynamicQuestionCheckList(
+      {required DynamicQuestionCheckListModel
+          dynamicQuestionCheckListModel}) async {
     try {
+      Map<String, dynamic> data = dynamicQuestionCheckListModel.toJson();
+      data["alternatives"] = dynamicQuestionCheckListModel.alternatives
+          .map((e) => e.toJson())
+          .toList();
+      data["fieldUpdate"] = dynamicQuestionCheckListModel.fieldUpdate.toJson();
+
       final response = await _httpWithAuth.post(
         Endpoints.updateQuestion,
         data: data,
@@ -360,7 +367,8 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future<PageListModel> getDynamicQuestionCheckLists({required int size, required int page, required String status}) async {
+  Future<PageListModel> getDynamicQuestionCheckLists(
+      {required int size, required int page, required String status}) async {
     Map<String, dynamic> params = {
       "size": size,
       "page": page,
@@ -372,12 +380,15 @@ class AccountDatasource implements IAccountDatasource {
         Endpoints.getQuestions,
         queryParameters: params,
       );
-      
+
       PageListModel pageList = PageListModel.fromJson(response);
 
       var dynamicQuestionCheckList = response["content"];
 
-      List<DynamicQuestionCheckListModel> dynamicQuestionCheckListModel = (dynamicQuestionCheckList as List).map((e) => DynamicQuestionCheckListModel.fromJson(e)).toList();
+      List<DynamicQuestionCheckListModel> dynamicQuestionCheckListModel =
+          (dynamicQuestionCheckList as List)
+              .map((e) => DynamicQuestionCheckListModel.fromJson(e))
+              .toList();
 
       pageList.content = dynamicQuestionCheckListModel;
 
@@ -407,7 +418,8 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future updateDynamicField({required DynamicFieldModel dynamicFieldModel}) async {
+  Future updateDynamicField(
+      {required DynamicFieldModel dynamicFieldModel}) async {
     try {
       // final response = await _httpWithAuth.post(
       //   Endpoints.up,
@@ -424,7 +436,8 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future<PageListModel> getDynamicFields({required int size, required int page}) async {
+  Future<PageListModel> getDynamicFields(
+      {required int size, required int page}) async {
     Map<String, dynamic> params = {
       "size": size,
       "page": page,
@@ -435,12 +448,14 @@ class AccountDatasource implements IAccountDatasource {
         Endpoints.getFields,
         queryParameters: params,
       );
-      
+
       PageListModel pageList = PageListModel.fromJson(response);
 
       var dynamicFields = response["content"];
 
-      List<DynamicFieldModel> dynamicFieldModel = (dynamicFields as List).map((e) => DynamicFieldModel.fromJson(e)).toList();
+      List<DynamicFieldModel> dynamicFieldModel = (dynamicFields as List)
+          .map((e) => DynamicFieldModel.fromJson(e))
+          .toList();
 
       pageList.content = dynamicFieldModel;
 
@@ -487,7 +502,8 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future<PageListModel> getHuntings({required int size, required int page}) async {
+  Future<PageListModel> getHuntings(
+      {required int size, required int page}) async {
     Map<String, dynamic> params = {
       "size": size,
       "page": page,
@@ -498,12 +514,13 @@ class AccountDatasource implements IAccountDatasource {
         Endpoints.getHuntings,
         queryParameters: params,
       );
-      
+
       PageListModel pageList = PageListModel.fromJson(response);
 
       var hunting = response["content"];
 
-      List<HuntingModel> dynamicFieldModel = (hunting as List).map((e) => HuntingModel.fromJson(e)).toList();
+      List<HuntingModel> dynamicFieldModel =
+          (hunting as List).map((e) => HuntingModel.fromJson(e)).toList();
 
       pageList.content = dynamicFieldModel;
 
@@ -516,7 +533,8 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future<PageListModel> getCarteiras({required int size, required int page}) async {
+  Future<PageListModel> getCarteiras(
+      {required int size, required int page}) async {
     Map<String, dynamic> params = {
       "size": size,
       "page": page,
@@ -527,12 +545,13 @@ class AccountDatasource implements IAccountDatasource {
         Endpoints.getCarteiraWithoutOwner,
         queryParameters: params,
       );
-      
+
       PageListModel pageList = PageListModel.fromJson(response);
 
       var carteira = response["content"];
 
-      List<CarteiraModel> dynamicQuestionCheckListModel = (carteira as List).map((e) => CarteiraModel.fromJson(e)).toList();
+      List<CarteiraModel> dynamicQuestionCheckListModel =
+          (carteira as List).map((e) => CarteiraModel.fromJson(e)).toList();
 
       pageList.content = dynamicQuestionCheckListModel;
 
@@ -545,7 +564,8 @@ class AccountDatasource implements IAccountDatasource {
   }
 
   @override
-  Future transferCarteira({required String userId, required String carteiraId}) async {
+  Future transferCarteira(
+      {required String userId, required String carteiraId}) async {
     Map<String, dynamic> data = {
       "userId": userId,
       "carteiraId": carteiraId,

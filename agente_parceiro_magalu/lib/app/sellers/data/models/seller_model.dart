@@ -1,3 +1,5 @@
+import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_field_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/tag_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/shared/sheets/sheets_field.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -18,8 +20,8 @@ class SellerModel {
   String endereco;
   String numero;
   String complemento;
-  List? sellerFields;
-  List? checkListVisitas;
+  List<SellerFieldModel>? sellerFields;
+  List<ChecklistModel>? checkListVisitas;
   List<TagModel>? tags;
 
   SellerModel({

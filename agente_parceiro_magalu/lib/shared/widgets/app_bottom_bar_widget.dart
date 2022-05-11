@@ -70,7 +70,7 @@ class _AppBottomBarState extends State<AppBottomBar> {
                   },
                 ),
                 bottomIcon(
-                  tittle: "Carteira",
+                  tittle: "Sellers",
                   iconData: Icons.credit_card,
                   active: _store.currentPage == AppRoutes.sellers,
                   onPressed: () {

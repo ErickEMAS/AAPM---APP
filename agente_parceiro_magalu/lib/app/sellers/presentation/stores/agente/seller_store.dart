@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:agente_parceiro_magalu/app/sellers/data/datasources/seller_datasource.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
@@ -38,6 +40,20 @@ abstract class _SellerStoreBase with Store {
   @observable
   int pageablePage = -1;
 
+  @observable
+  int indexSellerSelected = -1;
+
+  @observable
+  bool admin = false;
+
+  String userRole = "";
+
+  @action
+  setRole() async {
+    userRole = (await SecureStorageHelper.read(key: StorageKeys.userRole))!;
+    admin = userRole == "ROLE_ADMIN";
+  }
+
   @action
   _setPage(int value) => pageablePage = value;
 
@@ -45,6 +61,7 @@ abstract class _SellerStoreBase with Store {
 
   @observable
   SellerModel? sellerEditModel;
+
   @action
   _setEditSellerModel(SellerModel newData) {
     sellerEditModel = newData;
@@ -225,6 +242,22 @@ abstract class _SellerStoreBase with Store {
     }
   }
 
+  Future<bool> updateSeller() async {
+    try {
+      if (sellerEditModel != null) {
+        sellerModel =
+            await _datasource.updateSeller(sellerModel: sellerEditModel!);
+
+        sellerList[indexSellerSelected] = sellerModel;
+
+        // navigateToSellerOverview(context, sellerModel.id!);
+      }
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   TextEditingController nomeController = TextEditingController();
   TextEditingController helenaController = TextEditingController();
   TextEditingController telefoneController = TextEditingController();
@@ -296,5 +329,9 @@ abstract class _SellerStoreBase with Store {
     return Navigator.of(context)
         .pushNamed(AppRoutes.checklistHistorico, arguments: sellerId)
         .then((value) => true);
+  }
+
+  void navigateback(BuildContext context) {
+    return Navigator.pop(context);
   }
 }

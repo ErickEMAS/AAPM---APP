@@ -19,8 +19,12 @@ SellerModel _$SellerModelFromJson(Map<String, dynamic> json) => SellerModel(
       endereco: json['endereco'] as String,
       numero: json['numero'] as String,
       complemento: json['complemento'] as String,
-      sellerFields: json['sellerFields'] as List<dynamic>?,
-      checkListVisitas: json['checkListVisitas'] as List<dynamic>?,
+      sellerFields: (json['sellerFields'] as List<dynamic>)
+          .map((e) => SellerFieldModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      checkListVisitas: (json['checkListVisitas'] as List<dynamic>)
+          .map((e) => ChecklistModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       tags: (json['tags'] as List<dynamic>?)
           ?.map((e) => TagModel.fromJson(e as Map<String, dynamic>))
           .toList(),

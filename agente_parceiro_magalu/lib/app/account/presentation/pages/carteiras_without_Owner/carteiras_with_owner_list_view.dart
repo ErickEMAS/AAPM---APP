@@ -71,11 +71,11 @@ class _CarteirasWithOwnerViewState extends State<CarteirasWithOwnerListView> {
                           width: phoneWidth * .8,
                           child: Column(
                             children: [
-                              _rowUser(
+                              _row(
                                 atributo: "Id",
                                 value: _store.carteiraList[index].id,
                               ),
-                              _rowUser(
+                              _row(
                                 atributo: "Total de sellers",
                                 value:
                                     "${_store.carteiraList[index].sellers!.length}",
@@ -96,16 +96,16 @@ class _CarteirasWithOwnerViewState extends State<CarteirasWithOwnerListView> {
     );
   }
 
-  Row _rowUser({required String atributo, required String value}) {
+  Row _row({required String atributo, required String value}) {
     return Row(
       children: [
         Text(
           "$atributo: ",
-          style: AppTextStyles.bold(size: 14, color: AppColors.primary),
+          style: AppTextStyles.bold(size: 12, color: AppColors.primary),
         ),
         Text(
           value,
-          style: AppTextStyles.bold(size: 14, color: AppColors.black),
+          style: AppTextStyles.bold(size: 12, color: AppColors.black),
         ),
       ],
     );

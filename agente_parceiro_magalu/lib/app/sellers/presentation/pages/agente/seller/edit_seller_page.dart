@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../data/models/seller_field_model.dart';
+
 class EditSellerPage extends StatefulWidget {
   final String sellerId;
 
@@ -46,6 +48,7 @@ class _EditSellerPageState extends State<EditSellerPage> {
   @override
   Widget build(BuildContext context) {
     phoneWidth = MediaQuery.of(context).size.width;
+    int i = -1;
     return Scaffold(
       appBar: const AppBarGradient(
         title: "Editar Seller",
@@ -69,7 +72,7 @@ class _EditSellerPageState extends State<EditSellerPage> {
                       onPressed: () {
                         _tagDialog();
                       },
-                      child: Text("adicionar tag"),
+                      child: const Text("adicionar tag"),
                     )
                   ],
                 ),
@@ -178,11 +181,31 @@ class _EditSellerPageState extends State<EditSellerPage> {
                     _store.sellerEditModel!.complemento = value;
                   },
                 ),
-                SizedBox(height: AppDimens.space * 3),
+                ..._store.sellerEditModel!.sellerFields!
+                    .map<Widget>((SellerFieldModel sellerField) {
+                  i++;
+                  return Column(
+                    children: [
+                      SizedBox(height: AppDimens.space * 3),
+                      ..._addSellerColumn(
+                        title: sellerField.name ?? "",
+                        initialValue: sellerField.value ?? "",
+                        inputHint: sellerField.name ?? "",
+                        onChanged: (value) {
+                          _store.sellerEditModel!.sellerFields![i].value =
+                              value;
+                        },
+                      )
+                    ],
+                  );
+                }),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      _store.updateSeller();
+                      _store.navigateback(context);
+                    },
                     child: const Text("Editar"),
                   ),
                 ),
@@ -227,9 +250,12 @@ class _EditSellerPageState extends State<EditSellerPage> {
   _tagDialog() {
     return appDialog(
       context: context,
-      title: Text(
-        "Adicionar nova tag",
-        style: AppTextStyles.bold(size: 16, color: AppColors.primary),
+      title: GestureDetector(
+        onTap: () => {},
+        child: Text(
+          "Adicionar nova tag",
+          style: AppTextStyles.bold(size: 16, color: AppColors.primary),
+        ),
       ),
     );
   }

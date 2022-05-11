@@ -39,6 +39,21 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
+  final _$adminAtom = Atom(name: '_SellerStoreBase.admin');
+
+  @override
+  bool get admin {
+    _$adminAtom.reportRead();
+    return super.admin;
+  }
+
+  @override
+  set admin(bool value) {
+    _$adminAtom.reportWrite(value, super.admin, () {
+      super.admin = value;
+    });
+  }
+
   final _$sellerEditModelAtom = Atom(name: '_SellerStoreBase.sellerEditModel');
 
   @override
@@ -97,6 +112,13 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     _$searchSellerAtom.reportWrite(value, super.searchSeller, () {
       super.searchSeller = value;
     });
+  }
+
+  final _$setRoleAsyncAction = AsyncAction('_SellerStoreBase.setRole');
+
+  @override
+  Future setRole() {
+    return _$setRoleAsyncAction.run(() => super.setRole());
   }
 
   final _$_SellerStoreBaseActionController =
@@ -195,6 +217,7 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     return '''
 sellerModel: ${sellerModel},
 pageablePage: ${pageablePage},
+admin: ${admin},
 sellerEditModel: ${sellerEditModel},
 searchClicked: ${searchClicked},
 tagId: ${tagId},

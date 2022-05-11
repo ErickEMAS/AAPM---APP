@@ -70,11 +70,11 @@ class _CarteirasOverwithwithOwnerViewState
       children: [
         Text(
           "$atributo: ",
-          style: AppTextStyles.bold(size: 14, color: AppColors.primary),
+          style: AppTextStyles.bold(size: 12, color: AppColors.primary),
         ),
         Text(
           value,
-          style: AppTextStyles.bold(size: 14, color: AppColors.black),
+          style: AppTextStyles.bold(size: 12, color: AppColors.black),
         ),
       ],
     );

@@ -32,7 +32,7 @@ abstract class _UserAgentStoreBase with Store {
   bool searchClicked = true;
 
   @observable
-  String? role = "null";
+  String? role = "";
 
   @observable
   bool filterUserActive = true;

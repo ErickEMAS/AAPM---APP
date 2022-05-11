@@ -41,7 +41,7 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
 
   @observable
   int pageablePage = 0;
-  
+
   @observable
   int pageablePageAgent = 0;
 
@@ -109,7 +109,8 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
     }
   }
 
-  ObservableList<UserAgentModel> userAgenteModelList = ObservableList<UserAgentModel>();
+  ObservableList<UserAgentModel> userAgenteModelList =
+      ObservableList<UserAgentModel>();
 
   @observable
   bool searchClicked = false;
@@ -235,13 +236,17 @@ abstract class _CarteirasWithOwnerStoreBase with Store {
           (value) => false,
         );
   }
-  
+
   Future<bool> navigateToAgentListForCarteiraView(BuildContext context) {
-    return Navigator.of(context)
-        .pushNamed(AppRoutes.agentListForCarteira)
-        .then(
+    return Navigator.of(context).pushNamed(AppRoutes.agentListForCarteira).then(
           (value) => false,
         );
+  }
+
+  Future<bool> navigateTocarteirasWithoutOwner(BuildContext context) {
+    return Navigator.of(context)
+        .pushNamed(AppRoutes.carteitaWithoutOwner)
+        .then((value) => true);
   }
 
   void navigateback(BuildContext context) {

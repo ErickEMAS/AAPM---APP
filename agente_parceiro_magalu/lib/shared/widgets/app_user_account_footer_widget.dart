@@ -19,7 +19,7 @@ class AppUserAccountFooter extends StatelessWidget {
               "Equipe Lumos"
               "\nLeticia Silva Ferraz Melo"
               "\nErick Alexandre Mendes de Souza"
-              "\nApp Agente Parceiro Magalo - versão 1.00.0",
+              "\nApp Agente Parceiro Magalu - versão 1.00.0",
               style: TextStyle(
                 fontSize: 14,
                 color: AppColors.grey,

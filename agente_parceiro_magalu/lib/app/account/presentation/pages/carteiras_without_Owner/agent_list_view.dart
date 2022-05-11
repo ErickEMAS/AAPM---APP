@@ -67,129 +67,125 @@ class _AgentListForCarteiraViewState extends State<AgentListForCarteiraView> {
                 : null,
             title: "Selecione um usuário",
           ),
-          body: Content(),
+          body: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(AppDimens.margin),
+                child: Observer(builder: (_) {
+                  return Column(
+                    children: [
+                      Observer(builder: (_) {
+                        return Column(
+                          children: [
+                            TextFormField(
+                              controller: searchController,
+                              decoration: const InputDecoration(
+                                labelText: "Pesquisa",
+                                hintText: "Pesquisar Agente",
+                              ),
+                              onChanged: (value) {
+                                _store.setSearch(value);
+                                _store.getUsers();
+                              },
+                            ),
+                            SizedBox(height: AppDimens.space),
+                          ],
+                        );
+                      })
+                    ],
+                  );
+                }),
+              ),
+              Observer(builder: (_) {
+                return Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _store.userAgenteModelList.length,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => {
+                          _store.userAgentselected =
+                              _store.userAgenteModelList[index],
+                          _modalUser(),
+                        },
+                        child: Container(
+                          color: AppColors.white,
+                          padding: const EdgeInsets.all(16),
+                          margin: const EdgeInsets.only(bottom: 16, top: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      _row(
+                                        atributo: "Nome",
+                                        value:
+                                            "${_store.userAgenteModelList[index].fullName}",
+                                      ),
+                                      _row(
+                                        atributo: "Email",
+                                        value:
+                                            "${_store.userAgenteModelList[index].email}",
+                                      ),
+                                      _row(
+                                        atributo: "CPF",
+                                        value: maskCPF(
+                                            cpf: _store
+                                                .userAgenteModelList[index]
+                                                .cpf),
+                                      ),
+                                      _row(
+                                        atributo: "Usuário ativo",
+                                        value: _store.userAgenteModelList[index]
+                                                .active!
+                                            ? "Sim"
+                                            : "Não",
+                                      ),
+                                      _row(
+                                        atributo: "Primeiro acesso realizado",
+                                        value: _store.userAgenteModelList[index]
+                                                .enabled!
+                                            ? "Sim"
+                                            : "Não",
+                                      ),
+                                      _row(
+                                        atributo: "Função",
+                                        value: _store.userAgenteModelList[index]
+                                                    .roles[0] ==
+                                                "ROLE_ADMIN"
+                                            ? "Administrador"
+                                            : "Agente",
+                                      ),
+                                      _row(
+                                        atributo: "Sellers",
+                                        value:
+                                            "${_store.userAgenteModelList[index].totalSeller}",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              })
+            ],
+          ),
           bottomNavigationBar: AppBottomBar(),
         );
       }),
     );
     ;
-  }
-
-  Column Content() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.all(AppDimens.margin),
-          child: Observer(builder: (_) {
-            return Column(
-              children: [
-                Observer(builder: (_) {
-                  return Column(
-                    children: [
-                      TextFormField(
-                        controller: searchController,
-                        decoration: const InputDecoration(
-                          labelText: "Pesquisa",
-                          hintText: "Pesquisar Agente",
-                        ),
-                        onChanged: (value) {
-                          _store.setSearch(value);
-                          _store.getUsers();
-                        },
-                      ),
-                      SizedBox(height: AppDimens.space),
-                    ],
-                  );
-                })
-              ],
-            );
-          }),
-        ),
-        Observer(builder: (_) {
-          return Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _store.userAgenteModelList.length,
-              controller: _scrollController,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => {
-                    _store.userAgentselected =
-                        _store.userAgenteModelList[index],
-                    _modalUser(),
-                  },
-                  child: Container(
-                    color: AppColors.white,
-                    padding: const EdgeInsets.all(16),
-                    margin: const EdgeInsets.only(bottom: 16, top: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _row(
-                                  atributo: "Nome",
-                                  value:
-                                      "${_store.userAgenteModelList[index].fullName}",
-                                ),
-                                _row(
-                                  atributo: "Email",
-                                  value:
-                                      "${_store.userAgenteModelList[index].email}",
-                                ),
-                                _row(
-                                  atributo: "CPF",
-                                  value: maskCPF(
-                                      cpf: _store
-                                          .userAgenteModelList[index].cpf),
-                                ),
-                                _row(
-                                  atributo: "Usuário ativo",
-                                  value: _store.userAgenteModelList[index]
-                                          .active!
-                                      ? "Sim"
-                                      : "Não",
-                                ),
-                                _row(
-                                  atributo: "Primeiro acesso realizado",
-                                  value:
-                                      _store.userAgenteModelList[index].enabled!
-                                          ? "Sim"
-                                          : "Não",
-                                ),
-                                _row(
-                                  atributo: "Função",
-                                  value: _store.userAgenteModelList[index]
-                                              .roles[0] ==
-                                          "ROLE_ADMIN"
-                                      ? "Administrador"
-                                      : "Agente",
-                                ),
-                                _row(
-                                  atributo: "Sellers",
-                                  value:
-                                      "${_store.userAgenteModelList[index].totalSeller}",
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        }),
-        SizedBox(height: AppDimens.margin * 3)
-      ],
-    );
   }
 
   Row _row({required String value, required String atributo}) {
@@ -268,7 +264,7 @@ class _AgentListForCarteiraViewState extends State<AgentListForCarteiraView> {
                       onPressed: () => {
                         _store.transferCarteira(),
                         _store.navigateback(context),
-                        _store.navigateback(context),
+                        _store.navigateTocarteirasWithoutOwner(context),
                       },
                       child: Text(
                         "Tranferir",
