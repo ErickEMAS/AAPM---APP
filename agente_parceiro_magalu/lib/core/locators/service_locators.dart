@@ -1,6 +1,7 @@
 import 'package:agente_parceiro_magalu/core/locators/account_locators.dart';
 import 'package:agente_parceiro_magalu/core/locators/agent_locators.dart';
 import 'package:agente_parceiro_magalu/core/locators/auth_locators.dart';
+import 'package:agente_parceiro_magalu/core/locators/calendar_locator.dart';
 import 'package:agente_parceiro_magalu/core/locators/http_locators.dart';
 import 'package:agente_parceiro_magalu/core/locators/app_locators.dart';
 import 'package:agente_parceiro_magalu/core/locators/seller_locators.dart';
@@ -13,6 +14,7 @@ Future<void> setupLocators() async {
   setupAppLocators();
   setupSellerLocators();
   setupHttpLocators();
+  setupCalendarLocators();
   setupAccountLocators();
   setupAgentLocators();
 }

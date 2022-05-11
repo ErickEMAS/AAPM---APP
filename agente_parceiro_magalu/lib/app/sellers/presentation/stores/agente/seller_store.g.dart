@@ -39,6 +39,22 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     });
   }
 
+  final _$indexSellerSelectedAtom =
+      Atom(name: '_SellerStoreBase.indexSellerSelected');
+
+  @override
+  int get indexSellerSelected {
+    _$indexSellerSelectedAtom.reportRead();
+    return super.indexSellerSelected;
+  }
+
+  @override
+  set indexSellerSelected(int value) {
+    _$indexSellerSelectedAtom.reportWrite(value, super.indexSellerSelected, () {
+      super.indexSellerSelected = value;
+    });
+  }
+
   final _$adminAtom = Atom(name: '_SellerStoreBase.admin');
 
   @override
@@ -217,6 +233,7 @@ mixin _$SellerStore on _SellerStoreBase, Store {
     return '''
 sellerModel: ${sellerModel},
 pageablePage: ${pageablePage},
+indexSellerSelected: ${indexSellerSelected},
 admin: ${admin},
 sellerEditModel: ${sellerEditModel},
 searchClicked: ${searchClicked},
