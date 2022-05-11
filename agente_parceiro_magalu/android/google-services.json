@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "105198987577",
+    "project_id": "app-agente-magalu",
+    "storage_bucket": "app-agente-magalu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105198987577:android:cafd6fc1e77d33b86ae0e8",
+        "android_client_info": {
+          "package_name": "com.example.agente_parceiro_magalu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105198987577-fj0ibehfjbjroh8fcdqibl295esrc3ft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.agente_parceiro_magalu",
+            "certificate_hash": "dba5b71ebaa4b10308f1d2a33969b193d295df81"
+          }
+        },
+        {
+          "client_id": "105198987577-u7rmf0r5bsk0jqdmmjgd45rm2aoulfol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsIO4KdlMQeGUoT4u1IgLhuM0KFC0tekw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105198987577-u7rmf0r5bsk0jqdmmjgd45rm2aoulfol.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "105198987577-ov4u2bhalnsn8tgabnpor51pa1614bic.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.agente.parceiro.magalu"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

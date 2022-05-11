@@ -36,7 +36,7 @@ dependencies:
   open_file: ^3.2.1
   flutter_speed_dial: ^6.0.0
   excel: 
-  file_picker: ^4.5.1
+  file_picker:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,7 +55,6 @@ dependencies:
   googleapis: ^8.1.0
   url_launcher: ^6.1.0
   syncfusion_flutter_calendar: ^20.1.52
-
   
   
 
