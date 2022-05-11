@@ -15,7 +15,6 @@ class CalendarClient {
     String calendarId = "";
     String eventID = "";
 
-    print("Esperando aqui");
     final signIn.GoogleSignInAccount? account = GoogleApi.googleUser;
 
     final authHeaders = await account!.authHeaders;
@@ -49,7 +48,7 @@ class CalendarClient {
         }
       }
 
-      Event event = Event(); // Create object of event
+      Event event = Event();
 
       event.summary = title;
 
@@ -65,15 +64,43 @@ class CalendarClient {
       try {
         calendarApi.events.insert(event, calendarId).then((value) async {
           if (value.status == "confirmed") {
-            log('Event added in google calendar --> ${value.id}');
+            print('event adicionado --> ${value.id}');
             eventID = value.id!;
           } else {
-            log("Unable to add event in google calendar");
+            print("erro ao adicionar evento ");
           }
         });
       } catch (e) {
-        log("Erro ao sincronizar com o Google");
-        log('Error creating event $e');
+        print(e);
+      }
+    });
+  }
+
+  delete(eventID) async {
+    String calendarId = "";
+    // String eventID = "";
+
+    final signIn.GoogleSignInAccount? account = GoogleApi.googleUser;
+
+    final authHeaders = await account!.authHeaders;
+    final authenticateClient = GoogleAuthClient(authHeaders);
+
+    var calendarApi = CalendarApi(authenticateClient);
+    calendarApi.calendarList.list().then((value) {
+      for (var item in value.items!) {
+        if (item.summary!.toLowerCase() == "app_agente") {
+          calendarId = item.id!;
+        }
+      }
+
+      try {
+        print("eventID ---> $eventID");
+        calendarApi.events.delete(calendarId, eventID).then((value) async {
+          print("foi");
+        });
+      } catch (e) {
+        print("erro ao sincronizar com o Google");
+        print('error deletando evento $e');
       }
     });
   }
@@ -81,7 +108,9 @@ class CalendarClient {
   getGoogleEventsData() async {
     final account = GoogleApi.googleUser;
 
-    final authHeaders = await account!.authHeaders;
+    if (account == null) return;
+
+    final authHeaders = await account.authHeaders;
     final authenticateClient = GoogleAuthClient(authHeaders);
 
     var calendarApi = CalendarApi(authenticateClient);
@@ -98,7 +127,6 @@ class CalendarClient {
       final Events calEvents = await calendarApi.events.list(
         calendarId,
       );
-
       if (calEvents.items != null) {
         for (int i = 0; i < calEvents.items!.length; i++) {
           final Event event = calEvents.items![i];
@@ -114,10 +142,6 @@ class CalendarClient {
   }
 
   void prompt(String url) async {
-    print("Please go to the following URL and grant access:");
-    print("  => $url");
-    print("");
-
     var uri = Uri.parse(url);
 
     if (await canLaunchUrl(uri)) {

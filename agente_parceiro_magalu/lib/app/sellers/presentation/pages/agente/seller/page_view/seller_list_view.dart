@@ -26,7 +26,7 @@ class _SellerListViewState extends State<SellerListView> {
   final SellerStore _sellerStore = serviceLocator<SellerStore>();
   final TagStore _tagStore = serviceLocator<TagStore>();
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -81,9 +81,9 @@ class _SellerListViewState extends State<SellerListView> {
                         _sellerStore
                             .setSearchClicked(!_sellerStore.searchClicked);
                       },
-                      icon: Icon(_sellerStore.searchClicked
-                          ? Icons.close
-                          : Icons.search),
+                      icon: Icon(
+                        _sellerStore.searchClicked ? Icons.close : Icons.search,
+                      ),
                     )
                   ],
                 ),

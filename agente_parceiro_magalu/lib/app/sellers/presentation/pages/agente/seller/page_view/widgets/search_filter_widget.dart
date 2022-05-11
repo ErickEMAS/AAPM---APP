@@ -10,7 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SearchFilterWidget extends StatefulWidget {
-  const SearchFilterWidget({Key? key}) : super(key: key);
+  final Function(String)? onChanged;
+  final bool dropdown;
+  const SearchFilterWidget({Key? key, this.onChanged, this.dropdown = true})
+      : super(key: key);
 
   @override
   State<SearchFilterWidget> createState() => _SearchFilterWidgetState();
@@ -34,52 +37,57 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
               labelText: "Pesquisar",
               hintText: "Pesquisar do seller",
             ),
-            onChanged: (value) {
-              _sellerStore.setSearchSeller(value);
-              _sellerStore.onSellerInit();
-            },
+            onChanged: widget.onChanged ??
+                (value) {
+                  _sellerStore.setSearchSeller(value);
+                  _sellerStore.onSellerInit();
+                },
           ),
           SizedBox(height: AppDimens.space),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.56,
-                child: AppDropdown(
-                  customItems: _tagStore.tagList.map((tag) {
-                    return DropdownMenuItem(
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: AppDimens.space),
-                        decoration: BoxDecoration(
-                            color: SwitchTagEnum.switchEnumColor(
-                              tag.color,
+              widget.dropdown
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.56,
+                      child: AppDropdown(
+                        textHint: "Selecione uma tag",
+                        customItems: _tagStore.tagList.map((tag) {
+                          return DropdownMenuItem(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppDimens.space),
+                              decoration: BoxDecoration(
+                                  color: SwitchTagEnum.switchEnumColor(
+                                    tag.color,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
+                              child: Text(
+                                tag.name,
+                                style: AppTextStyles.regular(
+                                  size: 16,
+                                  color: AppColors.white,
+                                ),
+                              ),
                             ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Text(
-                          tag.name,
-                          style: AppTextStyles.regular(
-                            size: 16,
-                            color: AppColors.white,
-                          ),
-                        ),
+                            onTap: () {
+                              _sellerStore
+                                  .setTagId(tag.id == null ? "" : tag.id!);
+                            },
+                            value: tag.name,
+                          );
+                        }).toList(),
+                        onChange: (value) {
+                          setState(() {
+                            dropdownSelection = value;
+                            _sellerStore.onSellerInit();
+                          });
+                        },
+                        value: dropdownSelection,
                       ),
-                      onTap: () {
-                        _sellerStore.setTagId(tag.id == null ? "" : tag.id!);
-                      },
-                      value: tag.name,
-                    );
-                  }).toList(),
-                  onChange: (value) {
-                    setState(() {
-                      dropdownSelection = value;
-                      _sellerStore.onSellerInit();
-                    });
-                  },
-                  value: dropdownSelection,
-                ),
-              ),
+                    )
+                  : SizedBox(),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.25,
                 child: ElevatedButton(

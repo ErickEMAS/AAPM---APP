@@ -25,7 +25,7 @@ class SellerCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-          _store.indexSellerSelected = index ?? _store.indexSellerSelected;
+        _store.indexSellerSelected = index ?? _store.indexSellerSelected;
         _store.navigateToSellerOverview(context, sellerModel.id!);
       },
       child: Column(
@@ -79,16 +79,20 @@ class SellerCardWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                !_store.admin ? (onAddButtonPressed != null
-                    ? ElevatedButton(
-                        onPressed: onAddButtonPressed,
-                        child: Icon(Icons.add),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(AppDimens.space),
-                        ),
-                      )
-                    : Container()) : Container(),
+                !_store.admin
+                    ? (onAddButtonPressed != null
+                        ? Flexible(
+                            child: ElevatedButton(
+                              onPressed: onAddButtonPressed,
+                              child: Icon(Icons.add),
+                              style: ElevatedButton.styleFrom(
+                                shape: CircleBorder(),
+                                padding: EdgeInsets.all(AppDimens.space),
+                              ),
+                            ),
+                          )
+                        : Container())
+                    : Container(),
               ],
             ),
           ),
