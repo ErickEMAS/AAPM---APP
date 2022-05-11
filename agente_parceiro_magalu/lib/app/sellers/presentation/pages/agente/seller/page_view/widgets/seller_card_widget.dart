@@ -63,14 +63,19 @@ class SellerCardWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                onAddButtonPressed != null ? ElevatedButton(
-                  onPressed: onAddButtonPressed,
-                  child: Icon(Icons.add),
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(AppDimens.space),
-                  ),
-                ) : Container(),
+                onAddButtonPressed != null
+                    ? Flexible(
+                        child: ElevatedButton(
+                          onPressed: onAddButtonPressed,
+                          child: Center(child: Icon(Icons.add)),
+                          style: ElevatedButton.styleFrom(
+                            shape: CircleBorder(),
+                            padding: EdgeInsets.all(AppDimens.space),
+                          ),
+                        ),
+                      )
+                    : Container(),
+                // SizedBox(width: AppDimens.margin),
               ],
             ),
           ),

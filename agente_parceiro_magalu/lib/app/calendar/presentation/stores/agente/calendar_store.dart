@@ -21,11 +21,61 @@ abstract class _CalendarStoreBase with Store {
     sellerModelByVisitOrderList.addAll(data);
   }
 
+  ObservableList<SellerModel> sellerList = ObservableList<SellerModel>();
+  @action
+  _setSellerList(List<SellerModel> data) {
+    sellerList.addAll(data);
+  }
+
   List<Event> appointments = [];
 
-  onInit() async {
-    appointments = await CalendarClient().getGoogleEventsData();
+  @observable
+  int totalElements = 30;
 
-    print(appointments);
+  @observable
+  String search = "";
+  setSearch(String data) {
+    search = data;
+  }
+
+  onInit() async {
+    try {
+      appointments = await CalendarClient().getGoogleEventsData();
+
+      PageListModel pageList = await _sellerDatasource.getSellerList(
+        search: "",
+      );
+      totalElements = pageList.totalElements;
+      print("TOTAL ELEMENTE AAAAAAA $totalElements");
+
+      return true;
+    } catch (err) {
+      print(err);
+      return false;
+    }
+  }
+
+  Future<bool> getAllSellers() async {
+    try {
+      PageListModel pageList = await _sellerDatasource.getSellerList(
+        size: totalElements,
+        search: search,
+      );
+
+      List<SellerModel>? seller = pageList.content.cast<SellerModel>().toList();
+
+      // totalElements = pageList.totalElements;
+      print("TOTAL ELEMENTE AAAAAAA $totalElements");
+
+      print(sellerList.length);
+
+      sellerList.clear();
+      _setSellerList(seller);
+
+      return true;
+    } catch (err) {
+      print(err);
+      return false;
+    }
   }
 }

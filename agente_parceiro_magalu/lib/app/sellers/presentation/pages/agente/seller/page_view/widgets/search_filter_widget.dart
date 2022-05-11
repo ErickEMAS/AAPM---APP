@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SearchFilterWidget extends StatefulWidget {
-  const SearchFilterWidget({Key? key}) : super(key: key);
+  final Function(String)? onChanged;
+  const SearchFilterWidget({Key? key, this.onChanged}) : super(key: key);
 
   @override
   State<SearchFilterWidget> createState() => _SearchFilterWidgetState();
@@ -34,10 +35,11 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
               labelText: "Pesquisar",
               hintText: "Pesquisar do seller",
             ),
-            onChanged: (value) {
-              _sellerStore.setSearchSeller(value);
-              _sellerStore.onSellerInit();
-            },
+            onChanged: widget.onChanged ??
+                (value) {
+                  _sellerStore.setSearchSeller(value);
+                  _sellerStore.onSellerInit();
+                },
           ),
           SizedBox(height: AppDimens.space),
           Row(

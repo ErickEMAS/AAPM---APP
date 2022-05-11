@@ -81,7 +81,9 @@ class CalendarClient {
   getGoogleEventsData() async {
     final account = GoogleApi.googleUser;
 
-    final authHeaders = await account!.authHeaders;
+    if (account == null) return;
+
+    final authHeaders = await account.authHeaders;
     final authenticateClient = GoogleAuthClient(authHeaders);
 
     var calendarApi = CalendarApi(authenticateClient);
@@ -98,7 +100,6 @@ class CalendarClient {
       final Events calEvents = await calendarApi.events.list(
         calendarId,
       );
-
       if (calEvents.items != null) {
         for (int i = 0; i < calEvents.items!.length; i++) {
           final Event event = calEvents.items![i];
