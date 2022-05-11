@@ -20,6 +20,8 @@ class SellerModel {
   String endereco;
   String numero;
   String complemento;
+  int orderVisitItinerary;
+  bool visiting;
   List<SellerFieldModel>? sellerFields;
   List<ChecklistModel>? checkListVisitas;
   List<TagModel>? tags;
@@ -37,6 +39,8 @@ class SellerModel {
     required this.endereco,
     required this.numero,
     required this.complemento,
+    this.orderVisitItinerary = 0,
+    this.visiting = false,
     this.sellerFields,
     this.checkListVisitas,
     this.tags,
