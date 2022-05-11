@@ -1,68 +1,41 @@
+import 'package:agente_parceiro_magalu/core/api/sheets/seller_sheets_api.dart';
+import 'package:agente_parceiro_magalu/core/app_config.dart';
+import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
+import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
+import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_router.dart';
+import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';
+import 'package:agente_parceiro_magalu/shared/themes/app_theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  AppConfig.setEnvironment(Environment.heroku);
+  WidgetsFlutterBinding.ensureInitialized();
+  String? sheetId = await SecureStorageHelper.read(key: StorageKeys.idSheets);
+
+  if (sheetId != null) {
+    await SellerSheetsApi.init();
+  }
+
+  await setupLocators();
+
+  runApp(const AppWidget());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class AppWidget extends StatelessWidget {
+  const AppWidget({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+      supportedLocales: const [Locale('pt', 'BR')],
+      title: 'Agente parceiro Magalu',
+      theme: AppThemes.theme,
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: AppRoutes.dashboard,
     );
   }
 }
