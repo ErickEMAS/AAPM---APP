@@ -12,12 +12,12 @@ import 'package:flutter/material.dart';
 
 void main() async {
   AppConfig.setEnvironment(Environment.heroku);
-  WidgetsFlutterBinding.ensureInitialized();
-  String? sheetId = await SecureStorageHelper.read(key: StorageKeys.idSheets);
+  // WidgetsFlutterBinding.ensureInitialized();
+  // String? sheetId = await SecureStorageHelper.read(key: StorageKeys.idSheets);
 
-  if (sheetId != null) {
-    await SellerSheetsApi.init();
-  }
+  // if (sheetId != null) {
+  //   await SellerSheetsApi.init();
+  // }
 
   await setupLocators();
 
