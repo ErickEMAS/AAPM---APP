@@ -1,7 +1,5 @@
 import 'package:agente_parceiro_magalu/core/api/sheets/seller_sheets_api.dart';
 import 'package:agente_parceiro_magalu/core/app_config.dart';
-import 'package:agente_parceiro_magalu/core/constants/storage_keys.dart';
-import 'package:agente_parceiro_magalu/core/helpers/storage_helper.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_router.dart';
 import 'package:agente_parceiro_magalu/core/routes/app_routes.dart';

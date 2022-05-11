@@ -46,7 +46,7 @@ abstract class _CalendarStoreBase with Store {
 
   onInit() async {
     try {
-      appointments = await CalendarClient().getGoogleEventsData();
+      appointments = await CalendarClient().getGoogleEventsData() ?? [];
 
       PageListModel pageList = await _sellerDatasource.getSellerList(
         search: "",
