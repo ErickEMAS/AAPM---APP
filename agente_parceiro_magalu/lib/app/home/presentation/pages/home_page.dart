@@ -147,7 +147,11 @@ class _HomePageState extends State<HomePage> {
     required void Function() onTap,
   }) {
     return GestureDetector(
-      onDoubleTap: onTap,
+      onTap: () => {
+        print("Tochead"),
+        onTap(),
+
+      },
       child: Container(
         height: 100,
         width: phoneWidth * .4,
