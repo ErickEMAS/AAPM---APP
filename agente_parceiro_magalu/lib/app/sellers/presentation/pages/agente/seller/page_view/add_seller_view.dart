@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/uf_builder.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
-import 'package:agente_parceiro_magalu/core/api/sheets/seller_sheets_api.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/helpers/formatter_helper.dart';
-import 'package:agente_parceiro_magalu/core/helpers/input_validator_helper.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
@@ -270,57 +266,57 @@ class _AddSellerViewState extends State<AddSellerView> {
                   labelText: "CNPJ do seller", hintText: "Digite o cnpj"),
             ),
             SizedBox(height: AppDimens.margin),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await SellerSheetsApi.init();
-                  final sellerFromSheet = await SellerSheetsApi.getSellerByCNPJ(
-                      _cpnjImportController.text);
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: () async {
+            // await SellerSheetsApi.init();
+            // final sellerFromSheet = await SellerSheetsApi.getSellerByCNPJ(
+            //     _cpnjImportController.text);
 
-                  final sellerModel =
-                      SellerModel.fromJsonSheet(sellerFromSheet!.toJson());
+            // final sellerModel =
+            //     SellerModel.fromJsonSheet(sellerFromSheet!.toJson());
 
-                  _store.setSellerModel(sellerModel);
-                  _store.fillAddSeller();
-                  setState(() {
-                    dropdownSelection = sellerModel.uf;
-                  });
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  "importar",
-                ),
-              ),
-            ),
+            // _store.setSellerModel(sellerModel);
+            // _store.fillAddSeller();
+            // setState(() {
+            //   dropdownSelection = sellerModel.uf;
+            // });
+            // Navigator.pop(context);
+            // },
+            // child: const Text(
+            //   "importar",
+            // ),
+            // ),
+            // ),
             Divider(),
-            SizedBox(height: AppDimens.margin),
-            const Text(
-                "Vai importar todos os dados da planilha, não salvara repetidos."),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await SellerSheetsApi.init();
+            // SizedBox(height: AppDimens.margin),
+            // const Text(
+            //     "Vai importar todos os dados da planilha, não salvara repetidos."),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: () async {
+            //       await SellerSheetsApi.init();
 
-                  final sheetSellerList = await SellerSheetsApi.getAllSeller();
+            //       final sheetSellerList = await SellerSheetsApi.getAllSeller();
 
-                  final sellerModelList = sheetSellerList!
-                      .map((e) => SellerModel.fromJsonSheet(e.toJson()))
-                      .toList();
+            //       final sellerModelList = sheetSellerList!
+            //           .map((e) => SellerModel.fromJsonSheet(e.toJson()))
+            //           .toList();
 
-                  sellerModelList.forEach((sellerModel) async {
-                    print("ta indo?");
-                    await _store.addSeller(sellerModelFromSheet: sellerModel);
-                  });
+            //       sellerModelList.forEach((sellerModel) async {
+            //         print("ta indo?");
+            //         await _store.addSeller(sellerModelFromSheet: sellerModel);
+            //       });
 
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  "importar todos",
-                ),
-              ),
-            )
+            //       Navigator.pop(context);
+            //     },
+            //     child: const Text(
+            //       "importar todos",
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),
