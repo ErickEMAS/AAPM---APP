@@ -126,16 +126,16 @@ class CalendarClient {
           agendaExiste = true;
         }
       }
-
-      if (agendaExiste != true) {
-        final request = Calendar(
-          summary: "app_agente",
-          description: "app agente magalu",
-        );
-
-        calendarApi.calendars.insert(request);
-      }
     });
+
+    if (agendaExiste != true) {
+      final request = Calendar(
+        summary: "app_agente",
+        description: "app agente magalu",
+      );
+
+      calendarApi.calendars.insert(request);
+    }
 
     await calendarApi.calendarList.list().then((value) async {
       final Events calEvents = await calendarApi.events.list(
