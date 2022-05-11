@@ -83,7 +83,7 @@ class _CalendarPageState extends State<CalendarPage> {
             GoogleApi.googleUser == null
                 ? Column(
                     children: [
-                      Text(
+                      const Text(
                           "Você deve logar a sua conta do google pra acessar essa tela"),
                       ElevatedButton(
                         onPressed: () {
@@ -99,7 +99,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             });
                           });
                         },
-                        child: Text("Entrar google"),
+                        child: const Text("Entrar google"),
                       )
                     ],
                   )

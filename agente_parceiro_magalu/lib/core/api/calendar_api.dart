@@ -76,7 +76,7 @@ class CalendarClient {
     });
   }
 
-  addFolder() async {
+  Future addFolder() async {
     final signIn.GoogleSignInAccount? account = GoogleApi.googleUser;
 
     final authHeaders = await account!.authHeaders;
@@ -85,7 +85,7 @@ class CalendarClient {
     var calendarApi = CalendarApi(authenticateClient);
     bool agendaExiste = false;
 
-    calendarApi.calendarList.list().then((value) {
+    await calendarApi.calendarList.list().then((value) {
       for (var item in value.items!) {
         if (item.summary!.toLowerCase() == "app_agente") {
           // calendarId = item.id!;
@@ -147,46 +147,15 @@ class CalendarClient {
 
     List<Event> appointments = <Event>[];
 
-    final list = await calendarApi.calendarList.list();
-    // .then((value) async {
-    //   for (var item in value.items!) {
-    //     if (item.summary!.toLowerCase() == "app_agente") {
-    //       calendarId = item.id!;
-    //       agendaExiste = true;
-    //     }
-    //   }
-    // }).whenComplete(() {
-    //   if (agendaExiste != true) {
-    //     final request = Calendar(
-    //       summary: "app_agente",
-    //       description: "app agente magalu",
-    //     );
-
-    //     calendarApi.calendars.insert(request);
-    //   }
-    // });
-
-    // final list;
-
-    for (var calendar in list.items!) {
-      switch (calendar.summary) {
-        case "app_agente":
-          agendaExiste = true;
-          print("1 is present in List");
-          break;
-      }
-    }
-
-    if (agendaExiste != true) {
-      final request = Calendar(
-        summary: "app_agente",
-        description: "app agente magalu",
-      );
-
-      calendarApi.calendars.insert(request);
-    }
+    addFolder();
 
     await calendarApi.calendarList.list().then((value) async {
+      for (var item in value.items!) {
+        if (item.summary!.toLowerCase() == "app_agente") {
+          calendarId = item.id!;
+        }
+      }
+
       final Events calEvents = await calendarApi.events.list(
         calendarId,
       );
