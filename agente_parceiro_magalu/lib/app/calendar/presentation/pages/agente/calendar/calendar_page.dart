@@ -1,14 +1,17 @@
 import 'package:agente_parceiro_magalu/app/calendar/presentation/stores/agente/calendar_store.dart';
-import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/seller_list_view.dart';
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/search_filter_widget.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/page_view/widgets/seller_card_widget.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/api/calendar_api.dart';
 import 'package:agente_parceiro_magalu/core/api/google_api.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
+import 'package:agente_parceiro_magalu/core/snackbar_helper.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
+import 'package:agente_parceiro_magalu/shared/widgets/app_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
@@ -30,6 +33,11 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   final CalendarStore _store = serviceLocator<CalendarStore>();
   final SellerStore _sellerStore = serviceLocator<SellerStore>();
+
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _timeController1 = TextEditingController();
+  TextEditingController _timeController2 = TextEditingController();
+  final CalendarController _controller = CalendarController();
 
   @override
   void initState() {
@@ -81,7 +89,11 @@ class _CalendarPageState extends State<CalendarPage> {
                         onPressed: () {
                           GoogleApi.signIn().whenComplete(() {
                             setState(() {});
-                            fetchData();
+                            LoadingOverlay.of(context)
+                                .during(fetchData())
+                                .whenComplete(() {
+                              setState(() {});
+                            });
                           });
                         },
                         child: Text("Entrar google"),
@@ -97,15 +109,73 @@ class _CalendarPageState extends State<CalendarPage> {
                           children: [
                             SfCalendar(
                               view: CalendarView.schedule,
+                              allowedViews: const [
+                                CalendarView.schedule,
+                                CalendarView.day,
+                                CalendarView.workWeek,
+                              ],
+                              onTap: (calendarTapDetails) {
+                                if (calendarTapDetails.targetElement ==
+                                        CalendarElement.agenda ||
+                                    calendarTapDetails.targetElement ==
+                                        CalendarElement.appointment) {
+                                  final calendar.Event appointment =
+                                      calendarTapDetails.appointments![0];
+
+                                  print(appointment);
+                                  appDialog(
+                                    context: context,
+                                    title: Text("Excluir visita?"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            LoadingOverlay.of(context)
+                                                .during(
+                                              CalendarClient().delete(
+                                                appointment.id,
+                                              ),
+                                            )
+                                                .whenComplete(() {
+                                              LoadingOverlay.of(context)
+                                                  .during(fetchData())
+                                                  .whenComplete(() {
+                                                setState(() {});
+                                              });
+                                              setState(() {});
+                                              Navigator.pop(context);
+                                              SnackBarHelper.snackBar(
+                                                context,
+                                                message: "Visita exluida",
+                                              );
+                                            });
+                                          },
+                                          child: Text("Exluir!"),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                  // _selectedAppointment = appointment;
+                                }
+                              },
+                              controller: _controller,
                               todayHighlightColor: AppColors.primary,
-                              cellBorderColor: AppColors.primary,
-                              allowViewNavigation: true,
+                              // cellBorderColor: AppColors.primary,
+                              selectionDecoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border.all(color: Colors.red, width: 2),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(4)),
+                                shape: BoxShape.rectangle,
+                              ),
+
                               dataSource: GoogleCalendarDatasource(
                                   events: snapshot.data),
                               scheduleViewSettings: ScheduleViewSettings(
                                 appointmentItemHeight: 70,
                                 dayHeaderSettings: DayHeaderSettings(
-                                  dayFormat: 'EEEE',
+                                  dayFormat: 'EEE',
                                   width: 70,
                                   dayTextStyle: AppTextStyles.regular(
                                       size: 12, color: AppColors.vermelho),
@@ -134,27 +204,19 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   _adicionarButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        _store.setSearch("");
-        bool ret =
-            await LoadingOverlay.of(context).during(_store.getAllSellers());
+    return GoogleApi.googleUser != null
+        ? ElevatedButton(
+            onPressed: () async {
+              _store.setSearch("");
+              bool ret = await LoadingOverlay.of(context)
+                  .during(_store.getAllSellers());
 
-        if (ret) {
-          _displayDialog(context);
-        }
-
-        // CalendarClient().insert(
-        //   "Visitar Alfredo",
-        //   DateTime.now().add(Duration(days: 0, hours: 3)),
-        //   DateTime.now().add(Duration(hours: 5)),
-        // );
-        // await LoadingOverlay.of(context).during(fetchData()).whenComplete(() {
-        //   setState(() {});
-        // });
-      },
-      child: Text("Adicionar"),
-    );
+              if (ret) {
+                _displayDialog(context);
+              }
+            },
+            child: Text("Adicionar"))
+        : SizedBox();
   }
 
   _displayDialog(BuildContext context) {
@@ -182,6 +244,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   ],
                 ),
                 SearchFilterWidget(
+                  dropdown: false,
                   onChanged: (value) {
                     _store.setSearch(value);
                     setState(() {});
@@ -200,7 +263,9 @@ class _CalendarPageState extends State<CalendarPage> {
                           print(_store.sellerList.length);
                           return SellerCardWidget(
                             sellerModel: _store.sellerList[index],
-                            onAddButtonPressed: () {},
+                            onAddButtonPressed: () {
+                              _addSellerToCalendar(_store.sellerList[index]);
+                            },
                           );
                         },
                       ),
@@ -213,6 +278,150 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
         );
       },
+    );
+  }
+
+  _addSellerToCalendar(SellerModel sellerModel) {
+    return appDialog(
+      context: context,
+      title: Text(
+        "Adicionar Seller na Agenda",
+        style: AppTextStyles.bold(),
+      ),
+      content: Padding(
+        padding: EdgeInsets.all(AppDimens.margin),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _datePicker(),
+            _timePicker(
+              controller: _timeController1,
+              label: "Hora inicial",
+              onTap: () async {
+                final selectedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+
+                if (selectedTime != null) {
+                  final text = selectedTime.toString().substring(10, 15);
+                  _store.horaInicio = selectedTime;
+                  setState(() {
+                    _timeController1.text = text;
+                  });
+                }
+              },
+            ),
+            SizedBox(height: AppDimens.margin),
+            _timePicker(
+              controller: _timeController2,
+              label: "Hora final",
+              onTap: () async {
+                final selectedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+
+                if (selectedTime != null) {
+                  final text = selectedTime.toString().substring(10, 15);
+                  _store.horaFim = selectedTime;
+                  setState(() {
+                    _timeController2.text = text;
+                  });
+                }
+              },
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  _dateController.text = '';
+                  _timeController1.text = '';
+                  _timeController2.text = '';
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  CalendarClient().insert(
+                    "Visitar ${sellerModel.nome}",
+                    _store.date!.add(
+                      Duration(
+                          hours: _store.horaInicio!.hour,
+                          minutes: _store.horaInicio!.minute),
+                    ),
+                    _store.date!.add(
+                      Duration(
+                          hours: _store.horaFim!.hour,
+                          minutes: _store.horaFim!.minute),
+                    ),
+                  );
+                  print(
+                    _store.date!.add(
+                      Duration(
+                        hours: _store.horaInicio!.hour,
+                        minutes: _store.horaInicio!.minute,
+                      ),
+                    ),
+                  );
+
+                  await LoadingOverlay.of(context)
+                      .during(fetchData())
+                      .whenComplete(() {
+                    setState(() {});
+                  });
+                  SnackBarHelper.snackBar(
+                    context,
+                    message: "Visita adicionada",
+                  );
+                },
+                child: Text("Adicionar"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _datePicker() {
+    return TextField(
+      controller: _dateController,
+      readOnly: true,
+      decoration: const InputDecoration(
+        labelText: "Data",
+        hintText: "Selecione a data",
+      ),
+      onTap: () async {
+        final selectedDate = await showDatePicker(
+          context: context,
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2100),
+          initialDate: DateTime.now(),
+        );
+        if (selectedDate != null) {
+          final date = _store.convertDateTime(now: selectedDate);
+          _store.date = selectedDate;
+          setState(() {
+            _dateController.text = date;
+          });
+        }
+      },
+    );
+  }
+
+  _timePicker({
+    required TextEditingController controller,
+    required String label,
+    void Function()? onTap,
+  }) {
+    return TextField(
+      controller: controller,
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: "Selecione a hora",
+      ),
+      // _store.date = selectedDate;
+
+      onTap: onTap,
     );
   }
 }

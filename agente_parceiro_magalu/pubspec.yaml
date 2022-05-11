@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: 
+    sdk: flutter  
   syncfusion_flutter_xlsio: 
   path_provider: ^2.0.1
   open_file: ^3.2.1
@@ -53,6 +55,7 @@ dependencies:
   googleapis: ^8.1.0
   url_launcher: ^6.1.0
   syncfusion_flutter_calendar: ^20.1.52
+
   
   
 

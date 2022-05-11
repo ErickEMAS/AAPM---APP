@@ -3,6 +3,7 @@ import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart
 import 'package:agente_parceiro_magalu/core/api/calendar_api.dart';
 import 'package:agente_parceiro_magalu/core/locators/service_locators.dart';
 import 'package:agente_parceiro_magalu/core/models/page_list_model.dart';
+import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:mobx/mobx.dart';
 
@@ -38,6 +39,11 @@ abstract class _CalendarStoreBase with Store {
     search = data;
   }
 
+  DateTime? date;
+
+  TimeOfDay? horaInicio;
+  TimeOfDay? horaFim;
+
   onInit() async {
     try {
       appointments = await CalendarClient().getGoogleEventsData();
@@ -46,7 +52,6 @@ abstract class _CalendarStoreBase with Store {
         search: "",
       );
       totalElements = pageList.totalElements;
-      print("TOTAL ELEMENTE AAAAAAA $totalElements");
 
       return true;
     } catch (err) {
@@ -64,11 +69,6 @@ abstract class _CalendarStoreBase with Store {
 
       List<SellerModel>? seller = pageList.content.cast<SellerModel>().toList();
 
-      // totalElements = pageList.totalElements;
-      print("TOTAL ELEMENTE AAAAAAA $totalElements");
-
-      print(sellerList.length);
-
       sellerList.clear();
       _setSellerList(seller);
 
@@ -77,5 +77,18 @@ abstract class _CalendarStoreBase with Store {
       print(err);
       return false;
     }
+  }
+
+  String convertDateTime({
+    required DateTime now,
+    bool onlyDate = true,
+  }) {
+    String convertedDateTime = "";
+    onlyDate
+        ? convertedDateTime =
+            "${now.day.toString()}/${now.month.toString().padLeft(2, '0')}/${now.year.toString().padLeft(2, '0')}"
+        : convertedDateTime =
+            "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+    return convertedDateTime;
   }
 }

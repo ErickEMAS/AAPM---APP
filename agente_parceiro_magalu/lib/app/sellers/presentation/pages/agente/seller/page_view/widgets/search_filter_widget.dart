@@ -11,7 +11,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SearchFilterWidget extends StatefulWidget {
   final Function(String)? onChanged;
-  const SearchFilterWidget({Key? key, this.onChanged}) : super(key: key);
+  final bool dropdown;
+  const SearchFilterWidget({Key? key, this.onChanged, this.dropdown = true})
+      : super(key: key);
 
   @override
   State<SearchFilterWidget> createState() => _SearchFilterWidgetState();
@@ -45,43 +47,47 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.56,
-                child: AppDropdown(
-                  customItems: _tagStore.tagList.map((tag) {
-                    return DropdownMenuItem(
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: AppDimens.space),
-                        decoration: BoxDecoration(
-                            color: SwitchTagEnum.switchEnumColor(
-                              tag.color,
+              widget.dropdown
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.56,
+                      child: AppDropdown(
+                        textHint: "Selecione uma tag",
+                        customItems: _tagStore.tagList.map((tag) {
+                          return DropdownMenuItem(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppDimens.space),
+                              decoration: BoxDecoration(
+                                  color: SwitchTagEnum.switchEnumColor(
+                                    tag.color,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
+                              child: Text(
+                                tag.name,
+                                style: AppTextStyles.regular(
+                                  size: 16,
+                                  color: AppColors.white,
+                                ),
+                              ),
                             ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        child: Text(
-                          tag.name,
-                          style: AppTextStyles.regular(
-                            size: 16,
-                            color: AppColors.white,
-                          ),
-                        ),
+                            onTap: () {
+                              _sellerStore
+                                  .setTagId(tag.id == null ? "" : tag.id!);
+                            },
+                            value: tag.name,
+                          );
+                        }).toList(),
+                        onChange: (value) {
+                          setState(() {
+                            dropdownSelection = value;
+                            _sellerStore.onSellerInit();
+                          });
+                        },
+                        value: dropdownSelection,
                       ),
-                      onTap: () {
-                        _sellerStore.setTagId(tag.id == null ? "" : tag.id!);
-                      },
-                      value: tag.name,
-                    );
-                  }).toList(),
-                  onChange: (value) {
-                    setState(() {
-                      dropdownSelection = value;
-                      _sellerStore.onSellerInit();
-                    });
-                  },
-                  value: dropdownSelection,
-                ),
-              ),
+                    )
+                  : SizedBox(),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.25,
                 child: ElevatedButton(
