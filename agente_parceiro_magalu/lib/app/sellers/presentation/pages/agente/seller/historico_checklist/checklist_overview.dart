@@ -24,8 +24,6 @@ class _ChecklistOverviewState extends State<ChecklistOverview> {
   
   @override
   Widget build(BuildContext context) {
-    print(widget.checklistModel.questions!.length);
-
     return Scaffold(
       appBar: const AppBarGradient(
         title: "Checklist",

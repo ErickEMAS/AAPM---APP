@@ -61,8 +61,6 @@ class _HistoricoChecklistPageState extends State<HistoricoChecklistPage> {
     return GestureDetector(
       onTap: () {
         _checklistStore.navigateToChecklistOverview(context, checklistList);
-        print(checklistList.questions!.length);
-        print("tap");
       },
       child: Container(
         margin: EdgeInsets.only(bottom: AppDimens.margin),
