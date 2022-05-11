@@ -87,8 +87,11 @@ class _CalendarPageState extends State<CalendarPage> {
                           "Você deve logar a sua conta do google pra acessar essa tela"),
                       ElevatedButton(
                         onPressed: () {
-                          GoogleApi.signIn().whenComplete(() {
+                          GoogleApi.signIn().whenComplete(() async {
                             setState(() {});
+
+                            await CalendarClient().addFolder();
+
                             LoadingOverlay.of(context)
                                 .during(fetchData())
                                 .whenComplete(() {
