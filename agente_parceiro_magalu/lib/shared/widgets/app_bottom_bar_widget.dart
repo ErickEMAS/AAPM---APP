@@ -59,7 +59,8 @@ class _AppBottomBarState extends State<AppBottomBar> {
                         },
                       )
                     : Container(),
-                bottomIcon(
+                _store.userRole != "ROLE_ADMIN"
+                      ? bottomIcon(
                   tittle: "Agenda",
                   iconData: Icons.calendar_today,
                   active: _store.currentPage == AppRoutes.calendar,
@@ -68,7 +69,7 @@ class _AppBottomBarState extends State<AppBottomBar> {
 
                     _navigator(context: context, route: AppRoutes.calendar);
                   },
-                ),
+                ) : Container(),
                 bottomIcon(
                   tittle: "Sellers",
                   iconData: Icons.credit_card,

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../../../shared/themes/app_colors.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
@@ -30,18 +32,108 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (_) {
-        return AppSafeArea(
-          child: Scaffold(
-            appBar: const AppBarGradient(
-              automaticallyImplyLeading: false,
-              title: "home page",
+    double phoneWidth = MediaQuery.of(context).size.width;
+
+    return AppSafeArea(
+      child: Scaffold(
+        appBar: const AppBarGradient(
+          automaticallyImplyLeading: false,
+          title: "home page",
+        ),
+        bottomNavigationBar: AppBottomBar(),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              height: 400,
+              width: phoneWidth * .87,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.primary,
+              ),
+              child: Image.asset("assets/logo_splash.png"),
             ),
-            bottomNavigationBar: AppBottomBar(),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _homeButton(
+                        phoneWidth: phoneWidth,
+                        icon: Icons.home,
+                        title: "Meus Sellers"),
+                    const SizedBox(width: 32),
+                    _homeButton(
+                        phoneWidth: phoneWidth,
+                        icon: Icons.home,
+                        title: "Meus Sellers"),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _homeButton(
+                        phoneWidth: phoneWidth,
+                        icon: Icons.home,
+                        title: "Meus Sellers"),
+                    const SizedBox(width: 32),
+                    _homeButton(
+                        phoneWidth: phoneWidth,
+                        icon: Icons.home,
+                        title: "Meus Sellers"),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _homeButton(
+      {required double phoneWidth,
+      required IconData icon,
+      required String title}) {
+    return Container(
+      height: 100,
+      width: phoneWidth * .4,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: AppColors.white,
+        boxShadow: const [
+          BoxShadow(color: AppColors.grey, spreadRadius: 1),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                size: 32,
+              )
+            ],
           ),
-        );
-      },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: AppColors.black,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
