@@ -105,25 +105,39 @@ class CalendarClient {
     });
   }
 
-  getGoogleEventsData() async {
+  Future<List<Event>?> getGoogleEventsData() async {
     final account = GoogleApi.googleUser;
 
-    if (account == null) return;
+    if (account == null) return [];
 
     final authHeaders = await account.authHeaders;
     final authenticateClient = GoogleAuthClient(authHeaders);
 
     var calendarApi = CalendarApi(authenticateClient);
     String calendarId = "";
+    bool agendaExiste = false;
+
     List<Event> appointments = <Event>[];
 
     await calendarApi.calendarList.list().then((value) async {
       for (var item in value.items!) {
         if (item.summary!.toLowerCase() == "app_agente") {
           calendarId = item.id!;
+          agendaExiste = true;
         }
       }
 
+      if (agendaExiste != true) {
+        final request = Calendar(
+          summary: "app_agente",
+          description: "app agente magalu",
+        );
+
+        calendarApi.calendars.insert(request);
+      }
+    });
+
+    await calendarApi.calendarList.list().then((value) async {
       final Events calEvents = await calendarApi.events.list(
         calendarId,
       );
