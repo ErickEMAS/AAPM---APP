@@ -61,12 +61,12 @@ class _AddSellerViewState extends State<AddSellerView> {
                     "Adicionar Seller",
                     style: AppTextStyles.bold(),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _importSheetDialog();
-                    },
-                    child: const Text("importar planilha"),
-                  )
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     _importSheetDialog();
+                  //   },
+                  //   child: const Text("importar planilha"),
+                  // )
                 ],
               ),
               SizedBox(height: AppDimens.space * 4),
@@ -206,6 +206,7 @@ class _AddSellerViewState extends State<AddSellerView> {
               SizedBox(height: AppDimens.space * 0.5),
               ..._addSellerColumn(
                 title: "Complemento",
+                validator: null,
                 inputHint: "Digite o complemento",
                 controller: _store.complementoController,
                 onChanged: (value) {
@@ -342,7 +343,7 @@ class _AddSellerViewState extends State<AddSellerView> {
         child: TextFormField(
           controller: controller,
           onChanged: onChanged,
-          validator: validator ?? InputValidatorHelper.validateCommonField,
+          validator: validator,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(

@@ -115,12 +115,11 @@ class _AddOrUpdateQuestionsChecklistViewState extends State<AddOrUpdateQuestions
         ..._addFAQColumn(
           title: "Nome do campo",
           initialValue: widget.update
-              ? _store.dynamicQuestionCheckListEditModel.question
+              ? _store.dynamicQuestionCheckListEditModel.fieldUpdate.name
               : "",
           inputHint: "Digite o nome do campo",
           onChanged: (value) {
-            _store.dynamicQuestionCheckListEditModel.fieldUpdate.name =
-                widget.update ? value : "";
+              widget.update ? _store.dynamicQuestionCheckListEditModel.fieldUpdate.name = value :
             _store.dynamicQuestionCheckListModel.fieldUpdate.name = value;
           },
         ),
@@ -195,7 +194,8 @@ class _AddOrUpdateQuestionsChecklistViewState extends State<AddOrUpdateQuestions
           onChanged: (bool value) {
             setState(
               () {
-                _store.dynamicQuestionCheckListEditModel.answerRequired = value;
+                widget.update ? _store.dynamicQuestionCheckListEditModel.answerRequired = value : 
+                _store.dynamicQuestionCheckListModel.answerRequired = value;
               },
             );
           },
@@ -206,7 +206,8 @@ class _AddOrUpdateQuestionsChecklistViewState extends State<AddOrUpdateQuestions
           onChanged: (bool value) {
             setState(
               () {
-                _store.dynamicQuestionCheckListEditModel.multipleAlternative =
+                widget.update ? _store.dynamicQuestionCheckListEditModel.multipleAlternative =
+                    value : _store.dynamicQuestionCheckListModel.multipleAlternative =
                     value;
               },
             );
@@ -218,7 +219,7 @@ class _AddOrUpdateQuestionsChecklistViewState extends State<AddOrUpdateQuestions
           onChanged: (bool value) {
             setState(
               () {
-                _store.dynamicQuestionCheckListEditModel.active = value;
+                widget.update ? _store.dynamicQuestionCheckListEditModel.active = value : _store.dynamicQuestionCheckListModel.active = value;
               },
             );
           },
@@ -239,8 +240,7 @@ class _AddOrUpdateQuestionsChecklistViewState extends State<AddOrUpdateQuestions
               : "",
           inputHint: "Digite a questão",
           onChanged: (value) {
-            _store.dynamicQuestionCheckListEditModel.question =
-                widget.update ? value : "";
+            widget.update ? _store.dynamicQuestionCheckListEditModel.question = value :
             _store.dynamicQuestionCheckListModel.question = value;
           },
         ),

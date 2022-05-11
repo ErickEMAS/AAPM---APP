@@ -37,7 +37,7 @@ class _HistoricoChecklistPageState extends State<HistoricoChecklistPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarGradient(
-        title: "Histórico de visita",
+        title: "Histórico de visitas",
       ),
       body: Column(
         children: [

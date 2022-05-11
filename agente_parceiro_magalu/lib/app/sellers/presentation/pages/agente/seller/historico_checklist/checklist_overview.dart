@@ -1,11 +1,14 @@
 import 'package:agente_parceiro_magalu/app/sellers/data/models/alternatives_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/checklist_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/question_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/checklist_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_colors.dart';
 import 'package:agente_parceiro_magalu/shared/themes/app_text_styles.dart';
 import 'package:agente_parceiro_magalu/shared/widgets/app_bar_gradient_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../../../core/locators/service_locators.dart';
 
 class ChecklistOverview extends StatefulWidget {
   final ChecklistModel checklistModel;
@@ -17,6 +20,8 @@ class ChecklistOverview extends StatefulWidget {
 }
 
 class _ChecklistOverviewState extends State<ChecklistOverview> {
+  final ChecklistStore _checklistStore = serviceLocator<ChecklistStore>();
+  
   @override
   Widget build(BuildContext context) {
     print(widget.checklistModel.questions!.length);
@@ -30,12 +35,24 @@ class _ChecklistOverviewState extends State<ChecklistOverview> {
           padding: EdgeInsets.all(AppDimens.margin),
           child: Column(
             children: [
+              Row(
+                children: [
+                  Text(
+                    "Visita feita: ${_checklistStore.formattDateTime(
+                      widget.checklistModel.dataVisita ?? DateTime(2022),
+                    )}",
+                    style: AppTextStyles.bold(size: 14),
+                  ),
+                ],
+              ),
+              SizedBox(height: AppDimens.space *2),
+              Divider(),
+              SizedBox(height: AppDimens.space *2),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: widget.checklistModel.questions!.length,
                 itemBuilder: (context, index) {
-                  print(widget.checklistModel.questions!.length);
                   return _questionCard(
                     widget.checklistModel.questions![index],
                     index,
@@ -71,6 +88,7 @@ class _ChecklistOverviewState extends State<ChecklistOverview> {
             );
           },
         ),
+        SizedBox(height: AppDimens.space * 2),
       ],
     );
   }

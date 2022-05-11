@@ -1,4 +1,6 @@
+import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_field_model.dart';
 import 'package:agente_parceiro_magalu/app/sellers/data/models/seller_model.dart';
+import 'package:agente_parceiro_magalu/app/sellers/presentation/pages/agente/seller/shared/sheets/sheets_field.dart';
 import 'package:agente_parceiro_magalu/app/sellers/presentation/stores/agente/seller_store.dart';
 import 'package:agente_parceiro_magalu/core/constants/app_dimens.dart';
 import 'package:agente_parceiro_magalu/core/loading_overlay.dart';
@@ -27,11 +29,11 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
 
   @override
   void initState() {
+    _store.setRole();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       LoadingOverlay.of(context)
           .during(_store.getSellerById(sellerId: widget.sellerId));
     });
-
     super.initState();
   }
 
@@ -41,17 +43,21 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
       appBar: const AppBarGradient(
         title: "Seller Overview",
       ),
-      body: Observer(builder: (_) {
-        return _store.sellerEditModel != null
-            ? Column(
-                children: [
-                  _sellerInfo(),
-                  SizedBox(height: AppDimens.margin),
-                  _initVisita(_store.sellerEditModel!),
-                ],
-              )
-            : Container();
-      }),
+      body: SingleChildScrollView(
+        child: Observer(builder: (_) {
+          return _store.sellerEditModel != null
+              ? Column(
+                  children: [
+                    _sellerInfo(),
+                    SizedBox(height: AppDimens.margin),
+                    !_store.admin
+                        ? _initVisita(_store.sellerEditModel!)
+                        : Container(),
+                  ],
+                )
+              : Container();
+        }),
+      ),
     );
   }
 
@@ -71,10 +77,14 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
                 "Informações do seller",
                 style: AppTextStyles.bold(),
               ),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("editar"),
-              )
+              !_store.admin
+                  ? ElevatedButton(
+                      onPressed: () {
+                        _store.navigateToEditSeller(context, widget.sellerId);
+                      },
+                      child: const Text("editar"),
+                    )
+                  : Container(),
             ],
           ),
           SizedBox(height: AppDimens.margin),
@@ -85,18 +95,9 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
               _infoRow(title: "CEP", content: _store.sellerEditModel!.cep),
               _infoRow(
                   title: "Endereço", content: _store.sellerEditModel!.endereco),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _infoRow(
-                        title: "Cidade",
-                        content: _store.sellerEditModel!.cidade),
-                    _infoRow(title: "UF", content: _store.sellerEditModel!.uf),
-                  ],
-                ),
-              ),
+              _infoRow(
+                  title: "Cidade", content: _store.sellerEditModel!.cidade),
+              _infoRow(title: "UF", content: _store.sellerEditModel!.uf),
               _infoRow(
                   title: "Complemento",
                   content: _store.sellerEditModel!.complemento),
@@ -104,19 +105,12 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
               _infoRow(title: "Email", content: _store.sellerEditModel!.email),
               _infoRow(
                   title: "Telefone", content: _store.sellerEditModel!.telefone),
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: ElevatedButton(
-              //     onPressed: () async {
-              //       final seller = SheetsFieldModel.fromJsonSellerModel(
-              //           jsonDecode(jsonEncode(_store.sellerEditModel!)));
-
-              //       SellerSheetsApi.insert(seller.toJson());
-              //     },
-              //     child: Text("Exportar planilha"),
-              //   ),
-              // ),
-
+              ..._store.sellerEditModel!.sellerFields!
+                  .map<Widget>((SellerFieldModel sellerField) {
+                return _infoColumn(
+                    title: sellerField.name ?? "",
+                    content: sellerField.value ?? "");
+              }).toList(),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -126,7 +120,7 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
                       widget.sellerId,
                     );
                   },
-                  child: Text("Ver histórico checklist"),
+                  child: Text("Ver histórico de visitas"),
                 ),
               )
             ],
@@ -145,9 +139,7 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
           onPressed: () {
             _store.navigateToChecklistVisita(context, sellerModel.id!);
           },
-          child: const Text(
-            "Iniciar visita",
-          ),
+          child: const Text("Iniciar visita"),
         ),
       ),
     );
@@ -155,6 +147,7 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
 
   _infoRow({required String title, required String content}) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -165,6 +158,29 @@ class _SellerOverviewPageState extends State<SellerOverviewPage> {
             Text(
               content,
               style: AppTextStyles.regular(size: 15),
+            ),
+          ],
+        ),
+        SizedBox(height: AppDimens.space),
+      ],
+    );
+  }
+
+  _infoColumn({required String title, required String content}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "$title: ",
+          style: AppTextStyles.bold(color: AppColors.primary, size: 16),
+        ),
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                content,
+                style: AppTextStyles.regular(size: 15),
+              ),
             ),
           ],
         ),

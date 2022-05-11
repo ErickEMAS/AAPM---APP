@@ -122,7 +122,8 @@ class _FAQListViewState extends State<QuestionsChecklistListView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Questão: ",

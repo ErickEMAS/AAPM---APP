@@ -89,40 +89,52 @@ class _SellerPageState extends State<SellerPage> {
                   onPressed: () => _previousPage(),
                 )
               : null,
-          title: "Carteira",
-          actions: [
-            _exportAllSellersFromList(),
-          ],
+          title: "Meus Sellers",
+          // actions: [
+          //   _exportAllSellersFromList(),
+          // ],
         ),
         floatingActionButton: currentPage == 0
             ? SpeedDial(
                 animatedIcon: AnimatedIcons.menu_close,
-                children: [
-                  SpeedDialChild(
-                    child: Icon(Icons.add),
-                    label: "Adicionar novo Seller",
-                    onTap: () async {
-                      _nextPage();
-                    },
-                  ),
-                  SpeedDialChild(
-                    child: Icon(Icons.file_download),
-                    label: "Exportar Sellers",
-                    onTap: () async {
-                      await _store.forceGetSellers();
-                      creatSheet();
-                    },
-                  ),
-                  SpeedDialChild(
-                    child: Icon(Icons.file_upload),
-                    label: "Importar Sellers",
-                    onTap: () async {
-                      String? ret = await _store.readSheets(context: context);
+                children: !_store.admin
+                    ? [
+                        SpeedDialChild(
+                          child: Icon(Icons.add),
+                          label: "Adicionar novo Seller",
+                          onTap: () async {
+                            _nextPage();
+                          },
+                        ),
+                        SpeedDialChild(
+                          child: Icon(Icons.file_download),
+                          label: "Exportar Sellers",
+                          onTap: () async {
+                            await _store.forceGetSellers();
+                            creatSheet();
+                          },
+                        ),
+                        SpeedDialChild(
+                          child: Icon(Icons.file_upload),
+                          label: "Importar Sellers",
+                          onTap: () async {
+                            String? ret =
+                                await _store.readSheets(context: context);
 
-                      if (ret != null) _returnMsg(string: ret);
-                    },
-                  ),
-                ],
+                            if (ret != null) _returnMsg(string: ret);
+                          },
+                        ),
+                      ]
+                    : [
+                        SpeedDialChild(
+                          child: Icon(Icons.file_download),
+                          label: "Exportar Sellers",
+                          onTap: () async {
+                            await _store.forceGetSellers();
+                            creatSheet();
+                          },
+                        ),
+                      ],
               )
             : null,
         body: PageView.builder(

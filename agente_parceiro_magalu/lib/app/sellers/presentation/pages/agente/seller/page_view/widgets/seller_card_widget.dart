@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 
 class SellerCardWidget extends StatelessWidget {
   final SellerModel sellerModel;
+  final int? index;
   final void Function()? onAddButtonPressed;
 
   SellerCardWidget({
     Key? key,
     required this.sellerModel,
+    this.index,
     this.onAddButtonPressed,
   }) : super(key: key);
 
@@ -23,6 +25,7 @@ class SellerCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        _store.indexSellerSelected = index ?? _store.indexSellerSelected;
         _store.navigateToSellerOverview(context, sellerModel.id!);
       },
       child: Column(
@@ -44,6 +47,10 @@ class SellerCardWidget extends StatelessWidget {
                       title: "Nome: ",
                       content: sellerModel.nome,
                     ),
+                    ..._sellerInfoRow(
+                      title: "Endereço: ",
+                      content: sellerModel.endereco,
+                    ),
                     Row(
                       children: [
                         ..._sellerInfoRow(
@@ -58,24 +65,34 @@ class SellerCardWidget extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: AppDimens.space),
+                    ..._sellerInfoRow(
+                      title: "E-mail: ",
+                      content: sellerModel.email,
+                    ),
+                    ..._sellerInfoRow(
+                      title: "Telefone: ",
+                      content: sellerModel.telefone,
+                    ),
+                    SizedBox(height: AppDimens.space),
                     TagListBuilder(
                       sellerModel: sellerModel,
                     )
                   ],
                 ),
-                onAddButtonPressed != null
-                    ? Flexible(
-                        child: ElevatedButton(
-                          onPressed: onAddButtonPressed,
-                          child: Center(child: Icon(Icons.add)),
-                          style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.all(AppDimens.space),
-                          ),
-                        ),
-                      )
+                !_store.admin
+                    ? (onAddButtonPressed != null
+                        ? Flexible(
+                            child: ElevatedButton(
+                              onPressed: onAddButtonPressed,
+                              child: Icon(Icons.add),
+                              style: ElevatedButton.styleFrom(
+                                shape: CircleBorder(),
+                                padding: EdgeInsets.all(AppDimens.space),
+                              ),
+                            ),
+                          )
+                        : Container())
                     : Container(),
-                // SizedBox(width: AppDimens.margin),
               ],
             ),
           ),

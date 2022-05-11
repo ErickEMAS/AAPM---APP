@@ -30,6 +30,7 @@ class _SellerListViewState extends State<SellerListView> {
 
   @override
   void initState() {
+    _sellerStore.setRole();
     _tagStore.getTags();
     super.initState();
 
@@ -72,7 +73,7 @@ class _SellerListViewState extends State<SellerListView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Lista de Sellers",
+                        !_sellerStore.admin ? "Minha Carteira" : "Lista de Sellers",
                       style: AppTextStyles.bold(),
                     ),
                     IconButton(
@@ -101,12 +102,12 @@ class _SellerListViewState extends State<SellerListView> {
               controller: _scrollController,
               itemBuilder: (context, index) {
                 return SellerCardWidget(
-                  sellerModel: _sellerStore.sellerList[index],
-                  onAddButtonPressed: () {
-                    _tagStore.getTags();
-                    _addTags(sellerId: _sellerStore.sellerList[index].id!);
-                  },
-                );
+                    sellerModel: _sellerStore.sellerList[index],
+                    index: index,
+                    onAddButtonPressed: () {
+                      _tagStore.getTags();
+                      _addTags(sellerId: _sellerStore.sellerList[index].id!);
+                    },);
               },
             ),
           );
