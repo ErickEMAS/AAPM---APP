@@ -70,6 +70,9 @@ class _SellerPageState extends State<SellerPage> {
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       LoadingOverlay.of(context).during(_store.onSellerInit());
     });
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      LoadingOverlay.of(context).during(_store.setRole());
+    });
   }
 
   @override
