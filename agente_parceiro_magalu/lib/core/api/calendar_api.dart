@@ -23,23 +23,25 @@ class CalendarClient {
     var calendarApi = CalendarApi(authenticateClient);
     bool agendaExiste = false;
 
-    calendarApi.calendarList.list().then((value) {
-      for (var item in value.items!) {
-        if (item.summary!.toLowerCase() == "app_agente") {
-          calendarId = item.id!;
-          agendaExiste = true;
-        }
-      }
+    // calendarApi.calendarList.list().then((value) {
+    //   for (var item in value.items!) {
+    //     if (item.summary!.toLowerCase() == "app_agente") {
+    //       calendarId = item.id!;
+    //       agendaExiste = true;
+    //     }
+    //   }
 
-      if (agendaExiste != true) {
-        final request = Calendar(
-          summary: "app_agente",
-          description: "app agente magalu",
-        );
+    //   if (agendaExiste != true) {
+    //     final request = Calendar(
+    //       summary: "app_agente",
+    //       description: "app agente magalu",
+    //     );
 
-        calendarApi.calendars.insert(request);
-      }
-    });
+    //     calendarApi.calendars.insert(request);
+    //   }
+    // });
+
+    await addFolder();
 
     calendarApi.calendarList.list().then((value) {
       for (var item in value.items!) {
@@ -93,20 +95,22 @@ class CalendarClient {
         }
       }
 
-      if (agendaExiste != true) {
-        final request = Calendar(
-          summary: "app_agente",
-          description: "app agente magalu",
-        );
-
-        calendarApi.calendars.insert(request);
-      }
+      print("fora do for item$agendaExiste");
     });
+
+    if (agendaExiste != true) {
+      final request = Calendar(
+        summary: "app_agente",
+        description: "app agente magalu",
+      );
+      print("if agenda existe$agendaExiste");
+
+      calendarApi.calendars.insert(request);
+    }
   }
 
   delete(eventID) async {
     String calendarId = "";
-    // String eventID = "";
 
     final signIn.GoogleSignInAccount? account = GoogleApi.googleUser;
 
@@ -147,7 +151,7 @@ class CalendarClient {
 
     List<Event> appointments = <Event>[];
 
-    addFolder();
+    // await addFolder();
 
     await calendarApi.calendarList.list().then((value) async {
       for (var item in value.items!) {

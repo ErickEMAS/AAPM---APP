@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              height: 400,
+              height: MediaQuery.of(context).size.height * 0.4,
               padding: EdgeInsets.all(8),
               color: AppColors.primary,
               child: Image.asset("assets/logo_splash.png"),
@@ -149,7 +149,6 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () => {
         onTap(),
-
       },
       child: Container(
         height: 100,

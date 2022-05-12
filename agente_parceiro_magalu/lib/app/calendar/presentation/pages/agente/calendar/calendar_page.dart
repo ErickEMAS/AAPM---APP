@@ -88,15 +88,14 @@ class _CalendarPageState extends State<CalendarPage> {
                       ElevatedButton(
                         onPressed: () {
                           GoogleApi.signIn().whenComplete(() async {
-                            setState(() {});
-
                             await CalendarClient().addFolder();
 
-                            LoadingOverlay.of(context)
-                                .during(fetchData())
-                                .whenComplete(() {
-                              setState(() {});
-                            });
+                            // LoadingOverlay.of(context)
+                            //     .during(fetchData())
+                            //     .whenComplete(() {
+                            //   setState(() {});
+                            // });
+                            setState(() {});
                           });
                         },
                         child: const Text("Entrar google"),
@@ -213,6 +212,8 @@ class _CalendarPageState extends State<CalendarPage> {
               _store.setSearch("");
               bool ret = await LoadingOverlay.of(context)
                   .during(_store.getAllSellers());
+
+              await CalendarClient().addFolder();
 
               if (ret) {
                 _displayDialog(context);
